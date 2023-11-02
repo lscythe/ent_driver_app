@@ -1,0 +1,8 @@
+include: package:lint/strict.yaml
+
+analyzer:
+  exclude:
+   - '**.g.dart'
+
+linter:
+  rules:
