@@ -1,0 +1,13 @@
+{
+  "@@locale": "en",
+  "loginTitle": "Welcome Back!",
+  "usernameHint": "Enter your username",
+  "passwordHint": "Enter your password",
+  "forgotPassword": "Forgot Password?",
+  "loginBtn": "Login",
+  "homeTitle": "Scheduling System",
+  "checkIn": "Check In",
+  "schedule": "Schedule",
+  "trip": "Trip",
+  "message": "Message"
+}
