@@ -1,9 +1,11 @@
 import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 part 'widgets/background.dart';
 
@@ -12,6 +14,8 @@ part 'widgets/text_field.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  static const String path = "/login";
+  static const String name = "login_screen";
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -68,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   KElevatedButton(
                     label: context.localization.loginBtn,
-                    onPressed: () {},
+                    onPressed: () => context.go(HomeScreen.path),
                   ),
                 ],
               ),

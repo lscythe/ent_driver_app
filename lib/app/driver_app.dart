@@ -1,5 +1,5 @@
+import 'package:driver/app/router.dart';
 import 'package:driver/app/themes/themes.dart';
-import 'package:driver/features/features.dart';
 import 'package:driver/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -9,11 +9,10 @@ class DriverApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: "Driver",
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const HomeScreen(),
       localizationsDelegates: const [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -21,6 +20,9 @@ class DriverApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }
