@@ -11,6 +11,7 @@ environment:
 isar_version: &isar_version 3.1.0+1
 
 dependencies:
+  bloc: ^8.1.2
   connectivity_plus: ^5.0.1
   cupertino_icons: ^1.0.6
   dio: ^5.3.3
@@ -18,6 +19,7 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.3
   flutter_localizations:
     sdk: flutter
   flutter_native_splash: ^2.3.5
@@ -25,15 +27,19 @@ dependencies:
   get_it: ^7.6.4
   go_router: ^12.1.0
   google_fonts: ^6.1.0
+  hydrated_bloc: ^9.1.2
   injectable: ^2.3.2
   intl: ^0.18.1
   isar: 3.1.0+1
   isar_flutter_libs: 3.1.0+1
   json_annotation: ^4.8.1
+  logger: ^2.0.2+1
   pretty_dio_logger: ^1.3.1
+  retrofit: ^4.0.3
   shared_preferences: ^2.2.2
 
 dev_dependencies:
+  bloc_test: ^9.1.5
   build_runner: ^2.4.6
   flutter_gen_runner: ^5.3.2
   flutter_launcher_icons: ^0.13.1
@@ -43,6 +49,7 @@ dev_dependencies:
   isar_generator: 3.1.0+1
   json_serializable: ^6.7.1
   lint: ^2.1.2
+  retrofit_generator: ^8.0.3
 
 flutter_gen:
   output: lib/generated/

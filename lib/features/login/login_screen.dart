@@ -1,11 +1,11 @@
 import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
-import 'package:driver/features/features.dart';
+import 'package:driver/features/login/cubit/login_cubit.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'widgets/background.dart';
 
@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 
   static const String path = "/login";
   static const String name = "login_screen";
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -26,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _usernameNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
 
-  bool _obsecureText = true;
+  bool _obscureText = true;
 
   @override
   void dispose() {
@@ -41,69 +42,97 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          const Background(),
-          Padding(
-            padding: Paddings.v16h28.size,
-            child: Center(
-              child: ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  Assets.images.appLogo.image(scale: 3),
-                  Spaces.h32.size,
-                  Text(
-                    context.localization.loginTitle,
-                    textAlign: TextAlign.start,
-                    style: context.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Spaces.h16.size,
-                  KTextField(
-                    hint: context.localization.usernameHint,
-                    borderRadius: Radius.r32.size,
-                    prefixIcon: const Icon(AppIcons.username),
-                  ),
-                  Spaces.h16.size,
-                  KTextField(
-                    hint: context.localization.passwordHint,
-                    borderRadius: Radius.r32.size,
-                    prefixIcon: const Icon(AppIcons.password),
-                    obscureText: _obsecureText,
-                    suffixIcon: IconButton(
-                      onPressed: _changePasswordVisibility,
-                      icon: Icon(_obsecureText ? AppIcons.hide : AppIcons.show),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Padding(
-                      padding: Paddings.a14.size,
-                      child: Text(
-                        context.localization.forgotPassword,
-                        textAlign: TextAlign.end,
-                        style: context.textTheme.labelLarge,
+      body: BlocProvider(
+        create: (context) => LoginCubit(),
+        child: BlocConsumer<LoginCubit, LoginState>(
+          listenWhen: (previous, current) => previous.state != current.state,
+          listener: (context, state) {
+            if (state.state == PageState.failure) {
+              print("Error");
+            } else if (state.state == PageState.success) {
+              print("Success");
+            }
+          },
+          builder: (context, state) => Stack(
+            children: [
+              const Background(),
+              Padding(
+                padding: Paddings.v16h28.size,
+                child: Center(
+                  child: ListView(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      Assets.images.appLogo.image(scale: 3),
+                      Spaces.h32.size,
+                      Text(
+                        context.localization.loginTitle,
+                        textAlign: TextAlign.start,
+                        style: context.textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      Spaces.h16.size,
+                      KTextField(
+                        hint: context.localization.usernameHint,
+                        borderRadius: Radius.r32.size,
+                        prefixIcon: const Icon(AppIcons.username),
+                        focusNode: _usernameNode,
+                        onEditingComplete: () => _usernameNode.nextFocus(),
+                        textInputAction: TextInputAction.next,
+                        onChanged: context.read<LoginCubit>().onUsernameChanged,
+                      ),
+                      Spaces.h16.size,
+                      KTextField(
+                        hint: context.localization.passwordHint,
+                        borderRadius: Radius.r32.size,
+                        prefixIcon: const Icon(AppIcons.password),
+                        obscureText: _obscureText,
+                        suffixIcon: IconButton(
+                          onPressed: _changePasswordVisibility,
+                          icon: Icon(
+                            _obscureText ? AppIcons.hide : AppIcons.show,
+                          ),
+                        ),
+                        focusNode: _passwordNode,
+                        onChanged: context.read<LoginCubit>().onPasswordChanged,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: Padding(
+                          padding: Paddings.a14.size,
+                          child: Text(
+                            context.localization.forgotPassword,
+                            textAlign: TextAlign.end,
+                            style: context.textTheme.labelLarge,
+                          ),
+                        ),
+                      ),
+                      KElevatedButton(
+                        label: context.localization.loginBtn,
+                        onPressed: () {
+                          context.hideKeyboard();
+                          context.read<LoginCubit>().login();
+                        },
+                      ),
+                    ],
                   ),
-                  KElevatedButton(
-                    label: context.localization.loginBtn,
-                    onPressed: () => context.go(CheckInScreen.path),
-                  ),
-                ],
+                ),
               ),
-            ),
+              if (state.state == PageState.loading)
+                const LoadingIndicator()
+              else
+                Container(),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 
   void _changePasswordVisibility() {
     setState(() {
-      _obsecureText = !_obsecureText;
+      _obscureText = !_obscureText;
     });
   }
 }

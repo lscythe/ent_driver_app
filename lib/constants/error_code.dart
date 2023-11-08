@@ -1,3 +1,3 @@
 class ErrorCode {
-  static const int connection = 800;
+  static const String connection = "800";
 }

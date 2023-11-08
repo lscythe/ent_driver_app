@@ -4,7 +4,7 @@ sealed class Result<T> {
   final T? data;
   final Status status;
   final String? message;
-  final int? code;
+  final String? code;
 
   const Result(this.status, {this.data, this.message, this.code});
 }
@@ -18,6 +18,6 @@ final class Loading<T> extends Result<T> {
 }
 
 final class Failure<T> extends Result<T> {
-  Failure({T? data, String? message, int? code})
+  Failure({T? data, String? message, String? code})
       : super(Status.failure, data: data, message: message, code: code);
 }

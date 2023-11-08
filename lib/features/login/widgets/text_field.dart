@@ -10,9 +10,11 @@ class KTextField extends StatelessWidget {
     this.obscureText = false,
     this.textInputAction,
     this.inputType,
-    this.onSubmitted,
+    this.onChanged,
     this.borderRadius = 0,
     this.prefixIcon,
+    this.focusNode,
+    this.onEditingComplete,
   });
 
   final String hint;
@@ -23,8 +25,10 @@ class KTextField extends StatelessWidget {
   final bool obscureText;
   final TextInputAction? textInputAction;
   final TextInputType? inputType;
-  final Function(String)? onSubmitted;
+  final Function(String)? onChanged;
   final double borderRadius;
+  final FocusNode? focusNode;
+  final VoidCallback? onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +40,8 @@ class KTextField extends StatelessWidget {
           obscureText: obscureText,
           textInputAction: textInputAction,
           keyboardType: inputType,
-          onSubmitted: onSubmitted,
+          onChanged: onChanged,
+          focusNode: focusNode,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(borderRadius),
@@ -49,6 +54,7 @@ class KTextField extends StatelessWidget {
             suffixIcon: suffixIcon,
             prefixIcon: prefixIcon,
           ),
+          onEditingComplete: onEditingComplete,
         ),
       ],
     );

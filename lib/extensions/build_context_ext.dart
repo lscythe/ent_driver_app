@@ -9,4 +9,6 @@ extension BuildContextExt on BuildContext {
   ColorScheme get colorScheme => theme.colorScheme;
 
   S get localization => S.of(this);
+
+  void hideKeyboard() => FocusScope.of(this).unfocus();
 }

@@ -7,3 +7,5 @@ export 'radius.dart';
 export 'spaces.dart';
 
 enum Status { success, loading, failure }
+
+enum PageState { success, loading, failure, idle }
