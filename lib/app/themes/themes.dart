@@ -9,10 +9,12 @@ final lightTheme = ThemeData(
   useMaterial3: true,
   colorScheme: KColors.lightScheme,
   fontFamily: GoogleFonts.poppins().fontFamily,
+  fontFamilyFallback: const [FontFamily.poppins],
 );
 
 final darkTheme = ThemeData(
   brightness: Brightness.dark,
   useMaterial3: true,
   colorScheme: KColors.darkScheme,
+  fontFamilyFallback: const [FontFamily.poppins],
 );

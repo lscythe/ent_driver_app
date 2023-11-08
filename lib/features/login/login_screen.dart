@@ -21,6 +21,23 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FocusNode _usernameNode = FocusNode();
+  final FocusNode _passwordNode = FocusNode();
+
+  bool _obsecureText = true;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    _usernameNode.dispose();
+    _passwordNode.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           const Background(),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: Paddings.v16h28.size,
             child: Center(
               child: ListView(
                 shrinkWrap: true,
@@ -54,9 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     hint: context.localization.passwordHint,
                     borderRadius: Radius.r32.size,
                     prefixIcon: const Icon(AppIcons.password),
+                    obscureText: _obsecureText,
                     suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(AppIcons.hide),
+                      onPressed: _changePasswordVisibility,
+                      icon: Icon(_obsecureText ? AppIcons.hide : AppIcons.show),
                     ),
                   ),
                   InkWell(
@@ -72,14 +90,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   KElevatedButton(
                     label: context.localization.loginBtn,
-                    onPressed: () => context.go(HomeScreen.path),
+                    onPressed: () => context.go(CheckInScreen.path),
                   ),
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
+  }
+
+  void _changePasswordVisibility() {
+    setState(() {
+      _obsecureText = !_obsecureText;
+    });
   }
 }

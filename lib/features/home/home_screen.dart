@@ -2,22 +2,18 @@ import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen(this.navigationShell, {super.key});
 
-  static const String path = "/";
-  static const String name = "home_screen";
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  final StatefulNavigationShell navigationShell;
 
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _appBar(context),
-      body: Container(),
+      body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
         items: _navBarItems(context),
         showSelectedLabels: false,
