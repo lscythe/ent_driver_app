@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-@lazySingleton
+@injectable
 class StorageService {
   const StorageService(this._preferences);
 

@@ -1,18 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:driver/constants/constants.dart';
-import 'package:driver/locator/locator.dart';
+import 'package:driver/data/usecases/usecases.dart';
 import 'package:driver/models/models.dart';
-import 'package:driver/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 
 part 'login_state.dart';
 
+@lazySingleton
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit({AuthRepository? authRepository})
-      : _authRepository = authRepository ?? locator.get<AuthRepository>(),
-        super(const LoginState.init());
+  LoginCubit(this._postLoginUseCase) : super(const LoginState.init());
 
-  final AuthRepository _authRepository;
+  final PostLoginUseCase _postLoginUseCase;
 
   void onUsernameChanged(String value) {
     emit(state.copyWith(username: value));
@@ -25,11 +24,22 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> login() async {
     if (state.username.isNotEmpty && state.password.isNotEmpty) {
       emit(state.copyWith(state: PageState.loading));
-      await _authRepository.postLogin(
-        LoginRequest(username: state.username, password: state.password),
+      final result = await _postLoginUseCase.invoke(
+        params: LoginRequest(
+          username: state.username,
+          password: state.password,
+        ),
       );
+      if (result is Success) {
+        emit(state.copyWith(state: PageState.success));
+      } else {
+        emit(
+          state.copyWith(
+            state: PageState.failure,
+            errorMessage: result.message,
+          ),
+        );
+      }
     }
-
-    emit(state.copyWith(state: PageState.success));
   }
 }

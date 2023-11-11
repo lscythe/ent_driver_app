@@ -1,11 +1,14 @@
 import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/features/login/cubit/login_cubit.dart';
 import 'package:driver/generated/assets.gen.dart';
+import 'package:driver/locator/locator.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 part 'widgets/background.dart';
 
@@ -43,14 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => LoginCubit(),
+        create: (context) => locator.get<LoginCubit>(),
         child: BlocConsumer<LoginCubit, LoginState>(
           listenWhen: (previous, current) => previous.state != current.state,
           listener: (context, state) {
-            if (state.state == PageState.failure) {
-              print("Error");
+            if (state.state == PageState.failure &&
+                state.errorMessage != null) {
+              context.scaffoldMessage
+                  .showSnackBar(_errorSnackBar(state.errorMessage!));
             } else if (state.state == PageState.success) {
-              print("Success");
+              context.go(CheckInScreen.path);
             }
           },
           builder: (context, state) => Stack(
@@ -135,4 +140,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _obscureText = !_obscureText;
     });
   }
+
+  SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

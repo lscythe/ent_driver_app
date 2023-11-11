@@ -11,4 +11,6 @@ extension BuildContextExt on BuildContext {
   S get localization => S.of(this);
 
   void hideKeyboard() => FocusScope.of(this).unfocus();
+
+  ScaffoldMessengerState get scaffoldMessage => ScaffoldMessenger.of(this);
 }

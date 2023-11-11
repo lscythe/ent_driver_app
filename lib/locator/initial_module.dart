@@ -2,9 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:driver/constants/api.dart';
 import 'package:driver/locator/locator.dart';
+import 'package:driver/models/models.dart';
 import 'package:driver/services/http/http.dart';
+import 'package:driver/services/service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +22,19 @@ abstract class InitialModule {
         aOptions: AndroidOptions(encryptedSharedPreferences: true),
         iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
       );
+
+  @preResolve
+  Future<Isar> isar() async {
+    final dir = await getApplicationDocumentsDirectory();
+    final isar = await Isar.open(
+      [
+        DriverResponseSchema,
+      ],
+      directory: dir.path,
+    );
+
+    return isar;
+  }
 
   Dio get client {
     final BaseOptions options = BaseOptions(
@@ -34,7 +51,6 @@ abstract class InitialModule {
     );
     dio.interceptors.add(ConnectivityInterceptor());
     dio.interceptors.add(TokenInterceptor());
-    dio.interceptors.add(ResponseInterceptor());
 
     return dio;
   }

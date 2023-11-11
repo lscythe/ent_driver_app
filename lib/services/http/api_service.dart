@@ -11,4 +11,7 @@ abstract class ApiService {
 
   @POST("${ApiConstants.authPath}driver-auth")
   Future<BaseResponse<LoginResponse>> postLogin(@Body() LoginRequest request);
+
+  @POST("${ApiConstants.analystPath}Tracking")
+  Future<BaseResponse<EmptyResponse>> postTracking(@Body() TrackingRequest request);
 }
