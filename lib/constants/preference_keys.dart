@@ -4,4 +4,6 @@ class PreferenceKeys {
   static const String lastLogin = "last_login";
   static const String lastCheckIn = "last_check_in";
   static const String haveCheckIn = "have_check_in";
+  static const String trailerNumber = "trailer_number";
+  static const String vehicleNumber = "vehicle_number";
 }

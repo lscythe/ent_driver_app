@@ -13,6 +13,6 @@ class ScheduleScreen extends StatefulWidget {
 class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(child: Text("Schedule"));
   }
 }

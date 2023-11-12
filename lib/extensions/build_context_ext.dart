@@ -13,4 +13,10 @@ extension BuildContextExt on BuildContext {
   void hideKeyboard() => FocusScope.of(this).unfocus();
 
   ScaffoldMessengerState get scaffoldMessage => ScaffoldMessenger.of(this);
+
+  MediaQueryData get mediaQuery => MediaQuery.of(this);
+
+  Size get size => mediaQuery.size;
+
+  bool get isDarkMode => mediaQuery.platformBrightness == Brightness.dark;
 }

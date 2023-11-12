@@ -14,4 +14,7 @@ abstract class ApiService {
 
   @POST("${ApiConstants.analystPath}Tracking")
   Future<BaseResponse<EmptyResponse>> postTracking(@Body() TrackingRequest request);
+
+  @POST("${ApiConstants.driverPath}CheckIn")
+  Future<BaseResponse<EmptyResponse>> postCico(@Body() CicoRequest request);
 }

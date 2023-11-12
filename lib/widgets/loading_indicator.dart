@@ -13,7 +13,7 @@ class LoadingIndicator extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: context.colorScheme.background,
-            borderRadius: BorderRadius.circular(Radius.r8.size),
+            borderRadius: BorderRadius.circular(KRadius.r8.size),
           ),
           child: Padding(
             padding: Paddings.a18.size,

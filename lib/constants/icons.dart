@@ -10,4 +10,5 @@ class AppIcons {
   static const IconData schedule = Icons.calendar_today_rounded;
   static const IconData trip = Icons.local_shipping;
   static const IconData message = Icons.mail_outline_rounded;
+  static const IconData chevronRight = Icons.chevron_right_rounded;
 }

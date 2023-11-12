@@ -4,30 +4,34 @@ class HomeState extends Equatable {
   const HomeState({
     required this.index,
     required this.state,
-    this.path = CheckInScreen.path,
-    this.hasCheckIn = false,
+    required this.hasCheckIn,
+    required this.homeError,
   });
 
   const HomeState.init()
       : index = 0,
         state = PageState.idle,
-        path = CheckInScreen.path,
-        hasCheckIn = false;
+        hasCheckIn = false,
+        homeError = HomeError.none;
 
   final int index;
-  final String path;
   final PageState state;
   final bool hasCheckIn;
+  final HomeError homeError;
 
-  HomeState copyWith(
-          {int? index, String? path, PageState? state, bool? hasCheckIn}) =>
+  HomeState copyWith({
+    int? index,
+    PageState? state,
+    bool? hasCheckIn,
+    HomeError? homeError,
+  }) =>
       HomeState(
         index: index ?? this.index,
         state: state ?? this.state,
-        path: path ?? this.path,
         hasCheckIn: hasCheckIn ?? this.hasCheckIn,
+        homeError: homeError ?? this.homeError,
       );
 
   @override
-  List<Object?> get props => <Object?>[index, path];
+  List<Object?> get props => <Object?>[index, state, hasCheckIn];
 }

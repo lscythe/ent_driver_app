@@ -22,18 +22,33 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "active": MessageLookupByLibrary.simpleMessage("Active"),
+        "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "checkIn": MessageLookupByLibrary.simpleMessage("Check In"),
+        "checkInDriverPlaceholder":
+            MessageLookupByLibrary.simpleMessage("Driver Name"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Scheduling System"),
+        "inActive": MessageLookupByLibrary.simpleMessage("InActive"),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
-        "loginTitle": MessageLookupByLibrary.simpleMessage("Welcome Back!"),
+        "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
+        "logoutDesc": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to log out?"),
+        "logoutTitle": MessageLookupByLibrary.simpleMessage("Confirm Logout"),
         "message": MessageLookupByLibrary.simpleMessage("Message"),
+        "no": MessageLookupByLibrary.simpleMessage("No"),
+        "notCheckIn": MessageLookupByLibrary.simpleMessage(
+            "Please check in first to access trip form."),
+        "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "passwordHint":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
+        "trailerNumber": MessageLookupByLibrary.simpleMessage("Trailer Number"),
         "trip": MessageLookupByLibrary.simpleMessage("Trip"),
         "usernameHint":
-            MessageLookupByLibrary.simpleMessage("Enter your username")
+            MessageLookupByLibrary.simpleMessage("Enter your username"),
+        "vehicleNumber": MessageLookupByLibrary.simpleMessage("Vehicle Number"),
+        "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }

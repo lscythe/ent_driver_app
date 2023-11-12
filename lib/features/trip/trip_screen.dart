@@ -13,6 +13,6 @@ class TripScreen extends StatefulWidget {
 class _TripScreenState extends State<TripScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Center(child: Text("Trip"));
   }
 }

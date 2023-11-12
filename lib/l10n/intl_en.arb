@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
-  "loginTitle": "Welcome Back!",
+  "appName": "Scheduling System",
+  "loginTitle": "Login",
   "usernameHint": "Enter your username",
   "passwordHint": "Enter your password",
   "forgotPassword": "Forgot Password?",
@@ -9,5 +10,16 @@
   "checkIn": "Check In",
   "schedule": "Schedule",
   "trip": "Trip",
-  "message": "Message"
+  "message": "Message",
+  "notCheckIn": "Please check in first to access trip form.",
+  "checkInDriverPlaceholder": "Driver Name",
+  "active": "Active",
+  "inActive": "InActive",
+  "logoutTitle": "Confirm Logout",
+  "logoutDesc": "Are you sure you want to log out?",
+  "ok": "OK",
+  "no": "No",
+  "yes": "Yes",
+  "vehicleNumber": "Vehicle Number",
+  "trailerNumber": "Trailer Number"
 }

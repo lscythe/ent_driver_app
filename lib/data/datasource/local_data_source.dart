@@ -29,17 +29,15 @@ class LocalDataSource {
 
   int getLastLogin() => _storage.getInt(PreferenceKeys.lastLogin);
 
-  void setLastCheckIn(int value) =>
+  Future<void> setLastCheckIn(int value) async =>
       _storage.write(key: PreferenceKeys.lastCheckIn, value: value);
 
-  int getLastCheckIn() =>
-      _storage.getInt(PreferenceKeys.lastCheckIn);
+  int getLastCheckIn() => _storage.getInt(PreferenceKeys.lastCheckIn);
 
   Future<void> setHaveCheckIn(bool value) async =>
       _storage.write(key: PreferenceKeys.haveCheckIn, value: value);
 
-  bool getHaveCheckIn() =>
-      _storage.getBool(PreferenceKeys.haveCheckIn);
+  bool getHaveCheckIn() => _storage.getBool(PreferenceKeys.haveCheckIn);
 
   Future<void> saveUser(DriverResponse driver) async {
     await _isar.writeTxn(() async {
@@ -62,6 +60,16 @@ class LocalDataSource {
   Future<void> clear() async {
     await _secureStorage.deleteAll();
     await _storage.clear();
-    await _isar.clear();
+    await _isar.writeTxn(() async => _isar.clear());
   }
+
+  Future<void> setTrailerNumber(String value) async =>
+      _storage.write(key: PreferenceKeys.trailerNumber, value: value);
+
+  Future<void> setVehicleNumber(String value) async =>
+      _storage.write(key: PreferenceKeys.vehicleNumber, value: value);
+
+  String getTrailerNumber() => _storage.getString(PreferenceKeys.trailerNumber);
+
+  String getVehicleNumber() => _storage.getString(PreferenceKeys.vehicleNumber);
 }

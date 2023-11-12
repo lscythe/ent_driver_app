@@ -21,7 +21,8 @@ enum Paddings {
   v14h20(EdgeInsets.symmetric(vertical: 14, horizontal: 20)),
   v16h20(EdgeInsets.symmetric(vertical: 16, horizontal: 20)),
   v16h24(EdgeInsets.symmetric(vertical: 16, horizontal: 24)),
-  v16h28(EdgeInsets.symmetric(vertical: 16, horizontal: 28));
+  v16h28(EdgeInsets.symmetric(vertical: 16, horizontal: 28)),
+  v16h32(EdgeInsets.symmetric(vertical: 18, horizontal: 32));
 
   const Paddings(this.size);
 

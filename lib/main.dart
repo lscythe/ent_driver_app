@@ -2,8 +2,8 @@ import 'package:driver/app/driver_app.dart';
 import 'package:driver/locator/locator.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  configureDependencies();
+  await configureDependencies();
   runApp(const DriverApp());
 }

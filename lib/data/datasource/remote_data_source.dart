@@ -15,6 +15,9 @@ class RemoteDataSource {
   Future<Result<EmptyResponse>> postTracking(TrackingRequest request) =>
       getResultWithSingleObject(_api.postTracking(request));
 
+  Future<Result<EmptyResponse>> postCico(CicoRequest request) =>
+      getResultWithSingleObject(_api.postCico(request));
+
   Future<Result<T>> getResultWithSingleObject<T>(
     Future<BaseResponse<T>> apiCall,
   ) async {

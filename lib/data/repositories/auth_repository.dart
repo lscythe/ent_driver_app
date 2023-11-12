@@ -26,6 +26,8 @@ class AuthRepository {
     return result;
   }
 
+  Future<DriverResponse?> getCurrentUser() async => _localDataSource.getUser();
+
   Future<String> accessToken() async => _localDataSource.getAccessToken();
 
   int lastLogin() => _localDataSource.getLastLogin();
