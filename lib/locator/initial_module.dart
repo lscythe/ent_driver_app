@@ -29,6 +29,7 @@ abstract class InitialModule {
     final isar = await Isar.open(
       [
         DriverResponseSchema,
+        MessageResponseSchema,
       ],
       directory: dir.path,
     );

@@ -1,6 +1,7 @@
 import 'package:driver/data/datasource/datasource.dart';
 import 'package:driver/models/models.dart';
 import 'package:injectable/injectable.dart';
+import 'package:isar/isar.dart';
 
 @lazySingleton
 class DriverRepository {
@@ -35,7 +36,7 @@ class DriverRepository {
   Future<Result<EmptyResponse>> postVehicleCheck(
     VehicleCheckRequest request,
   ) async {
-    final result = await _remoteDataSource.postVehicleChek(request);
+    final result = await _remoteDataSource.postVehicleCheck(request);
 
     if (result is Success) {
       await _localDataSource.setHaveCheckIn(true);
@@ -45,6 +46,26 @@ class DriverRepository {
 
     return result;
   }
+
+  Future<Result<List<MessageResponse>>> postMessage(
+    MessageRequest request,
+  ) async {
+    final result = await _remoteDataSource.postMessage(request);
+
+    if (result is Success) {
+      if (result.data != null) {
+        await _localDataSource.saveMessages(
+            result.data!, request.type ?? "all");
+      }
+      final data = await _localDataSource.getMessages();
+      return Success(data);
+    }
+
+    return result;
+  }
+
+  Future<int> getUnreadMessageCount(String type) async =>
+      _localDataSource.getUnreadMessageCount(type);
 
   bool haveCheckIn() => _localDataSource.getHaveCheckIn();
 

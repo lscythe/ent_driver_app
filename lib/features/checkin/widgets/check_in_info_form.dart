@@ -6,13 +6,11 @@ class CheckInInfoForm extends StatelessWidget {
   const CheckInInfoForm({
     super.key,
     required this.onChanged,
-    required this.controller,
     required this.label,
     this.textInputAction = TextInputAction.done,
   });
 
   final Function(String value) onChanged;
-  final TextEditingController controller;
   final String label;
   final TextInputAction textInputAction;
 
@@ -44,8 +42,8 @@ class CheckInInfoForm extends StatelessWidget {
           textInputAction: textInputAction,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           onChanged: onChanged,
-          controller: controller,
           keyboardType: TextInputType.text,
+          autoDisposeControllers: false,
         ),
       ],
     );

@@ -72,4 +72,46 @@ class LocalDataSource {
   String getTrailerNumber() => _storage.getString(PreferenceKeys.trailerNumber);
 
   String getVehicleNumber() => _storage.getString(PreferenceKeys.vehicleNumber);
+
+  Future<void> saveMessages(List<MessageResponse> messages, String type) async {
+    await _isar.writeTxn(() async {
+      final List<MessageResponse> newData = List.empty(growable: true);
+      for (final message in messages) {
+        final data = MessageResponse()
+          ..message = message.message
+          ..title = message.title
+          ..date = message.date
+          ..isRead = false
+          ..type = type != "all" ? type : null;
+
+        final isExist = await _isar.messageResponses
+            .filter()
+            .titleEqualTo(message.title.orEmpty)
+            .messageEqualTo(message.message.orEmpty)
+            .findAll();
+        print(isExist.length);
+        if (!isExist.isNotEmpty) {
+          newData.add(data);
+        } else {
+          final updateExisting = isExist.first
+            ..type = type != "all" ? type : null;
+          await _isar.messageResponses.put(updateExisting);
+        }
+      }
+
+      final existing = await _isar.messageResponses.where().findAll();
+      existing.addAll(newData);
+
+      await _isar.messageResponses.putAll(existing.toSet().toList());
+    });
+  }
+
+  Future<List<MessageResponse>> getMessages() async =>
+      _isar.messageResponses.where().findAll();
+
+  Future<int> getUnreadMessageCount(String type) async => _isar.messageResponses
+      .filter()
+      .isReadEqualTo(false)
+      .typeContains(type != "all" ? type : "")
+      .count();
 }

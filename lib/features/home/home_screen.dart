@@ -106,11 +106,15 @@ class HomeScreen extends StatelessWidget {
 
     if (message != null) {
       context.scaffoldMessage.showSnackBar(_errorSnackBar(message));
+      context.read<HomeCubit>().resetErrorMessage();
     }
 
-    if (state.errorMessage != null) {
+    if (state.errorMessage?.isNotEmpty ?? false) {
       context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+      context.read<HomeCubit>().resetErrorMessage();
     }
+
+
   }
 
   void _checkInListener(BuildContext context, CheckInState state) {

@@ -75,8 +75,10 @@ extension GetItInjectableX on _i1.GetIt {
         ));
     gh.lazySingleton<_i17.LoginCubit>(
         () => _i17.LoginCubit(gh<_i12.AuthRepository>()));
-    gh.lazySingleton<_i18.MessageCubit>(
-        () => _i18.MessageCubit(gh<_i16.DriverRepository>()));
+    gh.lazySingleton<_i18.MessageCubit>(() => _i18.MessageCubit(
+          gh<_i16.DriverRepository>(),
+          gh<_i16.AuthRepository>(),
+        ));
     gh.lazySingleton<_i19.CheckInCubit>(() => _i19.CheckInCubit(
           gh<_i16.DriverRepository>(),
           gh<_i16.AuthRepository>(),

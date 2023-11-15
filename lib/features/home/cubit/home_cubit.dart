@@ -57,6 +57,13 @@ class HomeCubit extends Cubit<HomeState> {
       ),
     );
   }
+
+  void resetErrorMessage() => emit(
+        state.copyWith(
+          errorMessage: "",
+          homeError: HomeError.none,
+        ),
+      );
 }
 
 enum HomeError { notCheckIn, none }

@@ -24,11 +24,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
   DateTime _currentTime = DateTime.now();
   late Timer _timer;
 
-  final TextEditingController _vehicleNumberController =
-      TextEditingController();
-  final TextEditingController _trailerNumberController =
-      TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -42,8 +37,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
 
   @override
   void dispose() {
-    _vehicleNumberController.dispose();
-    _trailerNumberController.dispose();
     _timer.cancel();
     super.dispose();
   }
@@ -156,14 +149,12 @@ class _CheckInScreenState extends State<CheckInScreen> {
             Expanded(
               child: CheckInInfoForm(
                 label: context.localization.vehicleNumber,
-                controller: _vehicleNumberController,
                 onChanged: context.read<CheckInCubit>().onVehicleNumberChanged,
               ),
             ),
             Expanded(
               child: CheckInInfoForm(
                 label: context.localization.trailerNumber,
-                controller: _trailerNumberController,
                 onChanged: context.read<CheckInCubit>().onTrailerNumberChanged,
               ),
             ),

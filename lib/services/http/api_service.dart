@@ -27,4 +27,9 @@ abstract class ApiService {
   Future<BaseResponse<EmptyResponse>> postVehicleChek(
     @Body() VehicleCheckRequest request,
   );
+
+  @POST("${ApiConstants.driverPath}Messages")
+  Future<BaseResponse<List<MessageResponse>>> postMessage(
+    @Body() MessageRequest request,
+  );
 }

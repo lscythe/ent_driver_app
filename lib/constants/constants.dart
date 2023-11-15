@@ -11,6 +11,8 @@ enum Status { success, loading, failure }
 
 enum PageState { success, loading, failure, idle }
 
+enum MessageType { all, alerts, requests, broadcast }
+
 enum KSize {
   s2(2.0),
   s4(4.0),

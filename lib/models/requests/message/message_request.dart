@@ -6,9 +6,12 @@ part 'message_request.g.dart';
 class MessageRequest {
   @JsonKey(name: "Drivers")
   final List<int> drivers;
+  @JsonKey(name: "Type")
+  final String? type;
 
   MessageRequest({
     required this.drivers,
+    this.type,
   });
 
   factory MessageRequest.fromJson(Map<String, dynamic> json) =>
