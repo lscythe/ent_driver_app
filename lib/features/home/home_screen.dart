@@ -2,10 +2,8 @@ import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
-import 'package:driver/features/home/cubit/home_cubit.dart';
-import 'package:driver/features/home/widget/bottom_navigation_bar.dart';
-import 'package:driver/features/home/widget/logout_dialog.dart';
 import 'package:driver/generated/assets.gen.dart';
+import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,17 +22,31 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit, HomeState>(
-      builder: (context, state) {
-        return Scaffold(
-          backgroundColor:
-              context.isDarkMode ? KColors.charcoal : KColors.antiFlashGray,
-          appBar: _appBar(context),
-          body: _buildChild(),
-          bottomNavigationBar: const KBottomNavigationBar(),
-        );
-      },
-      listener: _blocListener,
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<HomeCubit, HomeState>(listener: _homeListener),
+        BlocListener<CheckInCubit, CheckInState>(listener: _checkInListener),
+      ],
+      child: BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          return Stack(
+            children: [
+              Scaffold(
+                backgroundColor: context.isDarkMode
+                    ? KColors.charcoal
+                    : KColors.antiFlashGray,
+                appBar: _appBar(context),
+                body: _buildChild(),
+                bottomNavigationBar: const KBottomNavigationBar(),
+              ),
+              if (state.state == PageState.loading)
+                const LoadingIndicator()
+              else
+                Container(),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -79,13 +91,14 @@ class HomeScreen extends StatelessWidget {
               topRight: Radius.circular(KRadius.r10.size),
             ),
           ),
+          clipBehavior: Clip.antiAlias,
           child: _child[state.index],
         ),
       ),
     );
   }
 
-  void _blocListener(BuildContext context, HomeState state) {
+  void _homeListener(BuildContext context, HomeState state) {
     final message = switch (state.homeError) {
       HomeError.notCheckIn => context.localization.notCheckIn,
       HomeError.none => null,
@@ -94,6 +107,18 @@ class HomeScreen extends StatelessWidget {
     if (message != null) {
       context.scaffoldMessage.showSnackBar(_errorSnackBar(message));
     }
+
+    if (state.errorMessage != null) {
+      context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+    }
+  }
+
+  void _checkInListener(BuildContext context, CheckInState state) {
+    context.read<HomeCubit>().updateState(
+          state.state,
+          hasCheckIn: state.hasCheckIn,
+          errorMessage: state.errorMessage,
+        );
   }
 
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));

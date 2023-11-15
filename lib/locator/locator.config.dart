@@ -14,11 +14,12 @@ import 'package:driver/data/datasource/local_data_source.dart' as _i10;
 import 'package:driver/data/datasource/remote_data_source.dart' as _i7;
 import 'package:driver/data/repositories/auth_repository.dart' as _i12;
 import 'package:driver/data/repositories/driver_repository.dart' as _i14;
-import 'package:driver/data/repositories/repositories.dart' as _i18;
-import 'package:driver/features/checkin/cubit/checkin_cubit.dart' as _i17;
+import 'package:driver/data/repositories/repositories.dart' as _i16;
+import 'package:driver/features/checkin/cubit/checkin_cubit.dart' as _i19;
 import 'package:driver/features/home/cubit/home_cubit.dart' as _i15;
-import 'package:driver/features/login/cubit/login_cubit.dart' as _i16;
-import 'package:driver/locator/initial_module.dart' as _i19;
+import 'package:driver/features/login/cubit/login_cubit.dart' as _i17;
+import 'package:driver/features/message/cubit/message_cubit.dart' as _i18;
+import 'package:driver/locator/initial_module.dart' as _i20;
 import 'package:driver/services/http/http.dart' as _i3;
 import 'package:driver/services/service.dart' as _i11;
 import 'package:driver/services/storage_service.dart' as _i9;
@@ -69,17 +70,19 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i13.RemoteDataSource>(),
         ));
     gh.lazySingleton<_i15.HomeCubit>(() => _i15.HomeCubit(
-          gh<_i11.StorageService>(),
-          gh<_i12.AuthRepository>(),
+          gh<_i16.DriverRepository>(),
+          gh<_i16.AuthRepository>(),
         ));
-    gh.lazySingleton<_i16.LoginCubit>(
-        () => _i16.LoginCubit(gh<_i12.AuthRepository>()));
-    gh.lazySingleton<_i17.CheckInCubit>(() => _i17.CheckInCubit(
-          gh<_i18.DriverRepository>(),
-          gh<_i18.AuthRepository>(),
+    gh.lazySingleton<_i17.LoginCubit>(
+        () => _i17.LoginCubit(gh<_i12.AuthRepository>()));
+    gh.lazySingleton<_i18.MessageCubit>(
+        () => _i18.MessageCubit(gh<_i16.DriverRepository>()));
+    gh.lazySingleton<_i19.CheckInCubit>(() => _i19.CheckInCubit(
+          gh<_i16.DriverRepository>(),
+          gh<_i16.AuthRepository>(),
         ));
     return this;
   }
 }
 
-class _$InitialModule extends _i19.InitialModule {}
+class _$InitialModule extends _i20.InitialModule {}

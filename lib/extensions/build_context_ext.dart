@@ -19,4 +19,6 @@ extension BuildContextExt on BuildContext {
   Size get size => mediaQuery.size;
 
   bool get isDarkMode => mediaQuery.platformBrightness == Brightness.dark;
+
+  void dismiss() => Navigator.of(this).pop();
 }

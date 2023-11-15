@@ -8,6 +8,7 @@
   "loginBtn": "Login",
   "homeTitle": "Scheduling System",
   "checkIn": "Check In",
+  "checkOut": "Check Out",
   "schedule": "Schedule",
   "trip": "Trip",
   "message": "Message",
@@ -21,5 +22,12 @@
   "no": "No",
   "yes": "Yes",
   "vehicleNumber": "Vehicle Number",
-  "trailerNumber": "Trailer Number"
+  "trailerNumber": "Trailer Number",
+  "vehicleCheckList": "Vehicle Check List",
+  "submit": "Submit",
+  "checkedIn": "Checked In:",
+  "allMessage": "All",
+  "alertMessage": "Alerts",
+  "requestMessage": "Requests",
+  "broadcastMessage": "Broadcast"
 }

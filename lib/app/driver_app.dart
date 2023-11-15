@@ -1,8 +1,6 @@
 import 'package:driver/app/router.dart';
 import 'package:driver/app/themes/themes.dart';
-import 'package:driver/features/checkin/cubit/checkin_cubit.dart';
-import 'package:driver/features/home/cubit/home_cubit.dart';
-import 'package:driver/features/login/cubit/login_cubit.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/generated/l10n.dart';
 import 'package:driver/locator/locator.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +22,9 @@ class DriverApp extends StatelessWidget {
           ),
           BlocProvider<CheckInCubit>(
             create: (context) => locator.get<CheckInCubit>()..init(),
+          ),
+          BlocProvider<MessageCubit>(
+            create: (context) => locator.get<MessageCubit>(),
           ),
         ],
         child: MaterialApp.router(

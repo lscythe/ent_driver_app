@@ -23,10 +23,15 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "active": MessageLookupByLibrary.simpleMessage("Active"),
+        "alertMessage": MessageLookupByLibrary.simpleMessage("Alerts"),
+        "allMessage": MessageLookupByLibrary.simpleMessage("All"),
         "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
+        "broadcastMessage": MessageLookupByLibrary.simpleMessage("Broadcast"),
         "checkIn": MessageLookupByLibrary.simpleMessage("Check In"),
         "checkInDriverPlaceholder":
             MessageLookupByLibrary.simpleMessage("Driver Name"),
+        "checkOut": MessageLookupByLibrary.simpleMessage("Check Out"),
+        "checkedIn": MessageLookupByLibrary.simpleMessage("Checked In:"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Scheduling System"),
@@ -43,11 +48,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "passwordHint":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
+        "requestMessage": MessageLookupByLibrary.simpleMessage("Requests"),
         "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
+        "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "trailerNumber": MessageLookupByLibrary.simpleMessage("Trailer Number"),
         "trip": MessageLookupByLibrary.simpleMessage("Trip"),
         "usernameHint":
             MessageLookupByLibrary.simpleMessage("Enter your username"),
+        "vehicleCheckList":
+            MessageLookupByLibrary.simpleMessage("Vehicle Check List"),
         "vehicleNumber": MessageLookupByLibrary.simpleMessage("Vehicle Number"),
         "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };

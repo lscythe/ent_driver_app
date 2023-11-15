@@ -1,7 +1,5 @@
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
-import 'package:driver/features/home/cubit/home_cubit.dart';
-import 'package:driver/locator/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -22,10 +20,10 @@ class LogoutDialog extends StatelessWidget {
           ),
           TextButton(
             onPressed: () async {
-              await context
-                  .read<HomeCubit>()
-                  .logout()
-                  .whenComplete(() => context.go(LoginScreen.path));
+              await context.read<HomeCubit>().logout().whenComplete(() {
+                context.dismiss();
+                context.go(LoginScreen.path);
+              });
             },
             child: Text(context.localization.yes),
           ),

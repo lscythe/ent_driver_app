@@ -11,7 +11,8 @@ class KElevatedButton extends StatelessWidget {
     this.suffixIcon,
     this.borderRadius = 32.0,
     this.backgroundColor,
-    this.mainAxisSize = MainAxisSize.min,  this.bold = false,
+    this.mainAxisSize = MainAxisSize.min,
+    this.bold = false,
   });
 
   final VoidCallback onPressed;
@@ -25,6 +26,16 @@ class KElevatedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final btnLabel = Text(
+      label,
+      style: context.textTheme.labelLarge?.copyWith(
+        color: context.colorScheme.onPrimary,
+        fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+      ),
+      textAlign: prefixIcon != null && suffixIcon != null
+          ? TextAlign.start
+          : TextAlign.center,
+    );
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
@@ -39,18 +50,10 @@ class KElevatedButton extends StatelessWidget {
           mainAxisSize: mainAxisSize,
           children: [
             prefixIcon ?? Container(),
-            Flexible(
-              child: Text(
-                label,
-                style: context.textTheme.labelLarge?.copyWith(
-                  color: context.colorScheme.onPrimary,
-                  fontWeight: bold ? FontWeight.bold : FontWeight.normal,
-                ),
-                textAlign: prefixIcon != null && suffixIcon != null
-                    ? TextAlign.start
-                    : TextAlign.center,
-              ),
-            ),
+            if (mainAxisSize == MainAxisSize.max)
+              Expanded(child: btnLabel)
+            else
+              Flexible(child: btnLabel),
             suffixIcon ?? Container(),
           ],
         ),

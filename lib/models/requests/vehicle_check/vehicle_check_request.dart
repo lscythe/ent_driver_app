@@ -25,7 +25,7 @@ class Question {
   @JsonKey(name: "Key")
   final int key;
   @JsonKey(name: "Value")
-  final bool value;
+  bool value;
 
   Question({
     required this.key,

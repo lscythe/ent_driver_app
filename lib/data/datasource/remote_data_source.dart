@@ -18,6 +18,12 @@ class RemoteDataSource {
   Future<Result<EmptyResponse>> postCico(CicoRequest request) =>
       getResultWithSingleObject(_api.postCico(request));
 
+  Future<Result<List<VehicleCheckResponse>>> postVehicleCheckList() =>
+      getResultWithSingleObject(_api.postVehicleCheckList());
+
+  Future<Result<EmptyResponse>> postVehicleChek(VehicleCheckRequest request) =>
+      getResultWithSingleObject(_api.postVehicleChek(request));
+
   Future<Result<T>> getResultWithSingleObject<T>(
     Future<BaseResponse<T>> apiCall,
   ) async {

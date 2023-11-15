@@ -1,4 +1,5 @@
-part of '../login_screen.dart';
+import 'package:driver/app/themes/themes.dart';
+import 'package:flutter/material.dart';
 
 class Background extends StatelessWidget {
   const Background({super.key});

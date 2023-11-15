@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 enum Paddings {
   a4(EdgeInsets.all(4)),
-  a6(EdgeInsets.all(8)),
+  a6(EdgeInsets.all(6)),
+  a8(EdgeInsets.all(8)),
   a10(EdgeInsets.all(10)),
   a12(EdgeInsets.all(12)),
   a14(EdgeInsets.all(14)),

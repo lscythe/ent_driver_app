@@ -45,7 +45,12 @@ abstract class InitialModule {
       receiveTimeout: ApiConstants.receiveTimeout,
     );
     final Dio dio = Dio(options);
-    dio.interceptors.add(PrettyDioLogger());
+    dio.interceptors.add(
+      PrettyDioLogger(
+        requestBody: true,
+        requestHeader: true,
+      ),
+    );
     dio.interceptors.add(
       DioCacheInterceptor(options: CacheOptions(store: MemCacheStore())),
     );

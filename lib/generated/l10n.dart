@@ -130,6 +130,16 @@ class S {
     );
   }
 
+  /// `Check Out`
+  String get checkOut {
+    return Intl.message(
+      'Check Out',
+      name: 'checkOut',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Schedule`
   String get schedule {
     return Intl.message(
@@ -265,6 +275,76 @@ class S {
     return Intl.message(
       'Trailer Number',
       name: 'trailerNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicle Check List`
+  String get vehicleCheckList {
+    return Intl.message(
+      'Vehicle Check List',
+      name: 'vehicleCheckList',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit`
+  String get submit {
+    return Intl.message(
+      'Submit',
+      name: 'submit',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Checked In:`
+  String get checkedIn {
+    return Intl.message(
+      'Checked In:',
+      name: 'checkedIn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `All`
+  String get allMessage {
+    return Intl.message(
+      'All',
+      name: 'allMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Alerts`
+  String get alertMessage {
+    return Intl.message(
+      'Alerts',
+      name: 'alertMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Requests`
+  String get requestMessage {
+    return Intl.message(
+      'Requests',
+      name: 'requestMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Broadcast`
+  String get broadcastMessage {
+    return Intl.message(
+      'Broadcast',
+      name: 'broadcastMessage',
       desc: '',
       args: [],
     );

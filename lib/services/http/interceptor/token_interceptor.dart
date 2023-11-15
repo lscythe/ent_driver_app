@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:driver/constants/constants.dart';
+import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/locator/locator.dart';
-import 'package:driver/services/service.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenInterceptor extends InterceptorsWrapper {
   final _exceptions = [
@@ -16,9 +15,7 @@ class TokenInterceptor extends InterceptorsWrapper {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final token = await locator<FlutterSecureStorage>()
-            .read(key: PreferenceKeys.accessToken) ??
-        "";
+    final token = await locator<AuthRepository>().accessToken();
 
     if (!_exceptions.any(options.path.startsWith)) {
       if (token.isNotEmpty) {
