@@ -24,12 +24,30 @@ abstract class ApiService {
   Future<BaseResponse<List<VehicleCheckResponse>>> postVehicleCheckList();
 
   @POST("${ApiConstants.driverPath}submit-pre-op-check")
-  Future<BaseResponse<EmptyResponse>> postVehicleChek(
+  Future<BaseResponse<EmptyResponse>> postVehicleCheck(
     @Body() VehicleCheckRequest request,
   );
 
   @POST("${ApiConstants.driverPath}Messages")
   Future<BaseResponse<List<MessageResponse>>> postMessage(
     @Body() MessageRequest request,
+  );
+
+  @POST("${ApiConstants.driverPath}List-Trip-Form")
+  Future<BaseResponse<List<ListTripFormResponse>>> postListTripForm(
+    @Body() ListTripFormRequest request,
+  );
+
+  @POST("${ApiConstants.driverPath}Trip-Form")
+  Future<BaseResponse<EmptyResponse>> postTripForm(
+    @Body() TripFormRequest request,
+  );
+
+  @POST("${ApiConstants.transportLocationPath}List")
+  Future<BaseResponse<List<TransportLocationResponse>>> postTransportLocation();
+
+  @POST("${ApiConstants.driverPath}Schedule")
+  Future<BaseResponse<List<ScheduleResponse>>> postSchedule(
+    @Body() ScheduleRequest request,
   );
 }

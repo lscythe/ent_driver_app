@@ -11,7 +11,7 @@ class KColors {
     brightness: Brightness.light,
     primary: Color(0xFFd76d48),
     onPrimary: Color(0xFFFFFFFF),
-    secondary: Color(0xFF395BA9),
+    secondary: Color(0xFF344775),
     onSecondary: Color(0xFFFFFFFF),
     error: Color(0xFFBA1A1A),
     onError: Color(0xFFFFFFFF),

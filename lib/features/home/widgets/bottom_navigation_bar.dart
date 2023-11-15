@@ -35,7 +35,9 @@ class KBottomNavigationBar extends StatelessWidget {
                 icon: Icon(
                   AppIcons.trip,
                   color: state.hasCheckIn
-                      ? context.colorScheme.secondary
+                      ? state.index != 2
+                          ? context.colorScheme.secondary
+                          : context.colorScheme.onPrimary
                       : KColors.davyGray,
                 ),
                 label: context.localization.trip,

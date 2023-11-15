@@ -32,7 +32,7 @@ class CheckInCubit extends Cubit<CheckInState> {
         vehicleNumber: vehicleNumber,
         trailerNumber: trailerNumber,
         checkedInAt: !lastCheckIn.isZero ? formatDate(lastCheckIn) : null,
-        type: hasCheckIn ? Cico.checkIn : Cico.checkOut,
+        type: hasCheckIn ? Cico.checkOut : Cico.checkIn,
       ),
     );
   }

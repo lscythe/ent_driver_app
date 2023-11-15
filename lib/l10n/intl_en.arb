@@ -11,6 +11,8 @@
   "checkOut": "Check Out",
   "schedule": "Schedule",
   "trip": "Trip",
+  "addTripForm": "Add Trip Form",
+  "editTripForm": "Edit Trip Form",
   "message": "Message",
   "notCheckIn": "Please check in first to access trip form.",
   "checkInDriverPlaceholder": "Driver Name",
@@ -29,5 +31,52 @@
   "allMessage": "All",
   "alertMessage": "Alerts",
   "requestMessage": "Requests",
-  "broadcastMessage": "Broadcast"
+  "broadcastMessage": "Broadcast",
+  "emptyMessageTitle": "Your inbox is empty",
+  "emptyMessageDesc": "Incoming {messageType} message will be listed in this folder",
+  "@emptyMessageDesc": {
+    "placeholders": {
+      "messageType": {
+        "type": "String",
+        "example": "All"
+      }
+    }
+  },
+  "vehicleFilter": "Vehicle/Trailer No",
+  "date": "Date",
+  "tripFrom": "From: {from}",
+  "@tripForm": {
+    "placeholders": {
+      "from": {
+        "type": "String",
+        "example": "Test"
+      }
+    }
+  },
+  "tripTo": "To: {to}",
+  "@tripTo": {
+    "placeholders": {
+      "to": {
+        "type": "String",
+        "example": "Test"
+      }
+    }
+  },
+  "tripSize": "Container Size: {size}",
+  "@tripSize": {
+    "placeholders": {
+      "size": {
+        "type": "String",
+        "example": "Test"
+      }
+    }
+  },
+  "containerNo": "Container No",
+  "transportFrom": "Transport From",
+  "deliverTo": "Deliver To",
+  "containerSize": "Container Size",
+  "tripFormFilterErrorTitle": "Trip Form Not Found",
+  "tripFormFilterErrorDesc": "Please change the parameters to find another trip form.",
+  "filter": "Filter",
+  "changeDateError": "Please change to other date to filter with vehicle/trailer no"
 }

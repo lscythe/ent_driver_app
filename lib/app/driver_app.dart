@@ -18,10 +18,16 @@ class DriverApp extends StatelessWidget {
           create: (context) => locator.get<LoginCubit>(),
         ),
         BlocProvider<HomeCubit>(
-          create: (context) => locator.get<HomeCubit>(),
+          create: (context) => locator.get<HomeCubit>()..init(),
         ),
         BlocProvider<CheckInCubit>(
           create: (context) => locator.get<CheckInCubit>()..init(),
+        ),
+        BlocProvider<ScheduleCubit>(
+          create: (context) => locator.get<ScheduleCubit>()..postSchedule(),
+        ),
+        BlocProvider<TripCubit>(
+          create: (context) => locator.get<TripCubit>()..postListTrip(),
         ),
         BlocProvider<MessageCubit>(
           create: (context) => locator.get<MessageCubit>()..init(),

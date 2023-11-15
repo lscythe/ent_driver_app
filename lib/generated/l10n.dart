@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'intl/messages_all.dart';
+import 'package:driver/generated/intl/messages_all.dart';
 
 // **************************************************************************
 // Generator: Flutter Intl IDE plugin
@@ -19,7 +19,7 @@ class S {
 
   static S get current {
     assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',);
     return _current!;
   }
 
@@ -42,7 +42,7 @@ class S {
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',);
     return instance!;
   }
 
@@ -155,6 +155,26 @@ class S {
     return Intl.message(
       'Trip',
       name: 'trip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Trip Form`
+  String get addTripForm {
+    return Intl.message(
+      'Add Trip Form',
+      name: 'addTripForm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit Trip Form`
+  String get editTripForm {
+    return Intl.message(
+      'Edit Trip Form',
+      name: 'editTripForm',
       desc: '',
       args: [],
     );
@@ -345,6 +365,156 @@ class S {
     return Intl.message(
       'Broadcast',
       name: 'broadcastMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your inbox is empty`
+  String get emptyMessageTitle {
+    return Intl.message(
+      'Your inbox is empty',
+      name: 'emptyMessageTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Incoming {messageType} message will be listed in this folder`
+  String emptyMessageDesc(String messageType) {
+    return Intl.message(
+      'Incoming $messageType message will be listed in this folder',
+      name: 'emptyMessageDesc',
+      desc: '',
+      args: [messageType],
+    );
+  }
+
+  /// `Vehicle/Trailer No`
+  String get vehicleFilter {
+    return Intl.message(
+      'Vehicle/Trailer No',
+      name: 'vehicleFilter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `From: {from}`
+  String tripFrom(Object from) {
+    return Intl.message(
+      'From: $from',
+      name: 'tripFrom',
+      desc: '',
+      args: [from],
+    );
+  }
+
+  /// `To: {to}`
+  String tripTo(String to) {
+    return Intl.message(
+      'To: $to',
+      name: 'tripTo',
+      desc: '',
+      args: [to],
+    );
+  }
+
+  /// `Container Size: {size}`
+  String tripSize(String size) {
+    return Intl.message(
+      'Container Size: $size',
+      name: 'tripSize',
+      desc: '',
+      args: [size],
+    );
+  }
+
+  /// `Container No`
+  String get containerNo {
+    return Intl.message(
+      'Container No',
+      name: 'containerNo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Transport From`
+  String get transportFrom {
+    return Intl.message(
+      'Transport From',
+      name: 'transportFrom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Deliver To`
+  String get deliverTo {
+    return Intl.message(
+      'Deliver To',
+      name: 'deliverTo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Container Size`
+  String get containerSize {
+    return Intl.message(
+      'Container Size',
+      name: 'containerSize',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Trip Form Not Found`
+  String get tripFormFilterErrorTitle {
+    return Intl.message(
+      'Trip Form Not Found',
+      name: 'tripFormFilterErrorTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please change the parameters to find another trip form.`
+  String get tripFormFilterErrorDesc {
+    return Intl.message(
+      'Please change the parameters to find another trip form.',
+      name: 'tripFormFilterErrorDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Filter`
+  String get filter {
+    return Intl.message(
+      'Filter',
+      name: 'filter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please change to other date to filter with vehicle/trailer no`
+  String get changeDateError {
+    return Intl.message(
+      'Please change to other date to filter with vehicle/trailer no',
+      name: 'changeDateError',
       desc: '',
       args: [],
     );

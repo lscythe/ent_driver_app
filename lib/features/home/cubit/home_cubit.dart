@@ -25,8 +25,13 @@ class HomeCubit extends Cubit<HomeState> {
     Permission.ignoreBatteryOptimizations,
   ];
 
+  void init() {
+    final hasCheckIn = _driverRepository.haveCheckIn();
+    emit(state.copyWith(hasCheckIn: hasCheckIn));
+  }
+
   Future<void> checkPermission() async {
-    for (var _permission in _permissionList) {
+    for (final _permission in _permissionList) {
       final status = await _permission.status;
       if (!status.isGranted) {}
     }

@@ -7,14 +7,11 @@ class ListTripFormRequest {
   @JsonKey(name: "DriverId")
   final int driverId;
   @JsonKey(name: "Date")
-  final DateTime date;
-  @JsonKey(name: "Vehicle")
-  final String vehicle;
+  final String date;
 
   ListTripFormRequest({
     required this.driverId,
     required this.date,
-    required this.vehicle,
   });
 
   factory ListTripFormRequest.fromJson(Map<String, dynamic> json) =>

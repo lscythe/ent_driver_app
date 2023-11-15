@@ -17,6 +17,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   dio: ^5.3.3
   dio_cache_interceptor: ^3.4.4
+  dropdown_search: ^5.0.6
   equatable: ^2.0.5
   flutter:
     sdk: flutter
@@ -44,6 +45,8 @@ dependencies:
   retrofit: ^4.0.3
   shared_preferences: ^2.2.2
   supercharged: ^2.1.1
+  table_calendar: ^3.0.9
+  tuple: ^2.0.2
 
 dev_dependencies:
   bloc_test: ^9.1.5

@@ -1,6 +1,10 @@
 enum KDateFormat {
   hhMmA("hh:mm a"),
-  eDdMmYyyy("E, dd MMM yyyy");
+  eDdMmYyyy("E, dd MMM yyyy"),
+  ddMmmYyyyHhMmA("dd-MMM-yyyy, hh:mm a"),
+  yyyyMMdd("yyyy-MM-dd"),
+  mmmYYYY("MMM yyyy"),
+  timestamp("yyyy-MM-d'T'hh:mm:ss");
 
   const KDateFormat(this.format);
 

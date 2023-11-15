@@ -1,31 +1,36 @@
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'list_trip_form_response.g.dart';
 
 @JsonSerializable()
+@collection
 class ListTripFormResponse {
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  Id colId = Isar.autoIncrement;
+
   @JsonKey(name: "Id")
-  final int? id;
+  int? id;
   @JsonKey(name: "ShiftGroupId")
-  final int? shiftGroupId;
+  int? shiftGroupId;
   @JsonKey(name: "DriverId")
-  final int? driverId;
+  int? driverId;
   @JsonKey(name: "Name")
-  final String? name;
+  String? name;
   @JsonKey(name: "ShiftGroup")
-  final String? shiftGroup;
+  String? shiftGroup;
   @JsonKey(name: "ShiftDate")
-  final DateTime? shiftDate;
+  DateTime? shiftDate;
   @JsonKey(name: "Vehicle")
-  final String? vehicle;
+  String? vehicle;
   @JsonKey(name: "ContainerNumber")
-  final String? containerNumber;
+  String? containerNumber;
   @JsonKey(name: "TransportFrom")
-  final String? transportFrom;
+  String? transportFrom;
   @JsonKey(name: "DeliveryTo")
-  final String? deliveryTo;
+  String? deliveryTo;
   @JsonKey(name: "Size")
-  final int? size;
+  int? size;
 
   ListTripFormResponse({
     this.id,
@@ -45,4 +50,11 @@ class ListTripFormResponse {
       _$ListTripFormResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ListTripFormResponseToJson(this);
+}
+
+class ContainerFilter {
+  String name;
+  bool isEnable;
+
+  ContainerFilter({required this.name, this.isEnable = false});
 }

@@ -2,6 +2,7 @@ import 'package:driver/data/repositories/auth_repository.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/locator/locator.dart';
+import 'package:driver/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,6 +21,17 @@ final router = GoRouter(
       path: HomeScreen.path,
       name: HomeScreen.name,
       builder: (context, state) => HomeScreen(),
+    ),
+    GoRoute(
+      path: TripFormDetail.path,
+      name: TripFormDetail.name,
+      builder: (context, state) {
+        final ListTripFormResponse? data = state.extra as ListTripFormResponse?;
+        return TripFormDetail(
+          isEdit: data != null,
+          response: data,
+        );
+      },
     ),
   ],
   redirect: (context, state) async {

@@ -18,7 +18,7 @@ class KTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tab(
       child: !isSelected && !messageTotal.isZero
-          ? badges.Badge(
+          ? badges.Badge(badgeAnimation: const badges.BadgeAnimation.fade(),
               position: badges.BadgePosition.topEnd(top: -12),
               badgeStyle: badges.BadgeStyle(
                 badgeColor: context.colorScheme.error,

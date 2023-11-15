@@ -81,20 +81,18 @@ class LocalDataSource {
           ..message = message.message
           ..title = message.title
           ..date = message.date
-          ..isRead = false
-          ..type = type != "all" ? type : null;
+          ..isRead = false;
 
         final isExist = await _isar.messageResponses
             .filter()
             .titleEqualTo(message.title.orEmpty)
             .messageEqualTo(message.message.orEmpty)
             .findAll();
-        print(isExist.length);
-        if (!isExist.isNotEmpty) {
+        if (isExist.isEmpty) {
           newData.add(data);
         } else {
           final updateExisting = isExist.first
-            ..type = type != "all" ? type : null;
+            ..type = type != "all" ? type : isExist.first.type;
           await _isar.messageResponses.put(updateExisting);
         }
       }
@@ -106,12 +104,109 @@ class LocalDataSource {
     });
   }
 
-  Future<List<MessageResponse>> getMessages() async =>
-      _isar.messageResponses.where().findAll();
+  Future<List<MessageResponse>> getMessages(String? type) async {
+    final sevenDaysBefore = DateTime.now().subtract(const Duration(days: 7));
+    if (type != null) {
+      return _isar.messageResponses
+          .filter()
+          .typeEqualTo(type)
+          .dateBetween(sevenDaysBefore, DateTime.now())
+          .findAll();
+    } else {
+      return _isar.messageResponses
+          .filter()
+          .dateBetween(sevenDaysBefore, DateTime.now())
+          .findAll();
+    }
+  }
 
-  Future<int> getUnreadMessageCount(String type) async => _isar.messageResponses
-      .filter()
-      .isReadEqualTo(false)
-      .typeContains(type != "all" ? type : "")
-      .count();
+  Future<int> getUnreadMessageCount(String type) async {
+    if (type != "all") {
+      final count = await _isar.messageResponses
+          .filter()
+          .isReadEqualTo(false)
+          .typeContains(type)
+          .count();
+
+      return count;
+    } else {
+      return _isar.messageResponses.filter().isReadEqualTo(false).count();
+    }
+  }
+
+  Future<void> updateMessage(int id) async {
+    await _isar.writeTxn(() async {
+      final result = await _isar.messageResponses.get(id);
+
+      if (result != null) {
+        result.isRead = true;
+        await _isar.messageResponses.put(result);
+      }
+    });
+  }
+
+  Future<void> saveTripForm(List<ListTripFormResponse> tripForms) async {
+    await _isar.writeTxn(() async {
+      final List<ListTripFormResponse> newData = List.empty(growable: true);
+
+      for (final trip in tripForms) {
+        final data = ListTripFormResponse()
+          ..id = trip.id
+          ..shiftGroupId = trip.shiftGroupId
+          ..driverId = trip.driverId
+          ..name = trip.name
+          ..shiftGroup = trip.shiftGroup
+          ..shiftDate = trip.shiftDate
+          ..vehicle = trip.vehicle
+          ..containerNumber = trip.containerNumber
+          ..transportFrom = trip.transportFrom
+          ..deliveryTo = trip.deliveryTo
+          ..size = trip.size;
+
+        final isExist = await _isar.listTripFormResponses
+            .filter()
+            .idEqualTo(trip.id)
+            .findAll();
+
+        if (isExist.isEmpty) {
+          newData.add(data);
+        }
+      }
+
+      await _isar.listTripFormResponses.putAll(newData);
+    });
+  }
+
+  Future<List<ListTripFormResponse>> getListTripForm(
+    DateTime filteredDate, {
+    List<ContainerFilter> containers = const [],
+  }) async {
+    if (containers.isNotEmpty) {
+      final items = await _isar.listTripFormResponses
+          .filter()
+          .shiftDateBetween(
+            filteredDate,
+            filteredDate.add(const Duration(hours: 24)),
+          )
+          .findAll();
+
+      return items
+          .where(
+            (item) => containers.any(
+              (filter) =>
+                  item.containerNumber?.toLowerCase() ==
+                  filter.name.toLowerCase(),
+            ),
+          )
+          .toList();
+    } else {
+      return _isar.listTripFormResponses
+          .filter()
+          .shiftDateBetween(
+            filteredDate,
+            filteredDate.add(const Duration(hours: 24)),
+          )
+          .findAll();
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
 import 'package:flutter/material.dart';
@@ -11,12 +12,23 @@ class LogoutDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) => AlertDialog(
-        title: Text(context.localization.logoutTitle),
+        icon: const Icon(AppIcons.logout),
+        surfaceTintColor: Colors.transparent,
+        title: Text(
+          context.localization.logoutTitle,
+          style: context.textTheme.titleLarge
+              ?.copyWith(fontWeight: FontWeight.bold),
+        ),
         content: Text(context.localization.logoutDesc),
         actions: [
           TextButton(
             onPressed: context.pop,
-            child: Text(context.localization.no),
+            child: Text(
+              context.localization.no,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.secondary,
+              ),
+            ),
           ),
           TextButton(
             onPressed: () async {
@@ -25,7 +37,12 @@ class LogoutDialog extends StatelessWidget {
                 context.go(LoginScreen.path);
               });
             },
-            child: Text(context.localization.yes),
+            child: Text(
+              context.localization.yes,
+              style: context.textTheme.bodyMedium?.copyWith(
+                color: context.colorScheme.primary,
+              ),
+            ),
           ),
         ],
       ),

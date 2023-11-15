@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class KElevatedButton extends StatelessWidget {
   const KElevatedButton({
     super.key,
-    required this.onPressed,
+    this.onPressed,
     required this.label,
     this.prefixIcon,
     this.suffixIcon,
@@ -15,7 +15,7 @@ class KElevatedButton extends StatelessWidget {
     this.bold = false,
   });
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String label;
   final Widget? prefixIcon;
   final Widget? suffixIcon;

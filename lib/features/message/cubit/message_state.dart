@@ -67,5 +67,16 @@ class MessageState extends Equatable {
       );
 
   @override
-  List<Object?> get props => [state, errorMessage];
+  List<Object?> get props => [
+        state,
+        errorMessage,
+        allMessages,
+        alertMessages,
+        requestMessages,
+        broadcastMessages,
+        unreadAllMessageTotal,
+        unreadAlertMessageTotal,
+        unreadRequestMessageTotal,
+        unreadBroadcastMessageTotal,
+      ];
 }

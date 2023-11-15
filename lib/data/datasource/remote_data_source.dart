@@ -22,10 +22,25 @@ class RemoteDataSource {
       getResultWithSingleObject(_api.postVehicleCheckList());
 
   Future<Result<EmptyResponse>> postVehicleCheck(VehicleCheckRequest request) =>
-      getResultWithSingleObject(_api.postVehicleChek(request));
+      getResultWithSingleObject(_api.postVehicleCheck(request));
 
   Future<Result<List<MessageResponse>>> postMessage(MessageRequest request) =>
       getResultWithSingleObject(_api.postMessage(request));
+
+  Future<Result<List<ListTripFormResponse>>> postListTripForm(
+    ListTripFormRequest request,
+  ) =>
+      getResultWithSingleObject(_api.postListTripForm(request));
+
+  Future<Result<EmptyResponse>> postTripForm(TripFormRequest request) =>
+      getResultWithSingleObject(_api.postTripForm(request));
+
+  Future<Result<List<TransportLocationResponse>>> postTransportLocation() =>
+      getResultWithSingleObject(_api.postTransportLocation());
+
+  Future<Result<List<ScheduleResponse>>> postSchedule(
+          ScheduleRequest request) =>
+      getResultWithSingleObject(_api.postSchedule(request));
 
   Future<Result<T>> getResultWithSingleObject<T>(
     Future<BaseResponse<T>> apiCall,

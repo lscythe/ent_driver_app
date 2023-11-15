@@ -15,11 +15,13 @@ import 'package:driver/data/datasource/remote_data_source.dart' as _i7;
 import 'package:driver/data/repositories/auth_repository.dart' as _i12;
 import 'package:driver/data/repositories/driver_repository.dart' as _i14;
 import 'package:driver/data/repositories/repositories.dart' as _i16;
-import 'package:driver/features/checkin/cubit/checkin_cubit.dart' as _i19;
+import 'package:driver/features/checkin/cubit/checkin_cubit.dart' as _i21;
 import 'package:driver/features/home/cubit/home_cubit.dart' as _i15;
 import 'package:driver/features/login/cubit/login_cubit.dart' as _i17;
 import 'package:driver/features/message/cubit/message_cubit.dart' as _i18;
-import 'package:driver/locator/initial_module.dart' as _i20;
+import 'package:driver/features/schedule/cubit/schedule_cubit.dart' as _i19;
+import 'package:driver/features/trip/cubit/trip_cubit.dart' as _i20;
+import 'package:driver/locator/initial_module.dart' as _i22;
 import 'package:driver/services/http/http.dart' as _i3;
 import 'package:driver/services/service.dart' as _i11;
 import 'package:driver/services/storage_service.dart' as _i9;
@@ -79,7 +81,15 @@ extension GetItInjectableX on _i1.GetIt {
           gh<_i16.DriverRepository>(),
           gh<_i16.AuthRepository>(),
         ));
-    gh.lazySingleton<_i19.CheckInCubit>(() => _i19.CheckInCubit(
+    gh.lazySingleton<_i19.ScheduleCubit>(() => _i19.ScheduleCubit(
+          gh<_i16.AuthRepository>(),
+          gh<_i16.DriverRepository>(),
+        ));
+    gh.lazySingleton<_i20.TripCubit>(() => _i20.TripCubit(
+          gh<_i16.AuthRepository>(),
+          gh<_i16.DriverRepository>(),
+        ));
+    gh.lazySingleton<_i21.CheckInCubit>(() => _i21.CheckInCubit(
           gh<_i16.DriverRepository>(),
           gh<_i16.AuthRepository>(),
         ));
@@ -87,4 +97,4 @@ extension GetItInjectableX on _i1.GetIt {
   }
 }
 
-class _$InitialModule extends _i20.InitialModule {}
+class _$InitialModule extends _i22.InitialModule {}

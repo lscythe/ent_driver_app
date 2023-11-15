@@ -30,6 +30,7 @@ abstract class InitialModule {
       [
         DriverResponseSchema,
         MessageResponseSchema,
+        ListTripFormResponseSchema,
       ],
       directory: dir.path,
     );

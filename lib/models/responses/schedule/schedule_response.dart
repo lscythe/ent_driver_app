@@ -9,9 +9,9 @@ class ScheduleResponse {
   @JsonKey(name: "Name")
   final String? name;
   @JsonKey(name: "DateFrom")
-  final DateTime? dateFrom;
+  final String? dateFrom;
   @JsonKey(name: "DateTo")
-  final DateTime? dateTo;
+  final String? dateTo;
   @JsonKey(name: "Employee")
   final String? employee;
   @JsonKey(name: "Shift")

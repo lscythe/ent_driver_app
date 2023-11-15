@@ -1,9 +1,9 @@
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
-import 'package:driver/features/message/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
@@ -20,16 +20,34 @@ class _MessageScreenState extends State<MessageScreen>
   late TabController _tabController;
   int _currentIndex = 0;
 
-  final _tabViews = [
-    const MessageList(type: MessageType.all),
-    const MessageList(type: MessageType.alerts),
-    const MessageList(type: MessageType.requests),
-    const MessageList(type: MessageType.broadcast),
-  ];
+  final RefreshController _allMessageController = RefreshController();
+  final RefreshController _alertMessageController = RefreshController();
+  final RefreshController _requestMessageController = RefreshController();
+  final RefreshController _broadcastMessageController = RefreshController();
+
+  late List<Widget> _tabViews;
 
   @override
   void initState() {
     super.initState();
+    _tabViews = [
+      MessageList(
+        type: MessageType.all,
+        controller: _allMessageController,
+      ),
+      MessageList(
+        type: MessageType.alerts,
+        controller: _alertMessageController,
+      ),
+      MessageList(
+        type: MessageType.requests,
+        controller: _requestMessageController,
+      ),
+      MessageList(
+        type: MessageType.broadcast,
+        controller: _broadcastMessageController,
+      ),
+    ];
     _tabController = TabController(length: _tabViews.length, vsync: this);
     _tabController.addListener(() {
       setState(() {

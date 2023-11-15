@@ -17,8 +17,13 @@ class MessageCubit extends Cubit<MessageState> {
 
   Future<void> init() async {
     for (final type in MessageType.values) {
-      final count = await _driverRepository.getUnreadMessageCount(type.name);
+      await postMessages(type);
+    }
+  }
 
+  Future<void> getUnreadMessage() async {
+    for (final type in MessageType.values) {
+      final count = await _driverRepository.getUnreadMessageCount(type.name);
       emit(
         state.copyWith(
           unreadAllMessageTotal: type == MessageType.all ? count : null,
@@ -33,24 +38,46 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   Future<void> postMessages(MessageType type) async {
+    emit(state.copyWith(state: PageState.loading));
     final user = await _authRepository.getCurrentUser();
     final request = MessageRequest(
       drivers: [user?.id ?? 0],
       type: type != MessageType.all ? type.name : null,
     );
-
     final result = await _driverRepository.postMessage(request);
 
     if (result is Success) {
-      emit(
-        state.copyWith(
-          state: PageState.success,
-          broadcastMessages: type == MessageType.broadcast ? result.data : null,
-          requestMessages: type == MessageType.requests ? result.data : null,
-          alertMessages: type == MessageType.alerts ? result.data : null,
-          allMessages: type == MessageType.all ? result.data : null,
-        ),
-      );
+      switch (type) {
+        case MessageType.all:
+          emit(
+            state.copyWith(
+              state: PageState.success,
+              allMessages: result.data,
+            ),
+          );
+        case MessageType.alerts:
+          emit(
+            state.copyWith(
+              state: PageState.success,
+              alertMessages: result.data,
+            ),
+          );
+        case MessageType.requests:
+          emit(
+            state.copyWith(
+              state: PageState.success,
+              requestMessages: result.data,
+            ),
+          );
+        case MessageType.broadcast:
+          emit(
+            state.copyWith(
+              state: PageState.success,
+              broadcastMessages: result.data,
+            ),
+          );
+      }
+      await getUnreadMessage();
     } else {
       emit(
         state.copyWith(
@@ -61,6 +88,9 @@ class MessageCubit extends Cubit<MessageState> {
     }
   }
 
-  Future<int> getUnreadMessageCount(String type) async =>
-      _driverRepository.getUnreadMessageCount(type);
+  Future<void> onMessageIsRead(int id, MessageType type) async {
+    await _driverRepository.updateMessageOnRead(id);
+    await postMessages(type);
+    emit(state);
+  }
 }
