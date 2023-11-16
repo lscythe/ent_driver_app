@@ -12,6 +12,8 @@ class ScheduleResponse {
   final String? dateFrom;
   @JsonKey(name: "DateTo")
   final String? dateTo;
+  @JsonKey(name: "DataTo")
+  final String? dataTo;
   @JsonKey(name: "Employee")
   final String? employee;
   @JsonKey(name: "Shift")
@@ -30,6 +32,7 @@ class ScheduleResponse {
     this.name,
     this.dateFrom,
     this.dateTo,
+    this.dataTo,
     this.employee,
     this.shift,
     this.shiftGroup,

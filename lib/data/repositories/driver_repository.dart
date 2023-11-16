@@ -68,9 +68,8 @@ class DriverRepository {
 
   Future<Result<List<ListTripFormResponse>>> postListTripForm(
     ListTripFormRequest request,
-    DateTime filterDate, {
-    List<ContainerFilter> containers = const [],
-  }) async {
+    DateTime filterDate,
+  ) async {
     final result = await _remoteDataSource.postListTripForm(request);
 
     if (result is Success) {
@@ -79,7 +78,6 @@ class DriverRepository {
       }
 
       final data = await _localDataSource.getListTripForm(
-        containers: containers,
         filterDate,
       );
 
@@ -100,6 +98,20 @@ class DriverRepository {
   Future<Result<List<TransportLocationResponse>>>
       postTransportLocations() async =>
           _remoteDataSource.postTransportLocation();
+
+  Future<Result<List<LeaveTypeResponse>>> postListLeaveType() async =>
+      _remoteDataSource.postListLeaveType();
+
+  Future<Result<EmptyResponse>> postRequestLeave(LeaveRequest request) async =>
+      _remoteDataSource.postRequestLeave(request);
+
+  Future<Result<EmptyResponse>> postDriverToken(
+          FcmTokenRequest request) async =>
+      _remoteDataSource.postDriverToken(request);
+
+  Future<Result<EmptyResponse>> postAnalystTracking(
+          TrackingRequest request) async =>
+      _remoteDataSource.postAnalystTracking(request);
 
   Future<int> getUnreadMessageCount(String type) async =>
       _localDataSource.getUnreadMessageCount(type);

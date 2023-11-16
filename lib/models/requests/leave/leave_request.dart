@@ -9,7 +9,7 @@ class LeaveRequest {
   @JsonKey(name: "LeaveType")
   final String leaveType;
   @JsonKey(name: "Date")
-  final DateTime date;
+  final String date;
   @JsonKey(name: "TotalDay")
   final int totalDay;
 

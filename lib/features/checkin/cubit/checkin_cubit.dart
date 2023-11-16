@@ -143,6 +143,8 @@ class CheckInCubit extends Cubit<CheckInState> {
 
     return date.hhMmA;
   }
+
+  void resetErrorMessage() => emit(state.copyWith(errorMessage: ""));
 }
 
 enum Cico {

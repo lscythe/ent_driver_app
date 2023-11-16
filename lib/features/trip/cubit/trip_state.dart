@@ -11,28 +11,34 @@ class TripState extends Equatable {
     required this.transportFrom,
     required this.deliveryTo,
     required this.containerSize,
+    required this.isFiltered,
+    required this.filteredTripForms,
   });
 
   const TripState.init()
       : state = PageState.idle,
         errorMessage = null,
         tripForms = const [],
+        filteredTripForms = const [],
         transportLocations = const [],
         containerFilters = const [],
         containerNumber = "",
         transportFrom = "",
         deliveryTo = "",
-        containerSize = 20;
+        containerSize = 20,
+        isFiltered = false;
 
   final PageState state;
   final String? errorMessage;
   final List<ListTripFormResponse> tripForms;
+  final List<ListTripFormResponse> filteredTripForms;
   final List<TransportLocationResponse> transportLocations;
   final List<ContainerFilter> containerFilters;
   final String containerNumber;
   final String transportFrom;
   final String deliveryTo;
   final int containerSize;
+  final bool isFiltered;
 
   TripState copyWith({
     PageState? state,
@@ -44,6 +50,8 @@ class TripState extends Equatable {
     String? transportFrom,
     String? deliveryTo,
     int? containerSize,
+    bool? isFiltered,
+    List<ListTripFormResponse>? filteredTripForms,
   }) =>
       TripState(
         state: state ?? this.state,
@@ -55,6 +63,8 @@ class TripState extends Equatable {
         transportFrom: transportFrom ?? this.transportFrom,
         deliveryTo: deliveryTo ?? this.deliveryTo,
         containerSize: containerSize ?? this.containerSize,
+        isFiltered: isFiltered ?? this.isFiltered,
+        filteredTripForms: filteredTripForms ?? this.filteredTripForms,
       );
 
   @override
@@ -68,5 +78,7 @@ class TripState extends Equatable {
         transportFrom,
         deliveryTo,
         containerSize,
+        isFiltered,
+        filteredTripForms,
       ];
 }

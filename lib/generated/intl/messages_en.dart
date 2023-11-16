@@ -23,11 +23,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static String m0(messageType) =>
       "Incoming ${messageType} message will be listed in this folder";
 
-  static String m1(from) => "From: ${from}";
+  static String m1(balance, request) =>
+      "You have ${balance} days but are trying to apply for ${request} days.";
 
-  static String m2(size) => "Container Size: ${size}";
+  static String m2(from) => "From: ${from}";
 
-  static String m3(to) => "To: ${to}";
+  static String m3(size) => "Container Size: ${size}";
+
+  static String m4(to) => "To: ${to}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -37,8 +40,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "allMessage": MessageLookupByLibrary.simpleMessage("All"),
         "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "broadcastMessage": MessageLookupByLibrary.simpleMessage("Broadcast"),
+        "calendarInfo": MessageLookupByLibrary.simpleMessage("Calendar Info"),
         "changeDateError": MessageLookupByLibrary.simpleMessage(
-            "Please change to other date to filter with vehicle/trailer no",),
+            "Please change to other date to filter with vehicle/trailer no"),
         "checkIn": MessageLookupByLibrary.simpleMessage("Check In"),
         "checkInDriverPlaceholder":
             MessageLookupByLibrary.simpleMessage("Driver Name"),
@@ -47,6 +51,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "containerNo": MessageLookupByLibrary.simpleMessage("Container No"),
         "containerSize": MessageLookupByLibrary.simpleMessage("Container Size"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "days": MessageLookupByLibrary.simpleMessage("Days"),
         "deliverTo": MessageLookupByLibrary.simpleMessage("Deliver To"),
         "editTripForm": MessageLookupByLibrary.simpleMessage("Edit Trip Form"),
         "emptyMessageDesc": m0,
@@ -57,31 +62,40 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Forgot Password?"),
         "homeTitle": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "inActive": MessageLookupByLibrary.simpleMessage("InActive"),
+        "insufficientLeaveBalance": m1,
+        "leaveDate": MessageLookupByLibrary.simpleMessage("Leave Date"),
+        "leaveType": MessageLookupByLibrary.simpleMessage("Leave Type"),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutDesc": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to log out?",),
+            "Are you sure you want to log out?"),
         "logoutTitle": MessageLookupByLibrary.simpleMessage("Confirm Logout"),
+        "medicalLeave": MessageLookupByLibrary.simpleMessage("Medical Leave"),
         "message": MessageLookupByLibrary.simpleMessage("Message"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "notCheckIn": MessageLookupByLibrary.simpleMessage(
-            "Please check in first to access trip form.",),
+            "Please check in first to access trip form."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
+        "paidLeave": MessageLookupByLibrary.simpleMessage("Paid Leave"),
         "passwordHint":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
+        "pendingLeave": MessageLookupByLibrary.simpleMessage("Pending Leave"),
+        "requestLeave": MessageLookupByLibrary.simpleMessage("Request Leave"),
         "requestMessage": MessageLookupByLibrary.simpleMessage("Requests"),
         "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),
+        "standby": MessageLookupByLibrary.simpleMessage("Standby"),
         "submit": MessageLookupByLibrary.simpleMessage("Submit"),
         "trailerNumber": MessageLookupByLibrary.simpleMessage("Trailer Number"),
         "transportFrom": MessageLookupByLibrary.simpleMessage("Transport From"),
         "trip": MessageLookupByLibrary.simpleMessage("Trip"),
         "tripFormFilterErrorDesc": MessageLookupByLibrary.simpleMessage(
-            "Please change the parameters to find another trip form.",),
+            "Please change the parameters to find another trip form."),
         "tripFormFilterErrorTitle":
             MessageLookupByLibrary.simpleMessage("Trip Form Not Found"),
-        "tripFrom": m1,
-        "tripSize": m2,
-        "tripTo": m3,
+        "tripFrom": m2,
+        "tripSize": m3,
+        "tripTo": m4,
+        "unpaidLeave": MessageLookupByLibrary.simpleMessage("Unpaid Leave"),
         "usernameHint":
             MessageLookupByLibrary.simpleMessage("Enter your username"),
         "vehicleCheckList":
@@ -89,6 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "vehicleFilter":
             MessageLookupByLibrary.simpleMessage("Vehicle/Trailer No"),
         "vehicleNumber": MessageLookupByLibrary.simpleMessage("Vehicle Number"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "working": MessageLookupByLibrary.simpleMessage("Working"),
+        "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }

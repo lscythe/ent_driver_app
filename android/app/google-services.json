@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "873445143944",
+    "project_id": "ent-scheduling",
+    "storage_bucket": "ent-scheduling.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:873445143944:android:10c98176c03b660ce5b63d",
+        "android_client_info": {
+          "package_name": "com.entvision.app.scheduling.driver"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFrb6saza8MwMEQ00fKqoUBocu69NSowg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

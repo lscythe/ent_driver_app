@@ -18,19 +18,34 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   final String scheduleType = "detailsMobile";
 
+  Future<void> init({DateTime? date}) async {
+    final user = await _authRepository.getCurrentUser();
+    await _postListLeaveType();
+    await postSchedule();
+
+    final leaveQuota = int.tryParse(user?.totalLeaveBalance ?? "0");
+    emit(state.copyWith(leaveQuota: leaveQuota, userId: user?.id));
+  }
+
   Future<void> postSchedule({DateTime? date}) async {
     emit(state.copyWith(state: PageState.loading));
-    final user = await _authRepository.getCurrentUser();
     final request = ScheduleRequest(
       type: scheduleType.toUpperCase(),
       period: date ?? DateTime.now(),
-      driverId: user?.id ?? 0,
+      driverId: state.userId,
     );
 
     final result = await _driverRepository.postScheduleResponse(request);
 
     if (result is Success) {
-      emit(state.copyWith(state: PageState.loading, schedules: result.data));
+      final processedSchedule = processScheduleResponse(result.data);
+
+      emit(
+        state.copyWith(
+          state: PageState.success,
+          schedules: processedSchedule,
+        ),
+      );
     } else {
       emit(
         state.copyWith(
@@ -40,4 +55,109 @@ class ScheduleCubit extends Cubit<ScheduleState> {
       );
     }
   }
+
+  Future<void> _postListLeaveType() async {
+    state.copyWith(state: PageState.loading);
+    final result = await _driverRepository.postListLeaveType();
+
+    if (result is Success) {
+      emit(
+        state.copyWith(
+          state: PageState.success,
+          leaveTypes: result.data,
+          leaveType: result.data?.first.description,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          state: PageState.failure,
+          errorMessage: result.message,
+        ),
+      );
+    }
+  }
+
+  Future<void> postRequestLeave(DateTime date, {String? errorMessage}) async {
+    state.copyWith(state: PageState.loading);
+    final totalDay = int.parse(state.leaveDays);
+
+    if (totalDay > state.leaveQuota) {
+      emit(
+        state.copyWith(errorMessage: errorMessage, state: PageState.failure),
+      );
+    } else {
+      final request = LeaveRequest(
+        driverId: state.userId,
+        leaveType: state.leaveType,
+        date: date.ddMMMyyyy,
+        totalDay: totalDay,
+      );
+
+      final result = await _driverRepository.postRequestLeave(request);
+
+      if (result is Success) {
+        emit(state.copyWith(state: PageState.success));
+      } else {
+        emit(
+          state.copyWith(
+            state: PageState.failure,
+            errorMessage: result.message,
+          ),
+        );
+      }
+    }
+  }
+
+  List<Schedule> processScheduleResponse(List<ScheduleResponse>? response) {
+    final List<Schedule> schedules = List.empty(growable: true);
+
+    if (response != null) {
+      for (final schedule in response) {
+        final dateFrom = schedule.dateFrom?.timestamp ?? DateTime.now();
+        DateTime dateTo;
+
+        if (schedule.dateTo != null) {
+          dateTo = schedule.dateTo?.timestamp ?? DateTime.now();
+        } else if (schedule.dataTo != null) {
+          dateTo = schedule.dataTo?.timestamp ?? DateTime.now();
+        } else {
+          dateTo = dateFrom;
+        }
+
+        final dayInBetween = dateFrom.daysInBetween(endDate: dateTo);
+        for (final day in dayInBetween) {
+          schedules.add(
+            Schedule(
+              leaveStatus: schedule.leaveStatus.orEmpty,
+              leaveCode: schedule.leaveCode.orEmpty,
+              date: day,
+            ),
+          );
+        }
+      }
+    }
+    return schedules;
+  }
+
+  void onLeaveTypeChanges(String? value) =>
+      emit(state.copyWith(leaveType: value));
+
+  void onLeaveDaysChanges(String value) =>
+      emit(state.copyWith(leaveDays: value));
+
+  void resetErrorMessage() => emit(state.copyWith(errorMessage: ""));
+}
+
+enum EventType {
+  working("X"),
+  standby("S"),
+  paidLeave("L"),
+  unpaidLeave("UL"),
+  pendingLeave("PL"),
+  medicalLeave("M");
+
+  const EventType(this.value);
+
+  final String value;
 }

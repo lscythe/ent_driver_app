@@ -78,5 +78,29 @@
   "tripFormFilterErrorTitle": "Trip Form Not Found",
   "tripFormFilterErrorDesc": "Please change the parameters to find another trip form.",
   "filter": "Filter",
-  "changeDateError": "Please change to other date to filter with vehicle/trailer no"
+  "changeDateError": "Please change to other date to filter with vehicle/trailer no",
+  "calendarInfo": "Calendar Info",
+  "standby": "Standby",
+  "paidLeave": "Paid Leave",
+  "unpaidLeave": "Unpaid Leave",
+  "pendingLeave": "Pending Leave",
+  "medicalLeave": "Medical Leave",
+  "working": "Working",
+  "leaveType": "Leave Type",
+  "leaveDate": "Leave Date",
+  "days": "Days",
+  "requestLeave": "Request Leave",
+  "insufficientLeaveBalance": "You have {balance} days but are trying to apply for {request} days.",
+  "@insufficientLeaveBalance": {
+    "placeholders": {
+      "balance": {
+        "type": "String",
+        "example": "1"
+      },
+      "request": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  }
 }

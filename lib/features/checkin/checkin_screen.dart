@@ -83,6 +83,11 @@ class _CheckInScreenState extends State<CheckInScreen> {
             pageBuilder: (context, _, __) => const VehicleCheckListDialog(),
           );
         }
+
+        if (state.errorMessage?.isNotEmpty ?? false) {
+          context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+          context.read<CheckInCubit>().resetErrorMessage();
+        }
       },
     );
   }
@@ -245,4 +250,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
       ),
     );
   }
+
+  SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

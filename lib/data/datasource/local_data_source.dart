@@ -59,8 +59,6 @@ class LocalDataSource {
 
   Future<void> clear() async {
     await _secureStorage.deleteAll();
-    await _storage.clear();
-    await _isar.writeTxn(() async => _isar.clear());
   }
 
   Future<void> setTrailerNumber(String value) async =>
@@ -121,16 +119,22 @@ class LocalDataSource {
   }
 
   Future<int> getUnreadMessageCount(String type) async {
+    final sevenDaysBefore = DateTime.now().subtract(const Duration(days: 7));
     if (type != "all") {
       final count = await _isar.messageResponses
           .filter()
           .isReadEqualTo(false)
           .typeContains(type)
+          .dateBetween(sevenDaysBefore, DateTime.now())
           .count();
 
       return count;
     } else {
-      return _isar.messageResponses.filter().isReadEqualTo(false).count();
+      return _isar.messageResponses
+          .filter()
+          .dateBetween(sevenDaysBefore, DateTime.now())
+          .isReadEqualTo(false)
+          .count();
     }
   }
 
@@ -178,35 +182,13 @@ class LocalDataSource {
   }
 
   Future<List<ListTripFormResponse>> getListTripForm(
-    DateTime filteredDate, {
-    List<ContainerFilter> containers = const [],
-  }) async {
-    if (containers.isNotEmpty) {
-      final items = await _isar.listTripFormResponses
+    DateTime filteredDate,
+  ) async =>
+      _isar.listTripFormResponses
           .filter()
           .shiftDateBetween(
             filteredDate,
             filteredDate.add(const Duration(hours: 24)),
           )
           .findAll();
-
-      return items
-          .where(
-            (item) => containers.any(
-              (filter) =>
-                  item.containerNumber?.toLowerCase() ==
-                  filter.name.toLowerCase(),
-            ),
-          )
-          .toList();
-    } else {
-      return _isar.listTripFormResponses
-          .filter()
-          .shiftDateBetween(
-            filteredDate,
-            filteredDate.add(const Duration(hours: 24)),
-          )
-          .findAll();
-    }
-  }
 }

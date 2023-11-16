@@ -93,4 +93,6 @@ class MessageCubit extends Cubit<MessageState> {
     await postMessages(type);
     emit(state);
   }
+
+  void resetErrorMessage() => emit(state.copyWith(errorMessage: ""));
 }

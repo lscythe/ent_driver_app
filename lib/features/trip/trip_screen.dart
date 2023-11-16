@@ -69,9 +69,7 @@ class _TripScreenState extends State<TripScreen> {
                     InkWell(
                       onTap: () async {
                         await _filterByDate();
-                        context
-                            .read<TripCubit>()
-                            .postListTrip(date: _selectedDate);
+                        _getNewDataByDate();
                       },
                       child: _filterWidget(context.localization.date),
                     ),
@@ -82,11 +80,17 @@ class _TripScreenState extends State<TripScreen> {
                 child: SmartRefresher(
                   controller: _refreshController,
                   header: const ClassicHeader(),
-                  child: state.tripForms.isNotEmpty
+                  child: state.tripForms.isNotEmpty ||
+                          (state.isFiltered &&
+                              state.filteredTripForms.isNotEmpty)
                       ? ListView.builder(
-                          itemCount: state.tripForms.length,
+                          itemCount: !state.isFiltered
+                              ? state.tripForms.length
+                              : state.filteredTripForms.length,
                           itemBuilder: (context, index) {
-                            final tripForm = state.tripForms[index];
+                            final tripForm = !state.isFiltered
+                                ? state.tripForms[index]
+                                : state.filteredTripForms[index];
 
                             return InkWell(
                               onTap: () async {
@@ -237,6 +241,11 @@ class _TripScreenState extends State<TripScreen> {
         if (state.state != PageState.loading) {
           _refreshController.refreshCompleted();
         }
+        if (state.errorMessage?.isNotEmpty ?? false) {
+          context.scaffoldMessage
+              .showSnackBar(_errorSnackBar(state.errorMessage!));
+          context.read<TripCubit>().resetErrorMessage();
+        }
       },
     );
   }
@@ -262,6 +271,14 @@ class _TripScreenState extends State<TripScreen> {
       initialDate: _selectedDate,
       firstDate: DateTime(2010),
       lastDate: DateTime(2050),
+      builder: (context, child) => Theme(
+        data: context.theme.copyWith(
+          datePickerTheme: DatePickerThemeData(
+            surfaceTintColor: context.colorScheme.background,
+          ),
+        ),
+        child: child!,
+      ),
     );
 
     if (pickedDate != null && pickedDate != _selectedDate) {
@@ -270,4 +287,9 @@ class _TripScreenState extends State<TripScreen> {
       });
     }
   }
+
+  void _getNewDataByDate() =>
+      context.read<TripCubit>().postListTrip(date: _selectedDate);
+
+  SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

@@ -24,137 +24,150 @@ class _TripFormDetailState extends State<TripFormDetail> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<TripCubit, TripState>(
-      builder: (context, state) => Stack(
-        children: [
-          Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.isEdit
-                    ? context.localization.editTripForm
-                    : context.localization.addTripForm,
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
+      builder: (context, state) {
+        final isDeliverToExist = state.transportLocations
+            .any((loc) => loc.location == widget.response?.deliveryTo);
+        final isTransportFromExist = state.transportLocations
+            .any((loc) => loc.location == widget.response?.transportFrom);
+
+        return Stack(
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                title: Text(
+                  widget.isEdit
+                      ? context.localization.editTripForm
+                      : context.localization.addTripForm,
+                  style: context.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () => context.pop(false),
                 ),
               ),
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back),
-                onPressed: () => context.pop(false),
-              ),
-            ),
-            body: Padding(
-              padding: Paddings.a16.size,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Flexible(
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
+              body: Padding(
+                padding: Paddings.a16.size,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              labelText: context.localization.containerNo,
                             ),
-                            labelText: context.localization.containerNo,
+                            onChanged:
+                                context.read<TripCubit>().onContainerNoChanged,
+                            initialValue: widget.response?.containerNumber,
                           ),
-                          onChanged:
-                              context.read<TripCubit>().onContainerNoChanged,
-                          initialValue: widget.response?.containerNumber,
-                        ),
-                        Spaces.h16.size,
-                        DropdownButtonFormField(
-                          items: state.transportLocations
-                              .map<DropdownMenuItem<String>>(
-                                (e) => DropdownMenuItem(
-                                  value: e.location.orEmpty,
-                                  child: Text(e.location.orEmpty),
-                                ),
-                              )
-                              .toList(),
-                          onChanged:
-                              context.read<TripCubit>().onTransportFromChanged,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            labelText: context.localization.transportFrom,
-                          ),
-                          value: state.transportFrom,
-                        ),
-                        Spaces.h16.size,
-                        DropdownButtonFormField(
-                          items: state.transportLocations
-                              .map<DropdownMenuItem<String>>(
-                                (e) => DropdownMenuItem(
-                                  value: e.location.orEmpty,
-                                  child: Text(e.location.orEmpty),
-                                ),
-                              )
-                              .toList(),
-                          onChanged:
-                              context.read<TripCubit>().onDeliverToChanged,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            labelText: context.localization.deliverTo,
-                          ),
-                          value: state.deliveryTo,
-                        ),
-                        Spaces.h16.size,
-                        DropdownButtonFormField<int>(
-                          items: [20, 40]
-                              .map<DropdownMenuItem<int>>(
-                                (e) => DropdownMenuItem(
-                                  value: e,
-                                  child: Text("$e"),
-                                ),
-                              )
-                              .toList(),
-                          onChanged:
-                              context.read<TripCubit>().onContainerSizeChanged,
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 10,
-                            ),
-                            labelText: context.localization.containerSize,
-                          ),
-                          value: widget.response != null
-                              ? widget.response?.size
-                              : state.containerSize,
-                        ),
-                      ],
-                    ),
-                  ),
-                  KElevatedButton(
-                    onPressed: state.containerNumber.isNotEmpty
-                        ? () async {
-                            await context
+                          Spaces.h16.size,
+                          DropdownButtonFormField(
+                            items: state.transportLocations
+                                .map<DropdownMenuItem<String>>(
+                                  (e) => DropdownMenuItem(
+                                    value: e.location.orEmpty,
+                                    child: Text(e.location.orEmpty),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: context
                                 .read<TripCubit>()
-                                .postTripForm()
-                                .whenComplete(() => context.pop(true));
-                          }
-                        : null,
-                    mainAxisSize: MainAxisSize.max,
-                    label: context.localization.submit,
-                  ),
-                ],
+                                .onTransportFromChanged,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              labelText: context.localization.transportFrom,
+                            ),
+                            value: isTransportFromExist
+                                ? widget.response?.transportFrom
+                                : state.transportFrom,
+                          ),
+                          Spaces.h16.size,
+                          DropdownButtonFormField(
+                            items: state.transportLocations
+                                .map<DropdownMenuItem<String>>(
+                                  (e) => DropdownMenuItem(
+                                    value: e.location.orEmpty,
+                                    child: Text(e.location.orEmpty),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged:
+                                context.read<TripCubit>().onDeliverToChanged,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              labelText: context.localization.deliverTo,
+                            ),
+                            value: isDeliverToExist
+                                ? widget.response?.deliveryTo
+                                : state.deliveryTo,
+                          ),
+                          Spaces.h16.size,
+                          DropdownButtonFormField<int>(
+                            items: [20, 40]
+                                .map<DropdownMenuItem<int>>(
+                                  (e) => DropdownMenuItem(
+                                    value: e,
+                                    child: Text("$e"),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: context
+                                .read<TripCubit>()
+                                .onContainerSizeChanged,
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 10,
+                                horizontal: 10,
+                              ),
+                              labelText: context.localization.containerSize,
+                            ),
+                            value: widget.response != null
+                                ? widget.response?.size
+                                : state.containerSize,
+                          ),
+                        ],
+                      ),
+                    ),
+                    KElevatedButton(
+                      onPressed: state.containerNumber.isNotEmpty
+                          ? () async {
+                              await context
+                                  .read<TripCubit>()
+                                  .postTripForm()
+                                  .whenComplete(() => context.pop(true));
+                            }
+                          : null,
+                      mainAxisSize: MainAxisSize.max,
+                      label: context.localization.submit,
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          if (state.state == PageState.loading)
-            const LoadingIndicator()
-          else
-            Container(),
-        ],
-      ),
+            if (state.state == PageState.loading)
+              const LoadingIndicator()
+            else
+              Container(),
+          ],
+        );
+      },
       listener: (context, state) {
         if (state.state == PageState.failure) {
           showDialog(

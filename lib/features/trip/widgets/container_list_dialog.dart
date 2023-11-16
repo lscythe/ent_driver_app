@@ -37,7 +37,7 @@ class _ContainerListDialogState extends State<ContainerListDialog> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                context.localization.vehicleFilter,
+                "${context.localization.filter}: ${context.localization.vehicleFilter}",
                 style: context.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -85,7 +85,7 @@ class _ContainerListDialogState extends State<ContainerListDialog> {
                 onPressed: () {
                   context
                       .read<TripCubit>()
-                      .postListTrip(filters: _containerFilters);
+                      .filterByContainer(_containerFilters);
                   context.pop();
                 },
               ),

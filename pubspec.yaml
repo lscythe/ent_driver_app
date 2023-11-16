@@ -15,10 +15,14 @@ dependencies:
   bloc: ^8.1.2
   connectivity_plus: ^5.0.1
   cupertino_icons: ^1.0.6
+  device_info_plus: ^9.1.0
   dio: ^5.3.3
   dio_cache_interceptor: ^3.4.4
   dropdown_search: ^5.0.6
   equatable: ^2.0.5
+  firebase_core: ^2.22.0
+  firebase_crashlytics: ^3.4.4
+  firebase_messaging: ^14.7.4
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.3

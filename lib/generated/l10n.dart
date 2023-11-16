@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:driver/generated/intl/messages_all.dart';
+import 'intl/messages_all.dart';
 
 // **************************************************************************
 // Generator: Flutter Intl IDE plugin
@@ -19,7 +19,7 @@ class S {
 
   static S get current {
     assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',);
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
@@ -42,7 +42,7 @@ class S {
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',);
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -517,6 +517,126 @@ class S {
       name: 'changeDateError',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Calendar Info`
+  String get calendarInfo {
+    return Intl.message(
+      'Calendar Info',
+      name: 'calendarInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Standby`
+  String get standby {
+    return Intl.message(
+      'Standby',
+      name: 'standby',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Paid Leave`
+  String get paidLeave {
+    return Intl.message(
+      'Paid Leave',
+      name: 'paidLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unpaid Leave`
+  String get unpaidLeave {
+    return Intl.message(
+      'Unpaid Leave',
+      name: 'unpaidLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pending Leave`
+  String get pendingLeave {
+    return Intl.message(
+      'Pending Leave',
+      name: 'pendingLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Medical Leave`
+  String get medicalLeave {
+    return Intl.message(
+      'Medical Leave',
+      name: 'medicalLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Working`
+  String get working {
+    return Intl.message(
+      'Working',
+      name: 'working',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave Type`
+  String get leaveType {
+    return Intl.message(
+      'Leave Type',
+      name: 'leaveType',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Leave Date`
+  String get leaveDate {
+    return Intl.message(
+      'Leave Date',
+      name: 'leaveDate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Days`
+  String get days {
+    return Intl.message(
+      'Days',
+      name: 'days',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request Leave`
+  String get requestLeave {
+    return Intl.message(
+      'Request Leave',
+      name: 'requestLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You have {balance} days but are trying to apply for {request} days.`
+  String insufficientLeaveBalance(String balance, String request) {
+    return Intl.message(
+      'You have $balance days but are trying to apply for $request days.',
+      name: 'insufficientLeaveBalance',
+      desc: '',
+      args: [balance, request],
     );
   }
 }

@@ -24,7 +24,7 @@ class DriverApp extends StatelessWidget {
           create: (context) => locator.get<CheckInCubit>()..init(),
         ),
         BlocProvider<ScheduleCubit>(
-          create: (context) => locator.get<ScheduleCubit>()..postSchedule(),
+          create: (context) => locator.get<ScheduleCubit>(),
         ),
         BlocProvider<TripCubit>(
           create: (context) => locator.get<TripCubit>()..postListTrip(),
@@ -36,7 +36,7 @@ class DriverApp extends StatelessWidget {
       child: MaterialApp.router(
         title: "Driver",
         theme: lightTheme,
-        darkTheme: darkTheme,
+        themeMode: ThemeMode.light,
         localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,

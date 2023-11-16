@@ -50,4 +50,22 @@ abstract class ApiService {
   Future<BaseResponse<List<ScheduleResponse>>> postSchedule(
     @Body() ScheduleRequest request,
   );
+
+  @POST("${ApiConstants.leavePath}ListLeaveType")
+  Future<BaseResponse<List<LeaveTypeResponse>>> postListLeaveType();
+
+  @POST("${ApiConstants.driverPath}request-leave")
+  Future<BaseResponse<EmptyResponse>> postRequestLeave(
+    @Body() LeaveRequest request,
+  );
+
+  @POST("${ApiConstants.driverPath}SetDriverToken")
+  Future<BaseResponse<EmptyResponse>> postDriverToken(
+    @Body() FcmTokenRequest request,
+  );
+
+  @POST("${ApiConstants.analystPath}Tracking")
+  Future<BaseResponse<EmptyResponse>> postAnalystTracking(
+    @Body() TrackingRequest request,
+  );
 }

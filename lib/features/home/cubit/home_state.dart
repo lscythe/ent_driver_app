@@ -7,6 +7,7 @@ class HomeState extends Equatable {
     required this.hasCheckIn,
     required this.homeError,
     this.errorMessage,
+    required this.userId,
   });
 
   const HomeState.init()
@@ -14,13 +15,15 @@ class HomeState extends Equatable {
         state = PageState.idle,
         hasCheckIn = false,
         homeError = HomeError.none,
-        errorMessage = null;
+        errorMessage = null,
+        userId = 0;
 
   final int index;
   final PageState state;
   final bool hasCheckIn;
   final HomeError homeError;
   final String? errorMessage;
+  final int userId;
 
   HomeState copyWith({
     int? index,
@@ -28,6 +31,7 @@ class HomeState extends Equatable {
     bool? hasCheckIn,
     HomeError? homeError,
     String? errorMessage,
+    int? userId,
   }) =>
       HomeState(
         index: index ?? this.index,
@@ -35,6 +39,7 @@ class HomeState extends Equatable {
         hasCheckIn: hasCheckIn ?? this.hasCheckIn,
         homeError: homeError ?? this.homeError,
         errorMessage: errorMessage ?? this.errorMessage,
+        userId: userId ?? this.userId,
       );
 
   @override
@@ -44,5 +49,6 @@ class HomeState extends Equatable {
         hasCheckIn,
         homeError,
         errorMessage,
+        userId,
       ];
 }

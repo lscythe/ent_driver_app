@@ -359,6 +359,137 @@ class _ApiService implements ApiService {
     return value;
   }
 
+  @override
+  Future<BaseResponse<List<LeaveTypeResponse>>> postListLeaveType() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<List<LeaveTypeResponse>>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/Leave/ListLeaveType',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<List<LeaveTypeResponse>>.fromJson(
+      _result.data!,
+      (json) => json is List<dynamic>
+          ? json
+              .map<LeaveTypeResponse>(
+                  (i) => LeaveTypeResponse.fromJson(i as Map<String, dynamic>))
+              .toList()
+          : List.empty(),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<EmptyResponse>> postRequestLeave(
+      LeaveRequest request) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<EmptyResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/Driver/request-leave',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<EmptyResponse>.fromJson(
+      _result.data!,
+      (json) => EmptyResponse.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<EmptyResponse>> postDriverToken(
+      FcmTokenRequest request) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<EmptyResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/Driver/SetDriverToken',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<EmptyResponse>.fromJson(
+      _result.data!,
+      (json) => EmptyResponse.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
+  @override
+  Future<BaseResponse<EmptyResponse>> postAnalystTracking(
+      TrackingRequest request) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<BaseResponse<EmptyResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/api/Analyst/Tracking',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = BaseResponse<EmptyResponse>.fromJson(
+      _result.data!,
+      (json) => EmptyResponse.fromJson(json as Map<String, dynamic>),
+    );
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

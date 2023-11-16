@@ -6,6 +6,15 @@ class KColors {
   static const Color davyGray = Color(0xFF4F4F4F);
   static const Color antiFlashGray = Color(0xFFE7E9EE);
   static const Color charcoal = Color(0xFF464E62);
+  static const Color paidLeave = Color(0xFFEAFFC8);
+  static const Color unpaidLeave = Color(0xFFCFF6FF);
+  static const Color pendingLeave = Color(0xFF76FF9F);
+  static const Color medicalLeave= Color(0xFFFFB8A4);
+  static const Color standby = Color(0xFFFFFFFF);
+  static const Color working = Color(0xFF344775);
+  static const Color inactiveColor = Color(0xFFD5D4DF);
+  static const Color inactiveTextColor = Color(0xFFA8A8A8);
+  static const Color todayColor = Color(0xFF45539D);
 
   static const ColorScheme lightScheme = ColorScheme(
     brightness: Brightness.light,

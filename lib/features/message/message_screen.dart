@@ -58,7 +58,7 @@ class _MessageScreenState extends State<MessageScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MessageCubit, MessageState>(
+    return BlocConsumer<MessageCubit, MessageState>(
       builder: (context, state) => Column(
         children: [
           ColoredBox(
@@ -112,6 +112,12 @@ class _MessageScreenState extends State<MessageScreen>
           ),
         ],
       ),
+      listener: (context, state) {
+        if (state.errorMessage?.isNotEmpty ?? false) {
+          context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+          context.read<MessageCubit>().resetErrorMessage();
+        }
+      },
     );
   }
 
@@ -132,4 +138,6 @@ class _MessageScreenState extends State<MessageScreen>
       return BorderRadius.circular(KRadius.r10.size);
     }
   }
+
+  SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

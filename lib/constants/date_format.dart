@@ -4,7 +4,8 @@ enum KDateFormat {
   ddMmmYyyyHhMmA("dd-MMM-yyyy, hh:mm a"),
   yyyyMMdd("yyyy-MM-dd"),
   mmmYYYY("MMM yyyy"),
-  timestamp("yyyy-MM-d'T'hh:mm:ss");
+  timestamp("yyyy-MM-d'T'hh:mm:ss"),
+  ddMMMyyyy("dd-MMM-yyyy");
 
   const KDateFormat(this.format);
 

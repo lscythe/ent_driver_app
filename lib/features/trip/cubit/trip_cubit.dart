@@ -29,7 +29,6 @@ class TripCubit extends Cubit<TripState> {
 
     final result = await _driverRepository.postListTripForm(
       request,
-      containers: filters,
       date ?? DateTime.now(),
     );
 
@@ -134,11 +133,19 @@ class TripCubit extends Cubit<TripState> {
     emit(state.copyWith(containerFilters: state.containerFilters));
   }
 
-  void filterByVehicle(List<ContainerFilter> filters) {
+  void filterByContainer(List<ContainerFilter> filters) {
     final tripForms = state.tripForms
-        .where((trip) => filters.any((filter) => trip.vehicle == filter.name))
+        .where(
+          (trip) => filters.any(
+            (filter) => trip.containerNumber == filter.name && filter.isEnable,
+          ),
+        )
         .toList();
 
-    emit(state.copyWith(tripForms: tripForms));
+    final isFiltered = filters.any((element) => element.isEnable);
+
+    emit(state.copyWith(filteredTripForms: tripForms, isFiltered: isFiltered));
   }
+
+  void resetErrorMessage() => emit(state.copyWith(errorMessage: ""));
 }

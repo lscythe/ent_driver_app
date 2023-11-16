@@ -10,39 +10,52 @@ class RemoteDataSource {
   final ApiService _api;
 
   Future<Result<LoginResponse>> postLogin(LoginRequest request) =>
-      getResultWithSingleObject(_api.postLogin(request));
+      _getResultWithSingleObject(_api.postLogin(request));
 
   Future<Result<EmptyResponse>> postTracking(TrackingRequest request) =>
-      getResultWithSingleObject(_api.postTracking(request));
+      _getResultWithSingleObject(_api.postTracking(request));
 
   Future<Result<EmptyResponse>> postCico(CicoRequest request) =>
-      getResultWithSingleObject(_api.postCico(request));
+      _getResultWithSingleObject(_api.postCico(request));
 
   Future<Result<List<VehicleCheckResponse>>> postVehicleCheckList() =>
-      getResultWithSingleObject(_api.postVehicleCheckList());
+      _getResultWithSingleObject(_api.postVehicleCheckList());
 
   Future<Result<EmptyResponse>> postVehicleCheck(VehicleCheckRequest request) =>
-      getResultWithSingleObject(_api.postVehicleCheck(request));
+      _getResultWithSingleObject(_api.postVehicleCheck(request));
 
   Future<Result<List<MessageResponse>>> postMessage(MessageRequest request) =>
-      getResultWithSingleObject(_api.postMessage(request));
+      _getResultWithSingleObject(_api.postMessage(request));
 
   Future<Result<List<ListTripFormResponse>>> postListTripForm(
     ListTripFormRequest request,
   ) =>
-      getResultWithSingleObject(_api.postListTripForm(request));
+      _getResultWithSingleObject(_api.postListTripForm(request));
 
   Future<Result<EmptyResponse>> postTripForm(TripFormRequest request) =>
-      getResultWithSingleObject(_api.postTripForm(request));
+      _getResultWithSingleObject(_api.postTripForm(request));
 
   Future<Result<List<TransportLocationResponse>>> postTransportLocation() =>
-      getResultWithSingleObject(_api.postTransportLocation());
+      _getResultWithSingleObject(_api.postTransportLocation());
 
   Future<Result<List<ScheduleResponse>>> postSchedule(
-          ScheduleRequest request) =>
-      getResultWithSingleObject(_api.postSchedule(request));
+    ScheduleRequest request,
+  ) =>
+      _getResultWithSingleObject(_api.postSchedule(request));
 
-  Future<Result<T>> getResultWithSingleObject<T>(
+  Future<Result<List<LeaveTypeResponse>>> postListLeaveType() =>
+      _getResultWithSingleObject(_api.postListLeaveType());
+
+  Future<Result<EmptyResponse>> postRequestLeave(LeaveRequest request) =>
+      _getResultWithSingleObject(_api.postRequestLeave(request));
+
+  Future<Result<EmptyResponse>> postDriverToken(FcmTokenRequest request) =>
+      _getResultWithSingleObject(_api.postDriverToken(request));
+
+  Future<Result<EmptyResponse>> postAnalystTracking(TrackingRequest request) =>
+      _getResultWithSingleObject(_api.postAnalystTracking(request));
+
+  Future<Result<T>> _getResultWithSingleObject<T>(
     Future<BaseResponse<T>> apiCall,
   ) async {
     try {
@@ -50,7 +63,7 @@ class RemoteDataSource {
       if (response.value != null) {
         return Success(response.value as T);
       } else {
-        return errorHandler(response);
+        return _errorHandler(response);
       }
     } on DioException catch (e) {
       final resp = e.response;
@@ -63,7 +76,7 @@ class RemoteDataSource {
     }
   }
 
-  Result<T> errorHandler<T>(BaseResponse<dynamic>? response) {
+  Result<T> _errorHandler<T>(BaseResponse<dynamic>? response) {
     BaseResponse<T> errorDetail;
     try {
       errorDetail = BaseResponse(
