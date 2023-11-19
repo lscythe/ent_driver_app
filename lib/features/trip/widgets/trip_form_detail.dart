@@ -151,7 +151,12 @@ class _TripFormDetailState extends State<TripFormDetail> {
                               await context
                                   .read<TripCubit>()
                                   .postTripForm()
-                                  .whenComplete(() => context.pop(true));
+                                  .whenComplete(
+                                    () async => await context
+                                        .read<HomeCubit>()
+                                        .postTracking("ADD_TRIP_FORM")
+                                        .whenComplete(() => context.pop(true)),
+                                  );
                             }
                           : null,
                       mainAxisSize: MainAxisSize.max,

@@ -639,6 +639,46 @@ class S {
       args: [balance, request],
     );
   }
+
+  /// `Permission Needed`
+  String get permissionNeeded {
+    return Intl.message(
+      'Permission Needed',
+      name: 'permissionNeeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This app relies on read access to your location. \nWe require access to this permission to find your current location.`
+  String get locationPermission {
+    return Intl.message(
+      'This app relies on read access to your location. \nWe require access to this permission to find your current location.',
+      name: 'locationPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We require access to this permission to send you notification.`
+  String get notificationPermission {
+    return Intl.message(
+      'We require access to this permission to send you notification.',
+      name: 'notificationPermission',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We require access to this permission to track your current location.`
+  String get alarmPermission {
+    return Intl.message(
+      'We require access to this permission to track your current location.',
+      name: 'alarmPermission',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

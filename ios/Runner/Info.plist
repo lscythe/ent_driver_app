@@ -50,13 +50,16 @@
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
 
-		<key>NSLocationWhenInUseUsageDescription</key>
-        <string>Need location when in use</string>
-        <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>Always and when in use!</string>
-        <key>NSLocationUsageDescription</key>
-        <string>Older devices need location.</string>
+		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+        <string>This app needs access to location.</string>
         <key>NSLocationAlwaysUsageDescription</key>
-        <string>Can I have location always?</string>
+        <string>This app needs access to location.</string>
+        <key>NSLocationWhenInUseUsageDescription</key>
+        <string>This app needs access to location.</string>
+        <key>UIBackgroundModes</key>
+        <array>
+        	<string>fetch</string>
+        	<string>location</string>
+        </array>
 	</dict>
 </plist>

@@ -20,11 +20,12 @@ class ScheduleCubit extends Cubit<ScheduleState> {
 
   Future<void> init({DateTime? date}) async {
     final user = await _authRepository.getCurrentUser();
-    await _postListLeaveType();
-    await postSchedule();
 
     final leaveQuota = int.tryParse(user?.totalLeaveBalance ?? "0");
     emit(state.copyWith(leaveQuota: leaveQuota, userId: user?.id));
+
+    await _postListLeaveType();
+    await postSchedule();
   }
 
   Future<void> postSchedule({DateTime? date}) async {

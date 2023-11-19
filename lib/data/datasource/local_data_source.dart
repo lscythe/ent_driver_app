@@ -71,6 +71,11 @@ class LocalDataSource {
 
   String getVehicleNumber() => _storage.getString(PreferenceKeys.vehicleNumber);
 
+  Future<void> setIsAfterLogin(bool value) async =>
+      _storage.write(key: PreferenceKeys.isAfterLogin, value: value);
+
+  bool isAfterLogin() => _storage.getBool(PreferenceKeys.isAfterLogin);
+
   Future<void> saveMessages(List<MessageResponse> messages, String type) async {
     await _isar.writeTxn(() async {
       final List<MessageResponse> newData = List.empty(growable: true);

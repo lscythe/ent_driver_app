@@ -36,6 +36,8 @@ class MessageLookup extends MessageLookupByLibrary {
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "active": MessageLookupByLibrary.simpleMessage("Active"),
         "addTripForm": MessageLookupByLibrary.simpleMessage("Add Trip Form"),
+        "alarmPermission": MessageLookupByLibrary.simpleMessage(
+            "We require access to this permission to track your current location."),
         "alertMessage": MessageLookupByLibrary.simpleMessage("Alerts"),
         "allMessage": MessageLookupByLibrary.simpleMessage("All"),
         "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
@@ -65,6 +67,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "insufficientLeaveBalance": m1,
         "leaveDate": MessageLookupByLibrary.simpleMessage("Leave Date"),
         "leaveType": MessageLookupByLibrary.simpleMessage("Leave Type"),
+        "locationPermission": MessageLookupByLibrary.simpleMessage(
+            "This app relies on read access to your location. \nWe require access to this permission to find your current location."),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutDesc": MessageLookupByLibrary.simpleMessage(
@@ -75,11 +79,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "notCheckIn": MessageLookupByLibrary.simpleMessage(
             "Please check in first to access trip form."),
+        "notificationPermission": MessageLookupByLibrary.simpleMessage(
+            "We require access to this permission to send you notification."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "paidLeave": MessageLookupByLibrary.simpleMessage("Paid Leave"),
         "passwordHint":
             MessageLookupByLibrary.simpleMessage("Enter your password"),
         "pendingLeave": MessageLookupByLibrary.simpleMessage("Pending Leave"),
+        "permissionNeeded":
+            MessageLookupByLibrary.simpleMessage("Permission Needed"),
         "requestLeave": MessageLookupByLibrary.simpleMessage("Request Leave"),
         "requestMessage": MessageLookupByLibrary.simpleMessage("Requests"),
         "schedule": MessageLookupByLibrary.simpleMessage("Schedule"),

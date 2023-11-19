@@ -18,6 +18,7 @@ class AuthRepository {
       await _localDataSource.setLastLogin(
         DateTime.now().millisecondsSinceEpoch,
       );
+      await setIsAfterLogin(true);
       if (result.data!.driver != null) {
         await _localDataSource.saveUser(result.data!.driver!);
       }
@@ -33,4 +34,8 @@ class AuthRepository {
   int lastLogin() => _localDataSource.getLastLogin();
 
   Future<void> logout() async => _localDataSource.clear();
+
+  bool isAfterLogin() => _localDataSource.isAfterLogin();
+
+  Future<void> setIsAfterLogin(bool value) async => _localDataSource.setIsAfterLogin(value);
 }

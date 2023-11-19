@@ -31,12 +31,7 @@ class LogoutDialog extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () async {
-              await context.read<HomeCubit>().logout().whenComplete(() {
-                context.dismiss();
-                context.go(LoginScreen.path);
-              });
-            },
+            onPressed: () => context.pop(true),
             child: Text(
               context.localization.yes,
               style: context.textTheme.bodyMedium?.copyWith(

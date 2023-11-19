@@ -1,13 +1,17 @@
 import 'dart:io';
 
+import 'package:background_location/background_location.dart';
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:tuple/tuple.dart';
 
 part 'home_state.dart';
 
@@ -21,33 +25,95 @@ class HomeCubit extends Cubit<HomeState> {
   final AuthRepository _authRepository;
   final DriverRepository _driverRepository;
 
+  late Permission currentPermission;
+
   final _permissionList = [
     Permission.location,
     Permission.locationWhenInUse,
     Permission.locationAlways,
     Permission.notification,
-    Permission.ignoreBatteryOptimizations,
+    Permission.reminders,
+    Permission.scheduleExactAlarm,
   ];
 
   Future<void> init() async {
     final hasCheckIn = _driverRepository.haveCheckIn();
     final user = await _authRepository.getCurrentUser();
+    final isAfterLogin = _authRepository.isAfterLogin();
+
+    if (isAfterLogin) {
+      await _authRepository.setIsAfterLogin(false);
+      postTracking("LOGIN");
+    }
+
+    await setupBackgroundLocation();
+    await postDriverToken();
+    await checkIfPermissionNeeded();
     emit(state.copyWith(hasCheckIn: hasCheckIn, userId: user?.id));
   }
 
-  Future<void> checkPermission() async {
-    for (final _permission in _permissionList) {
-      final status = await _permission.status;
-      if (!status.isGranted) {}
+  Future<void> checkIfPermissionNeeded() async {
+    for (final permission in _permissionList) {
+      currentPermission = permission;
+      final status = await permission.status;
+
+      if (!status.isGranted) {
+        emit(
+          state.copyWith(
+            permissionStatus: Tuple2(permission, status),
+          ),
+        );
+        return;
+      }
     }
+    onAllPermissionGranted();
+  }
+
+  void onAllPermissionGranted() {
+    emit(state.copyWith(isAllPermissionGranted: true));
+  }
+
+  Future<void> onRequestAllPermission() async {
+    for (final permission in _permissionList) {
+      currentPermission = permission;
+      var status = await permission.status;
+
+      if (status.isDenied) {
+        status = await permission.request();
+
+        emit(state.copyWith(permissionStatus: Tuple2(permission, status)));
+        return;
+      }
+    }
+
+    for (final permission in _permissionList) {
+      final status = await permission.status;
+
+      if (!status.isGranted) return;
+    }
+    onAllPermissionGranted();
   }
 
   Future<void> postTracking(String name) async {
+    emit(state.copyWith(state: PageState.loading));
+    Position? position;
+
+    if (state.location == null) {
+      position = await _getCurrentPosition();
+    }
+
     final request = TrackingRequest(
       actionType: name,
       driverId: state.userId,
-      lat: "lat",
-      lng: "lng",
+      lat: position != null
+          ? position.latitude.toString()
+          : state.location?.latitude.toString() ?? "",
+      lng: position != null
+          ? position.longitude.toString()
+          : state.location?.longitude.toString() ?? "",
+      speed: position != null
+          ? position.speed.toString()
+          : state.location?.speed.toString() ?? "",
     );
 
     final result = await _driverRepository.postAnalystTracking(request);
@@ -65,6 +131,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> postDriverToken() async {
+    final fcm = FirebaseMessaging.instance;
     final deviceInfo = DeviceInfoPlugin();
     String deviceId = "";
 
@@ -75,11 +142,12 @@ class HomeCubit extends Cubit<HomeState> {
       final iosInfo = await deviceInfo.iosInfo;
       deviceId = iosInfo.utsname.machine;
     }
+    final token = await fcm.getToken();
 
     final request = FcmTokenRequest(
       userId: state.userId.toString(),
       deviceId: deviceId,
-      deviceToken: "",
+      deviceToken: token ?? "",
     );
 
     final result = await _driverRepository.postDriverToken(request);
@@ -96,7 +164,63 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-  Future<void> logout() async => _authRepository.logout();
+  Future<void> logout() async {
+    BackgroundLocation.stopLocationService();
+    await postTracking("LOGOUT");
+    await _authRepository.logout();
+  }
+
+  Future<Position> _getCurrentPosition() async {
+    bool serviceEnabled;
+    PermissionStatus permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      final check = await Geolocator.openLocationSettings();
+      if (check) {
+        _getCurrentPosition();
+      }
+    }
+
+    permission = await Permission.location.status;
+    if (!permission.isGranted) {
+      permission = await Permission.location.request();
+      if (!permission.isGranted) {
+        emit(
+          state.copyWith(
+            permissionStatus: Tuple2(Permission.location, permission),
+            isAllPermissionGranted: false,
+          ),
+        );
+      }
+    }
+
+    if (permission.isPermanentlyDenied) {
+      emit(
+        state.copyWith(
+          permissionStatus: Tuple2(Permission.location, permission),
+          isAllPermissionGranted: false,
+        ),
+      );
+    }
+
+    onAllPermissionGranted();
+    return await Geolocator.getCurrentPosition();
+  }
+
+  Future<void> setupBackgroundLocation() async {
+    await BackgroundLocation.setAndroidNotification(
+      title: "Location Tracker is running",
+      message: "Background location in progress",
+      icon: "@mipmap/ic_launcher",
+    );
+
+    await BackgroundLocation.setAndroidConfiguration(600000);
+    await BackgroundLocation.startLocationService(distanceFilter: 10);
+    BackgroundLocation.getLocationUpdates((location) {
+      emit(state.copyWith(location: location));
+    });
+  }
 
   void onNavigationChanged(int index) {
     final hasCheckIn = _driverRepository.haveCheckIn();

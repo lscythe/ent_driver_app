@@ -20,6 +20,7 @@ class _RequestLeaveDialogState extends State<RequestLeaveDialog> {
   Widget build(BuildContext context) {
     return BlocBuilder<ScheduleCubit, ScheduleState>(
       builder: (context, state) => Container(
+        color: context.colorScheme.background,
         padding: EdgeInsets.only(
           bottom: context.mediaQuery.viewInsets.bottom,
         ),
@@ -98,15 +99,22 @@ class _RequestLeaveDialogState extends State<RequestLeaveDialog> {
                 mainAxisSize: MainAxisSize.max,
                 onPressed: state.leaveDays.isNotEmpty &&
                         state.leaveType.isNotEmpty
-                    ? () {
+                    ? () async {
                         context.pop();
-                        context.read<ScheduleCubit>().postRequestLeave(
+                        await context
+                            .read<ScheduleCubit>()
+                            .postRequestLeave(
                               widget.day,
                               errorMessage:
                                   context.localization.insufficientLeaveBalance(
                                 state.leaveQuota.toString(),
                                 state.leaveDays,
                               ),
+                            )
+                            .whenComplete(
+                              () => context
+                                  .read<HomeCubit>()
+                                  .postTracking("REQUEST_LEAVE"),
                             );
                       }
                     : null,

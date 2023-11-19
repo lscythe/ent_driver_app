@@ -4,6 +4,7 @@ import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/checkin/cubit/checkin_cubit.dart';
 import 'package:driver/features/checkin/widgets/widgets.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/button.dart';
 import 'package:flutter/material.dart';
@@ -85,7 +86,8 @@ class _CheckInScreenState extends State<CheckInScreen> {
         }
 
         if (state.errorMessage?.isNotEmpty ?? false) {
-          context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+          context.scaffoldMessage
+              .showSnackBar(_errorSnackBar(state.errorMessage!));
           context.read<CheckInCubit>().resetErrorMessage();
         }
       },
@@ -222,10 +224,7 @@ class _CheckInScreenState extends State<CheckInScreen> {
       builder: (context, state) => Column(
         children: [
           KElevatedButton(
-            onPressed: () async {
-              context.hideKeyboard();
-              await context.read<CheckInCubit>().postCheckIn();
-            },
+            onPressed: _onButtonTapped,
             bold: true,
             backgroundColor: state.hasCheckIn
                 ? context.colorScheme.error
@@ -252,4 +251,14 @@ class _CheckInScreenState extends State<CheckInScreen> {
   }
 
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
+
+  Future<void> _onButtonTapped() async {
+    context.hideKeyboard();
+    final checkInCubit = context.read<CheckInCubit>();
+    await checkInCubit.postCheckIn().whenComplete(
+          () => context.read<HomeCubit>().postTracking(
+                !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
+              ),
+        );
+  }
 }

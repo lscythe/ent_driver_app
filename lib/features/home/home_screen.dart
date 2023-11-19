@@ -6,12 +6,20 @@ import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   static const String path = "/";
   static const String name = "home_screen";
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool hideScreen = false;
 
   final List<Widget> _child = [
     const CheckInScreen(),
@@ -21,14 +29,36 @@ class HomeScreen extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+
+    context.read<HomeCubit>().init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
         BlocListener<HomeCubit, HomeState>(listener: _homeListener),
         BlocListener<CheckInCubit, CheckInState>(listener: _checkInListener),
+        BlocListener<HomeCubit, HomeState>(
+          listener: (context, state) {
+            if (state.location != null) {
+              context.read<HomeCubit>().postTracking("LOCATION");
+            }
+          },
+          listenWhen: (previous, current) =>
+              previous.location != current.location,
+        ),
       ],
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
+          context.watch<HomeCubit>().checkIfPermissionNeeded();
+
+          if (!state.isAllPermissionGranted) {
+            return const RequestPermission();
+          }
+
           return Stack(
             children: [
               Scaffold(
@@ -62,10 +92,14 @@ class HomeScreen extends StatelessWidget {
       centerTitle: true,
       actions: [
         IconButton(
-          onPressed: () => showDialog(
-            context: context,
-            builder: (context) => const LogoutDialog(),
-          ),
+          onPressed: () async {
+            final bool? isLogout = await showDialog(
+              context: context,
+              builder: (context) => const LogoutDialog(),
+            );
+
+            if (isLogout ?? false) _onLogout();
+          },
           icon: const Icon(
             AppIcons.logout,
           ),
@@ -113,8 +147,6 @@ class HomeScreen extends StatelessWidget {
       context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
       context.read<HomeCubit>().resetErrorMessage();
     }
-
-
   }
 
   void _checkInListener(BuildContext context, CheckInState state) {
@@ -126,4 +158,10 @@ class HomeScreen extends StatelessWidget {
   }
 
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
+
+  Future<void> _onLogout() async {
+    await context.read<HomeCubit>().logout().whenComplete(
+          () => context.go(LoginScreen.path),
+        );
+  }
 }

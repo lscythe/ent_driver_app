@@ -3,12 +3,37 @@ import 'package:driver/app/themes/themes.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/generated/l10n.dart';
 import 'package:driver/locator/locator.dart';
+import 'package:driver/services/local_notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-class DriverApp extends StatelessWidget {
+class DriverApp extends StatefulWidget {
   const DriverApp({super.key});
+
+  @override
+  State<DriverApp> createState() => _DriverAppState();
+}
+
+class _DriverAppState extends State<DriverApp> {
+  _DriverAppState() {
+    FirebaseMessaging.onMessage.listen((event) {
+      LocalNotificationService.showNotification(event);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((event) {
+      LocalNotificationService.showNotification(event);
+    });
+    FirebaseMessaging.onBackgroundMessage(
+      (message) => LocalNotificationService.showNotification(message),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    LocalNotificationService.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -8,6 +8,9 @@ class HomeState extends Equatable {
     required this.homeError,
     this.errorMessage,
     required this.userId,
+    required this.permissionStatus,
+    required this.isAllPermissionGranted,
+    this.location,
   });
 
   const HomeState.init()
@@ -16,7 +19,10 @@ class HomeState extends Equatable {
         hasCheckIn = false,
         homeError = HomeError.none,
         errorMessage = null,
-        userId = 0;
+        userId = 0,
+        permissionStatus = const Tuple2(null, PermissionStatus.denied),
+        isAllPermissionGranted = true,
+        location = null;
 
   final int index;
   final PageState state;
@@ -24,6 +30,9 @@ class HomeState extends Equatable {
   final HomeError homeError;
   final String? errorMessage;
   final int userId;
+  final Tuple2<Permission?, PermissionStatus> permissionStatus;
+  final bool isAllPermissionGranted;
+  final Location? location;
 
   HomeState copyWith({
     int? index,
@@ -32,6 +41,9 @@ class HomeState extends Equatable {
     HomeError? homeError,
     String? errorMessage,
     int? userId,
+    Tuple2<Permission?, PermissionStatus>? permissionStatus,
+    bool? isAllPermissionGranted,
+    Location? location,
   }) =>
       HomeState(
         index: index ?? this.index,
@@ -40,6 +52,10 @@ class HomeState extends Equatable {
         homeError: homeError ?? this.homeError,
         errorMessage: errorMessage ?? this.errorMessage,
         userId: userId ?? this.userId,
+        permissionStatus: permissionStatus ?? this.permissionStatus,
+        isAllPermissionGranted:
+            isAllPermissionGranted ?? this.isAllPermissionGranted,
+        location: location ?? this.location,
       );
 
   @override
@@ -50,5 +66,8 @@ class HomeState extends Equatable {
         homeError,
         errorMessage,
         userId,
+        permissionStatus,
+        isAllPermissionGranted,
+        location,
       ];
 }
