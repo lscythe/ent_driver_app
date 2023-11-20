@@ -37,6 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
   ];
 
   Future<void> init() async {
+    const HomeState.init();
     final hasCheckIn = _driverRepository.haveCheckIn();
     final user = await _authRepository.getCurrentUser();
     final isAfterLogin = _authRepository.isAfterLogin();
@@ -53,20 +54,21 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> checkIfPermissionNeeded() async {
+    final List<bool> grantedPermissions = List.empty(growable: true);
     for (final permission in _permissionList) {
       currentPermission = permission;
       final status = await permission.status;
 
-      if (!status.isGranted) {
-        emit(
-          state.copyWith(
-            permissionStatus: Tuple2(permission, status),
-          ),
-        );
-        return;
+      if (status.isGranted) {
+        grantedPermissions.add(true);
+      } else {
+        grantedPermissions.add(false);
       }
     }
-    onAllPermissionGranted();
+
+    if (!grantedPermissions.any((element) => false)) {
+      onAllPermissionGranted();
+    }
   }
 
   void onAllPermissionGranted() {
@@ -132,6 +134,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> postDriverToken() async {
     final fcm = FirebaseMessaging.instance;
+    await fcm.requestPermission(provisional: true);
     final deviceInfo = DeviceInfoPlugin();
     String deviceId = "";
 
@@ -165,7 +168,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> logout() async {
-    BackgroundLocation.stopLocationService();
+    await BackgroundLocation.stopLocationService();
     await postTracking("LOGOUT");
     await _authRepository.logout();
   }
@@ -212,11 +215,13 @@ class HomeCubit extends Cubit<HomeState> {
     await BackgroundLocation.setAndroidNotification(
       title: "Location Tracker is running",
       message: "Background location in progress",
-      icon: "@mipmap/ic_launcher",
+      icon: "@mipmap/ic_launcher_foreground",
     );
 
     await BackgroundLocation.setAndroidConfiguration(600000);
-    await BackgroundLocation.startLocationService(distanceFilter: 10);
+    if (state.hasCheckIn) {
+      await BackgroundLocation.startLocationService(distanceFilter: 10);
+    }
     BackgroundLocation.getLocationUpdates((location) {
       emit(state.copyWith(location: location));
     });

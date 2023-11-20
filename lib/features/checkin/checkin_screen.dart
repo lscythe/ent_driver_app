@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
-import 'package:driver/features/checkin/cubit/checkin_cubit.dart';
-import 'package:driver/features/checkin/widgets/widgets.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/button.dart';

@@ -32,7 +32,7 @@ class RequestPermission extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ),
-              KElevatedButton(label: "Allow"),
+              const KElevatedButton(label: "Allow"),
             ],
           ),
         ),

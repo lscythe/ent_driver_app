@@ -49,10 +49,10 @@ class _DriverAppState extends State<DriverApp> {
           create: (context) => locator.get<CheckInCubit>()..init(),
         ),
         BlocProvider<ScheduleCubit>(
-          create: (context) => locator.get<ScheduleCubit>(),
+          create: (context) => locator.get<ScheduleCubit>()..init(),
         ),
         BlocProvider<TripCubit>(
-          create: (context) => locator.get<TripCubit>()..postListTrip(),
+          create: (context) => locator.get<TripCubit>()..init(),
         ),
         BlocProvider<MessageCubit>(
           create: (context) => locator.get<MessageCubit>()..init(),

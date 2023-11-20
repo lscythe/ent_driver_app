@@ -1,3 +1,4 @@
+import 'package:background_location/background_location.dart';
 import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
@@ -146,6 +147,10 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state.errorMessage?.isNotEmpty ?? false) {
       context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
       context.read<HomeCubit>().resetErrorMessage();
+    }
+
+    if (state.hasCheckIn) {
+      BackgroundLocation.startLocationService(distanceFilter: 10);
     }
   }
 

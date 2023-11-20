@@ -16,6 +16,12 @@ class TripCubit extends Cubit<TripState> {
   final AuthRepository _authRepository;
   final DriverRepository _driverRepository;
 
+  Future<void> init() async {
+    const TripState.init();
+    await postTransportLocation();
+    await postListTrip();
+  }
+
   Future<void> postListTrip({
     DateTime? date,
     List<ContainerFilter> filters = const [],

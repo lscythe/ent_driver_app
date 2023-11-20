@@ -17,6 +17,7 @@ class CheckInCubit extends Cubit<CheckInState> {
   final AuthRepository _authRepository;
 
   Future<void> init() async {
+    const CheckInState.init();
     final currentUser = await _authRepository.getCurrentUser();
     final trailerNumber = _driverRepository.trailerNumber();
     final vehicleNumber = _driverRepository.vehicleNumber();

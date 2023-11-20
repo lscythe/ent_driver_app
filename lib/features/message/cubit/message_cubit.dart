@@ -16,6 +16,7 @@ class MessageCubit extends Cubit<MessageState> {
   final AuthRepository _authRepository;
 
   Future<void> init() async {
+    const MessageState.init();
     for (final type in MessageType.values) {
       await postMessages(type);
     }

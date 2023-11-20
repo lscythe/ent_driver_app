@@ -106,11 +106,11 @@ class DriverRepository {
       _remoteDataSource.postRequestLeave(request);
 
   Future<Result<EmptyResponse>> postDriverToken(
-          FcmTokenRequest request) async =>
+          FcmTokenRequest request,) async =>
       _remoteDataSource.postDriverToken(request);
 
   Future<Result<EmptyResponse>> postAnalystTracking(
-          TrackingRequest request) async =>
+          TrackingRequest request,) async =>
       _remoteDataSource.postAnalystTracking(request);
 
   Future<int> getUnreadMessageCount(String type) async =>

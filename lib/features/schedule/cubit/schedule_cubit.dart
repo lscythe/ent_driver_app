@@ -19,6 +19,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
   final String scheduleType = "detailsMobile";
 
   Future<void> init({DateTime? date}) async {
+    const ScheduleState.init();
     final user = await _authRepository.getCurrentUser();
 
     final leaveQuota = int.tryParse(user?.totalLeaveBalance ?? "0");
