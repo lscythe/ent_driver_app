@@ -55,11 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
           context.watch<HomeCubit>().checkIfPermissionNeeded();
-
-          if (!state.isAllPermissionGranted) {
-            return const RequestPermission();
-          }
-
           return Stack(
             children: [
               Scaffold(
@@ -83,7 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
-      leading: Assets.images.appLogo2.image(scale: 3.5),
+      leading: InkWell(
+          child: Assets.images.appLogo2.image(scale: 3.5)),
       title: Text(
         context.localization.appName.toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(
@@ -99,7 +95,10 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context) => const LogoutDialog(),
             );
 
-            if (isLogout ?? false) _onLogout();
+            if (isLogout ?? false) {
+              BackgroundLocation.stopLocationService();
+              _onLogout();
+            }
           },
           icon: const Icon(
             AppIcons.logout,

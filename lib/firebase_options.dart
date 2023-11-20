@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCFrb6saza8MwMEQ00fKqoUBocu69NSowg',
-    appId: '1:873445143944:android:10c98176c03b660ce5b63d',
-    messagingSenderId: '873445143944',
-    projectId: 'ent-scheduling',
-    storageBucket: 'ent-scheduling.appspot.com',
+    apiKey: 'AIzaSyBkgMjtEgT-IarLZp-MfhQQnh9Pj1suNRQ',
+    appId: '1:225557572875:android:bc6f0af051f74d2542060e',
+    messagingSenderId: '225557572875',
+    projectId: 'escheduling-6cac5',
+    storageBucket: 'escheduling-6cac5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyB-twvJQYTmoCE5QsuT_gE5JTnmEjudwbI',
-    appId: '1:873445143944:ios:581e56f1b3a6ff10e5b63d',
-    messagingSenderId: '873445143944',
-    projectId: 'ent-scheduling',
-    storageBucket: 'ent-scheduling.appspot.com',
+    apiKey: 'AIzaSyCerzllHVtvhBmb5PdERocyCDb-vsGJGDk',
+    appId: '1:225557572875:ios:7870eeff25f20a1f42060e',
+    messagingSenderId: '225557572875',
+    projectId: 'escheduling-6cac5',
+    storageBucket: 'escheduling-6cac5.appspot.com',
     iosBundleId: 'com.entvision.app.scheduling.driver',
   );
 }

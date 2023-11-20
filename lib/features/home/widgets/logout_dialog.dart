@@ -22,7 +22,7 @@ class LogoutDialog extends StatelessWidget {
         content: Text(context.localization.logoutDesc),
         actions: [
           TextButton(
-            onPressed: context.pop,
+            onPressed: () => context.pop(false),
             child: Text(
               context.localization.no,
               style: context.textTheme.bodyMedium?.copyWith(

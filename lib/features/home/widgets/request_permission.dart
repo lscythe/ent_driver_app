@@ -1,3 +1,4 @@
+import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/widgets/button.dart';
@@ -13,27 +14,43 @@ class RequestPermission extends StatelessWidget {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) => Scaffold(
         backgroundColor: context.colorScheme.background,
-        body: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                context.localization.permissionNeeded,
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 28),
+          child: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _getIcon(state.permissionStatus.item1),
+                  color: context.colorScheme.primary,
+                  size: 128,
                 ),
-              ),
-              Text(
-                _getPermissionRational(
-                  state.permissionStatus.item1,
-                  context,
+                Spaces.h16.size,
+                Text(
+                  context.localization.permissionNeeded,
+                  style: context.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                style: context.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w500,
+                Spaces.h12.size,
+                Text(
+                  _getPermissionRational(
+                    state.permissionStatus.item1,
+                    context,
+                  ),
+                  style: context.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              const KElevatedButton(label: "Allow"),
-            ],
+                Spaces.h32.size,
+                KElevatedButton(
+                  label: "Allow",
+                  mainAxisSize: MainAxisSize.max,
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -52,6 +69,16 @@ class RequestPermission extends StatelessWidget {
       return context.localization.alarmPermission;
     } else {
       return "";
+    }
+  }
+
+  IconData _getIcon(Permission? permission) {
+    if (permission == Permission.location ||
+        permission == Permission.locationWhenInUse ||
+        permission == Permission.locationAlways) {
+      return Icons.location_off_rounded;
+    } else {
+      return Icons.notifications_active_rounded;
     }
   }
 }

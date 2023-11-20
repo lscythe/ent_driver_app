@@ -96,6 +96,34 @@ class HomeCubit extends Cubit<HomeState> {
     onAllPermissionGranted();
   }
 
+  // Future<void> requestPermission(Permission? permission) async {
+  //   if (permission != null) {
+  //     var status = await permission.status;
+  //
+  //     if (status.isDenied) {
+  //       status = await permission.request();
+  //
+  //       if (status.isPermanentlyDenied) {
+  //         emit(state.copyWith(
+  //             errorMessage:
+  //             "This app will not run properly because its relies on the permission"));
+  //       }
+  //     }
+  //
+  //     if (status.isPermanentlyDenied) {
+  //       if (permission == Permission.location ||
+  //           permission == Permission.locationWhenInUse ||
+  //           permission == Permission.locationAlways) {
+  //         AppSettings.openAppSettings(type: AppSettingsType.location);
+  //       } else if (permission == Permission.notification) {
+  //         AppSettings.openAppSettings(type: AppSettingsType.notification);
+  //       } else {
+  //         AppSettings.openAppSettings(type: AppSettingsType.alarm);
+  //       }
+  //     }
+  //   }
+  // }
+
   Future<void> postTracking(String name) async {
     emit(state.copyWith(state: PageState.loading));
     Position? position;
@@ -168,7 +196,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> logout() async {
-    await BackgroundLocation.stopLocationService();
     await postTracking("LOGOUT");
     await _authRepository.logout();
   }
@@ -222,9 +249,14 @@ class HomeCubit extends Cubit<HomeState> {
     if (state.hasCheckIn) {
       await BackgroundLocation.startLocationService(distanceFilter: 10);
     }
-    BackgroundLocation.getLocationUpdates((location) {
+    BackgroundLocation.getLocationUpdates((location) async {
       emit(state.copyWith(location: location));
+      await postTracking("LOCATION");
     });
+  }
+
+  void onPermissionDisallow() {
+    emit(state.copyWith(isDisallow: true));
   }
 
   void onNavigationChanged(int index) {

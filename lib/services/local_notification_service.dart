@@ -17,7 +17,7 @@ class LocalNotificationService {
 
   static Future<void> init(BuildContext context) async {
     const AndroidInitializationSettings androidInitSetting =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("@mipmap/ic_launcher_foreground");
 
     const DarwinInitializationSettings darwinInitializationSetting =
         DarwinInitializationSettings();
@@ -68,7 +68,7 @@ class LocalNotificationService {
 
   static Future<void> notificationHandler(BuildContext context) async {
     const AndroidInitializationSettings androidInitSetting =
-        AndroidInitializationSettings("@mipmap/ic_launcher");
+        AndroidInitializationSettings("@mipmap/ic_launcher_foreground");
 
     const DarwinInitializationSettings darwinInitializationSetting =
         DarwinInitializationSettings();

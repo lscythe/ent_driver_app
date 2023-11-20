@@ -1,26 +1,36 @@
 {
   "project_info": {
-    "project_number": "873445143944",
-    "project_id": "ent-scheduling",
-    "storage_bucket": "ent-scheduling.appspot.com"
+    "project_number": "225557572875",
+    "project_id": "escheduling-6cac5",
+    "storage_bucket": "escheduling-6cac5.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:873445143944:android:10c98176c03b660ce5b63d",
+        "mobilesdk_app_id": "1:225557572875:android:bc6f0af051f74d2542060e",
         "android_client_info": {
           "package_name": "com.entvision.app.scheduling.driver"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "225557572875-f1kifevoljdfjms6n7hhv6qe3hdtj6ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyCFrb6saza8MwMEQ00fKqoUBocu69NSowg"
+          "current_key": "AIzaSyBkgMjtEgT-IarLZp-MfhQQnh9Pj1suNRQ"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225557572875-f1kifevoljdfjms6n7hhv6qe3hdtj6ik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

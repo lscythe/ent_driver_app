@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:background_location/background_location.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
@@ -251,12 +252,13 @@ class _CheckInScreenState extends State<CheckInScreen> {
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 
   Future<void> _onButtonTapped() async {
-    context.hideKeyboard();
-    final checkInCubit = context.read<CheckInCubit>();
-    await checkInCubit.postCheckIn().whenComplete(
-          () => context.read<HomeCubit>().postTracking(
-                !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
-              ),
-        );
+    // context.hideKeyboard();
+    // final checkInCubit = context.read<CheckInCubit>();
+    // await checkInCubit.postCheckIn().whenComplete(
+    //       () => context.read<HomeCubit>().postTracking(
+    //             !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
+    //           ),
+    //     );
+    BackgroundLocation.stopLocationService();
   }
 }

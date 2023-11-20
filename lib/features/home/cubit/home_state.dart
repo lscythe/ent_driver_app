@@ -11,6 +11,7 @@ class HomeState extends Equatable {
     required this.permissionStatus,
     required this.isAllPermissionGranted,
     this.location,
+    required this.isDisallow,
   });
 
   const HomeState.init()
@@ -22,7 +23,8 @@ class HomeState extends Equatable {
         userId = 0,
         permissionStatus = const Tuple2(null, PermissionStatus.denied),
         isAllPermissionGranted = true,
-        location = null;
+        location = null,
+        isDisallow = false;
 
   final int index;
   final PageState state;
@@ -33,6 +35,7 @@ class HomeState extends Equatable {
   final Tuple2<Permission?, PermissionStatus> permissionStatus;
   final bool isAllPermissionGranted;
   final Location? location;
+  final bool isDisallow;
 
   HomeState copyWith({
     int? index,
@@ -44,6 +47,7 @@ class HomeState extends Equatable {
     Tuple2<Permission?, PermissionStatus>? permissionStatus,
     bool? isAllPermissionGranted,
     Location? location,
+    bool? isDisallow,
   }) =>
       HomeState(
         index: index ?? this.index,
@@ -56,6 +60,7 @@ class HomeState extends Equatable {
         isAllPermissionGranted:
             isAllPermissionGranted ?? this.isAllPermissionGranted,
         location: location ?? this.location,
+        isDisallow: isDisallow ?? this.isDisallow,
       );
 
   @override
@@ -69,5 +74,6 @@ class HomeState extends Equatable {
         permissionStatus,
         isAllPermissionGranted,
         location,
+        isDisallow,
       ];
 }

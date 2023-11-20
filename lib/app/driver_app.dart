@@ -21,9 +21,6 @@ class _DriverAppState extends State<DriverApp> {
     FirebaseMessaging.onMessage.listen((event) {
       LocalNotificationService.showNotification(event);
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      LocalNotificationService.showNotification(event);
-    });
     FirebaseMessaging.onBackgroundMessage(
       (message) => LocalNotificationService.showNotification(message),
     );

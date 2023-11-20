@@ -37,14 +37,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "active": MessageLookupByLibrary.simpleMessage("Active"),
         "addTripForm": MessageLookupByLibrary.simpleMessage("Add Trip Form"),
         "alarmPermission": MessageLookupByLibrary.simpleMessage(
-            "We require access to this permission to track your current location.",),
+            "We require access to this permission to track your current location."),
         "alertMessage": MessageLookupByLibrary.simpleMessage("Alerts"),
         "allMessage": MessageLookupByLibrary.simpleMessage("All"),
         "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "broadcastMessage": MessageLookupByLibrary.simpleMessage("Broadcast"),
         "calendarInfo": MessageLookupByLibrary.simpleMessage("Calendar Info"),
         "changeDateError": MessageLookupByLibrary.simpleMessage(
-            "Please change to other date to filter with vehicle/trailer no",),
+            "Please change to other date to filter with vehicle/trailer no"),
         "checkIn": MessageLookupByLibrary.simpleMessage("Check In"),
         "checkInDriverPlaceholder":
             MessageLookupByLibrary.simpleMessage("Driver Name"),
@@ -65,22 +65,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "homeTitle": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "inActive": MessageLookupByLibrary.simpleMessage("InActive"),
         "insufficientLeaveBalance": m1,
+        "later": MessageLookupByLibrary.simpleMessage("Later"),
         "leaveDate": MessageLookupByLibrary.simpleMessage("Leave Date"),
         "leaveType": MessageLookupByLibrary.simpleMessage("Leave Type"),
         "locationPermission": MessageLookupByLibrary.simpleMessage(
-            "This app relies on read access to your location. \nWe require access to this permission to find your current location.",),
+            "This app relies on read access to your location. \nWe require access to this permission to find your current location."),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutDesc": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to log out?",),
+            "Are you sure you want to log out?"),
         "logoutTitle": MessageLookupByLibrary.simpleMessage("Confirm Logout"),
         "medicalLeave": MessageLookupByLibrary.simpleMessage("Medical Leave"),
         "message": MessageLookupByLibrary.simpleMessage("Message"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "notCheckIn": MessageLookupByLibrary.simpleMessage(
-            "Please check in first to access trip form.",),
+            "Please check in first to access trip form."),
         "notificationPermission": MessageLookupByLibrary.simpleMessage(
-            "We require access to this permission to send you notification.",),
+            "We require access to this permission to send you notification."),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "paidLeave": MessageLookupByLibrary.simpleMessage("Paid Leave"),
         "passwordHint":
@@ -97,7 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transportFrom": MessageLookupByLibrary.simpleMessage("Transport From"),
         "trip": MessageLookupByLibrary.simpleMessage("Trip"),
         "tripFormFilterErrorDesc": MessageLookupByLibrary.simpleMessage(
-            "Please change the parameters to find another trip form.",),
+            "Please change the parameters to find another trip form."),
         "tripFormFilterErrorTitle":
             MessageLookupByLibrary.simpleMessage("Trip Form Not Found"),
         "tripFrom": m2,
@@ -112,6 +113,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vehicle/Trailer No"),
         "vehicleNumber": MessageLookupByLibrary.simpleMessage("Vehicle Number"),
         "working": MessageLookupByLibrary.simpleMessage("Working"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+        "yes": MessageLookupByLibrary.simpleMessage("Yes")
       };
 }

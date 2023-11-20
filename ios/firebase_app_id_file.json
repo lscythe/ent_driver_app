@@ -1,7 +1,7 @@
 {
   "file_generated_by": "FlutterFire CLI",
   "purpose": "FirebaseAppID & ProjectID for this Firebase app in this directory",
-  "GOOGLE_APP_ID": "1:873445143944:ios:581e56f1b3a6ff10e5b63d",
-  "FIREBASE_PROJECT_ID": "ent-scheduling",
-  "GCM_SENDER_ID": "873445143944"
+  "GOOGLE_APP_ID": "1:225557572875:ios:7870eeff25f20a1f42060e",
+  "FIREBASE_PROJECT_ID": "escheduling-6cac5",
+  "GCM_SENDER_ID": "225557572875"
 }
