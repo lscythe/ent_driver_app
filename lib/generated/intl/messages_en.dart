@@ -43,7 +43,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "broadcastMessage": MessageLookupByLibrary.simpleMessage("Broadcast"),
         "calendarInfo": MessageLookupByLibrary.simpleMessage("Calendar Info"),
         "changeDateError": MessageLookupByLibrary.simpleMessage(
-            "Please change to other date to filter with vehicle/trailer no"),
+            "Please change to other date to filter with vehicle/trailer no",),
         "checkIn": MessageLookupByLibrary.simpleMessage("Check In"),
         "checkInDriverPlaceholder":
             MessageLookupByLibrary.simpleMessage("Driver Name"),
@@ -69,19 +69,19 @@ class MessageLookup extends MessageLookupByLibrary {
         "leaveDate": MessageLookupByLibrary.simpleMessage("Leave Date"),
         "leaveType": MessageLookupByLibrary.simpleMessage("Leave Type"),
         "locationPermissionDesc": MessageLookupByLibrary.simpleMessage(
-            "This app requires location access to automatically detect and record your activities."),
+            "This app requires location access to automatically detect and record your activities.",),
         "locationPermissionTitle":
             MessageLookupByLibrary.simpleMessage("Location Access"),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),
         "loginTitle": MessageLookupByLibrary.simpleMessage("Login"),
         "logoutDesc": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to log out?"),
+            "Are you sure you want to log out?",),
         "logoutTitle": MessageLookupByLibrary.simpleMessage("Confirm Logout"),
         "medicalLeave": MessageLookupByLibrary.simpleMessage("Medical Leave"),
         "message": MessageLookupByLibrary.simpleMessage("Message"),
         "no": MessageLookupByLibrary.simpleMessage("No"),
         "notCheckIn": MessageLookupByLibrary.simpleMessage(
-            "Please check in first to access trip form."),
+            "Please check in first to access trip form.",),
         "ok": MessageLookupByLibrary.simpleMessage("OK"),
         "openSetting": MessageLookupByLibrary.simpleMessage("Open Settings"),
         "paidLeave": MessageLookupByLibrary.simpleMessage("Paid Leave"),
@@ -97,7 +97,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "transportFrom": MessageLookupByLibrary.simpleMessage("Transport From"),
         "trip": MessageLookupByLibrary.simpleMessage("Trip"),
         "tripFormFilterErrorDesc": MessageLookupByLibrary.simpleMessage(
-            "Please change the parameters to find another trip form."),
+            "Please change the parameters to find another trip form.",),
         "tripFormFilterErrorTitle":
             MessageLookupByLibrary.simpleMessage("Trip Form Not Found"),
         "tripFrom": m2,
@@ -112,6 +112,6 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Vehicle/Trailer No"),
         "vehicleNumber": MessageLookupByLibrary.simpleMessage("Vehicle Number"),
         "working": MessageLookupByLibrary.simpleMessage("Working"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes")
+        "yes": MessageLookupByLibrary.simpleMessage("Yes"),
       };
 }
