@@ -79,7 +79,8 @@ class _HomeScreenState extends State<HomeScreen> {
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       leading: InkWell(
-          child: Assets.images.appLogo2.image(scale: 3.5)),
+        child: Assets.images.appLogo2.image(scale: 3.5),
+      ),
       title: Text(
         context.localization.appName.toUpperCase(),
         style: context.textTheme.titleMedium?.copyWith(

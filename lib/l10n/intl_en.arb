@@ -103,9 +103,9 @@
       }
     }
   },
-  "permissionNeeded": "Permission Needed",
-  "locationPermission": "This app relies on read access to your location. \nWe require access to this permission to find your current location.",
-  "notificationPermission" : "We require access to this permission to send you notification.",
-  "alarmPermission" : "We require access to this permission to track your current location.",
-  "later": "Later"
+  "locationPermissionTitle": "Location Access",
+  "locationPermissionDesc": "This app requires location access to automatically detect and record your activities.",
+  "allow": "Allow",
+  "openSetting": "Open Settings",
+  "enableLocationService": "Enable Location Service"
 }

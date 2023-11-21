@@ -28,9 +28,6 @@ class HomeCubit extends Cubit<HomeState> {
   late Permission currentPermission;
 
   final _permissionList = [
-    Permission.location,
-    Permission.locationWhenInUse,
-    Permission.locationAlways,
     Permission.notification,
     Permission.reminders,
     Permission.scheduleExactAlarm,
@@ -42,14 +39,15 @@ class HomeCubit extends Cubit<HomeState> {
     final user = await _authRepository.getCurrentUser();
     final isAfterLogin = _authRepository.isAfterLogin();
 
-    if (isAfterLogin) {
-      await _authRepository.setIsAfterLogin(false);
-      postTracking("LOGIN");
-    }
+    await checkIfPermissionNeeded().whenComplete(() async {
+      if (isAfterLogin) {
+        await _authRepository.setIsAfterLogin(false);
+        postTracking("LOGIN");
+      }
+    });
 
     await setupBackgroundLocation();
     await postDriverToken();
-    await checkIfPermissionNeeded();
     emit(state.copyWith(hasCheckIn: hasCheckIn, userId: user?.id));
   }
 
@@ -74,55 +72,6 @@ class HomeCubit extends Cubit<HomeState> {
   void onAllPermissionGranted() {
     emit(state.copyWith(isAllPermissionGranted: true));
   }
-
-  Future<void> onRequestAllPermission() async {
-    for (final permission in _permissionList) {
-      currentPermission = permission;
-      var status = await permission.status;
-
-      if (status.isDenied) {
-        status = await permission.request();
-
-        emit(state.copyWith(permissionStatus: Tuple2(permission, status)));
-        return;
-      }
-    }
-
-    for (final permission in _permissionList) {
-      final status = await permission.status;
-
-      if (!status.isGranted) return;
-    }
-    onAllPermissionGranted();
-  }
-
-  // Future<void> requestPermission(Permission? permission) async {
-  //   if (permission != null) {
-  //     var status = await permission.status;
-  //
-  //     if (status.isDenied) {
-  //       status = await permission.request();
-  //
-  //       if (status.isPermanentlyDenied) {
-  //         emit(state.copyWith(
-  //             errorMessage:
-  //             "This app will not run properly because its relies on the permission"));
-  //       }
-  //     }
-  //
-  //     if (status.isPermanentlyDenied) {
-  //       if (permission == Permission.location ||
-  //           permission == Permission.locationWhenInUse ||
-  //           permission == Permission.locationAlways) {
-  //         AppSettings.openAppSettings(type: AppSettingsType.location);
-  //       } else if (permission == Permission.notification) {
-  //         AppSettings.openAppSettings(type: AppSettingsType.notification);
-  //       } else {
-  //         AppSettings.openAppSettings(type: AppSettingsType.alarm);
-  //       }
-  //     }
-  //   }
-  // }
 
   Future<void> postTracking(String name) async {
     emit(state.copyWith(state: PageState.loading));

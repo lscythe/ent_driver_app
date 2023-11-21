@@ -4,6 +4,7 @@ import 'package:driver/data/repositories/auth_repository.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 part 'login_state.dart';
 
@@ -12,6 +13,12 @@ class LoginCubit extends Cubit<LoginState> {
   LoginCubit(this._authRepository) : super(const LoginState.init());
 
   final AuthRepository _authRepository;
+
+  Future<void> init() async {
+    final status = await Permission.location.status.isGranted;
+
+    emit(state.copyWith(isLocationPermissionGranted: status));
+  }
 
   void onUsernameChanged(String value) {
     emit(state.copyWith(username: value));

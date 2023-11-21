@@ -37,7 +37,7 @@ class _DriverAppState extends State<DriverApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginCubit>(
-          create: (context) => locator.get<LoginCubit>(),
+          create: (context) => locator.get<LoginCubit>()..init(),
         ),
         BlocProvider<HomeCubit>(
           create: (context) => locator.get<HomeCubit>()..init(),
@@ -53,6 +53,9 @@ class _DriverAppState extends State<DriverApp> {
         ),
         BlocProvider<MessageCubit>(
           create: (context) => locator.get<MessageCubit>()..init(),
+        ),
+        BlocProvider<PermissionCubit>(
+          create: (context) => PermissionCubit(),
         ),
       ],
       child: MaterialApp.router(

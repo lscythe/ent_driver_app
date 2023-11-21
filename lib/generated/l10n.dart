@@ -640,51 +640,51 @@ class S {
     );
   }
 
-  /// `Permission Needed`
-  String get permissionNeeded {
+  /// `Location Access`
+  String get locationPermissionTitle {
     return Intl.message(
-      'Permission Needed',
-      name: 'permissionNeeded',
+      'Location Access',
+      name: 'locationPermissionTitle',
       desc: '',
       args: [],
     );
   }
 
-  /// `This app relies on read access to your location. \nWe require access to this permission to find your current location.`
-  String get locationPermission {
+  /// `This app requires location access to automatically detect and record your activities.`
+  String get locationPermissionDesc {
     return Intl.message(
-      'This app relies on read access to your location. \nWe require access to this permission to find your current location.',
-      name: 'locationPermission',
+      'This app requires location access to automatically detect and record your activities.',
+      name: 'locationPermissionDesc',
       desc: '',
       args: [],
     );
   }
 
-  /// `We require access to this permission to send you notification.`
-  String get notificationPermission {
+  /// `Allow`
+  String get allow {
     return Intl.message(
-      'We require access to this permission to send you notification.',
-      name: 'notificationPermission',
+      'Allow',
+      name: 'allow',
       desc: '',
       args: [],
     );
   }
 
-  /// `We require access to this permission to track your current location.`
-  String get alarmPermission {
+  /// `Open Settings`
+  String get openSetting {
     return Intl.message(
-      'We require access to this permission to track your current location.',
-      name: 'alarmPermission',
+      'Open Settings',
+      name: 'openSetting',
       desc: '',
       args: [],
     );
   }
 
-  /// `Later`
-  String get later {
+  /// `Enable Location Service`
+  String get enableLocationService {
     return Intl.message(
-      'Later',
-      name: 'later',
+      'Enable Location Service',
+      name: 'enableLocationService',
       desc: '',
       args: [],
     );

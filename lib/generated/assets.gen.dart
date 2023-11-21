@@ -35,9 +35,13 @@ class $AssetsImagesGen {
   AssetGenImage get emptyMessage =>
       const AssetGenImage('assets/images/empty_message.png');
 
+  /// File path: assets/images/location.png
+  AssetGenImage get location =>
+      const AssetGenImage('assets/images/location.png');
+
   /// List of all assets
   List<AssetGenImage> get values =>
-      [appIcon, appLogo, appLogo2, avatar, emptyForm, emptyMessage];
+      [appIcon, appLogo, appLogo2, avatar, emptyForm, emptyMessage, location];
 }
 
 class Assets {

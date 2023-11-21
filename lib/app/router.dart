@@ -5,6 +5,7 @@ import 'package:driver/locator/locator.dart';
 import 'package:driver/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 
@@ -27,9 +28,12 @@ final router = GoRouter(
 
         final isLoggingIn = state.path == LoginScreen.path;
 
+        final isLocationAccessGranted =
+            await Permission.location.status.isGranted;
+
         if (!lastLoggedIn.isZero) {
           final formattedLastLoggedIn =
-          DateTime.fromMillisecondsSinceEpoch(lastLoggedIn);
+              DateTime.fromMillisecondsSinceEpoch(lastLoggedIn);
           final isExpired =
               DateTime.now().difference(formattedLastLoggedIn).inHours >= 24;
 
@@ -41,6 +45,8 @@ final router = GoRouter(
         if (accessToken.isEmpty) return isLoggingIn ? null : LoginScreen.path;
 
         if (isLoggingIn) return HomeScreen.path;
+
+        if (!isLocationAccessGranted) return PermissionScreen.path;
 
         return null;
       },
@@ -55,6 +61,11 @@ final router = GoRouter(
           response: data,
         );
       },
+    ),
+    GoRoute(
+      path: PermissionScreen.path,
+      name: PermissionScreen.name,
+      builder: (context, state) => const PermissionScreen(),
     ),
   ],
 );

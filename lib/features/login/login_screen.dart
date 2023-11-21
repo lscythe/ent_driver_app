@@ -45,7 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
             context.scaffoldMessage
                 .showSnackBar(_errorSnackBar(state.errorMessage!));
           } else if (state.state == PageState.success) {
-            context.replace(HomeScreen.path);
+            if (state.isLocationPermissionGranted) {
+              context.go(HomeScreen.path);
+            } else {
+              context.go(PermissionScreen.path);
+            }
           }
         },
         builder: (context, state) => Stack(
@@ -94,17 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       focusNode: _passwordNode,
                       onChanged: context.read<LoginCubit>().onPasswordChanged,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      child: Padding(
-                        padding: Paddings.a14.size,
-                        child: Text(
-                          context.localization.forgotPassword,
-                          textAlign: TextAlign.end,
-                          style: context.textTheme.labelLarge,
-                        ),
-                      ),
-                    ),
+                    Spaces.h16.size,
                     KElevatedButton(
                       label: context.localization.loginBtn,
                       mainAxisSize: MainAxisSize.max,
