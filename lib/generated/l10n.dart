@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
-import 'package:driver/generated/intl/messages_all.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'intl/messages_all.dart';
 
 // **************************************************************************
 // Generator: Flutter Intl IDE plugin
@@ -19,7 +19,7 @@ class S {
 
   static S get current {
     assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',);
+        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
     return _current!;
   }
 
@@ -42,7 +42,7 @@ class S {
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
     assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',);
+        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
     return instance!;
   }
 
@@ -650,10 +650,10 @@ class S {
     );
   }
 
-  /// `This app requires location access to automatically detect and record your activities.`
+  /// `Smart Driver collects location data to enable identification location even when the app is closed or not in use.`
   String get locationPermissionDesc {
     return Intl.message(
-      'This app requires location access to automatically detect and record your activities.',
+      'Smart Driver collects location data to enable identification location even when the app is closed or not in use.',
       name: 'locationPermissionDesc',
       desc: '',
       args: [],
@@ -670,6 +670,16 @@ class S {
     );
   }
 
+  /// `Skip (app would not work properly)`
+  String get notNow {
+    return Intl.message(
+      'Skip (app would not work properly)',
+      name: 'notNow',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Open Settings`
   String get openSetting {
     return Intl.message(
@@ -680,11 +690,51 @@ class S {
     );
   }
 
-  /// `Enable Location Service`
-  String get enableLocationService {
+  /// `Enable`
+  String get enable {
     return Intl.message(
-      'Enable Location Service',
-      name: 'enableLocationService',
+      'Enable',
+      name: 'enable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enable Location`
+  String get enableLocationTitle {
+    return Intl.message(
+      'Enable Location',
+      name: 'enableLocationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update Location Setting`
+  String get updateLocationSetting {
+    return Intl.message(
+      'Update Location Setting',
+      name: 'updateLocationSetting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Not Now`
+  String get nowNowLocation {
+    return Intl.message(
+      'Not Now',
+      name: 'nowNowLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We need to know your location in order to enable identification location`
+  String get locationDialogDesc {
+    return Intl.message(
+      'We need to know your location in order to enable identification location',
+      name: 'locationDialogDesc',
       desc: '',
       args: [],
     );

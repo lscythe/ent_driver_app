@@ -18,8 +18,8 @@ class PermissionScreen extends StatefulWidget {
   State<PermissionScreen> createState() => _PermissionScreenState();
 }
 
-class _PermissionScreenState extends State<PermissionScreen> with WidgetsBindingObserver {
-
+class _PermissionScreenState extends State<PermissionScreen>
+    with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
@@ -58,7 +58,11 @@ class _PermissionScreenState extends State<PermissionScreen> with WidgetsBinding
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Assets.images.location.image(scale: 4),
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: context.colorScheme.primary,
+                        size: 36,
+                      ),
                       Text(
                         context.localization.locationPermissionTitle,
                         style: context.textTheme.titleLarge?.copyWith(
@@ -72,22 +76,38 @@ class _PermissionScreenState extends State<PermissionScreen> with WidgetsBinding
                         style: context.textTheme.bodyMedium,
                       ),
                       Spaces.h18.size,
+                      Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(KRadius.r16.size),
+                        ),
+                        child: Assets.images.locationTracking.image(scale: 1.5),
+                      ),
                     ],
                   ),
                 ),
               ),
               KElevatedButton(
-                label: state.isPermissionPermanentlyDenied
+                label: state.isPermissionPermanentlyDenied &&
+                        !state.isPermissionAlwaysGranted
                     ? context.localization.openSetting
                     : context.localization.allow,
                 mainAxisSize: MainAxisSize.max,
                 onPressed: () async {
-                  if (!state.isPermissionPermanentlyDenied) {
-                    context.read<PermissionCubit>().requestPermission();
-                  } else {
+                  if (!state.isPermissionPermanentlyDenied &&
+                      !state.isPermissionAlwaysGranted) {
                     openAppSettings();
+                  } else {
+                    context.read<PermissionCubit>().requestPermission();
                   }
                 },
+              ),
+              Spaces.h16.size,
+              KElevatedButton(
+                backgroundColor: context.colorScheme.secondary,
+                label: context.localization.notNow,
+                mainAxisSize: MainAxisSize.max,
+                onPressed: () => context.go(HomeScreen.path),
               ),
             ],
           ),

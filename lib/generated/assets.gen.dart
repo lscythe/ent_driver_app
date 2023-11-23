@@ -39,9 +39,21 @@ class $AssetsImagesGen {
   AssetGenImage get location =>
       const AssetGenImage('assets/images/location.png');
 
+  /// File path: assets/images/location_tracking.jpg
+  AssetGenImage get locationTracking =>
+      const AssetGenImage('assets/images/location_tracking.jpg');
+
   /// List of all assets
-  List<AssetGenImage> get values =>
-      [appIcon, appLogo, appLogo2, avatar, emptyForm, emptyMessage, location];
+  List<AssetGenImage> get values => [
+        appIcon,
+        appLogo,
+        appLogo2,
+        avatar,
+        emptyForm,
+        emptyMessage,
+        location,
+        locationTracking
+      ];
 }
 
 class Assets {

@@ -1,5 +1,6 @@
 import 'package:driver/app/router.dart';
 import 'package:driver/app/themes/themes.dart';
+import 'package:driver/constants/constants.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/generated/l10n.dart';
 import 'package:driver/locator/locator.dart';
@@ -59,7 +60,7 @@ class _DriverAppState extends State<DriverApp> {
         ),
       ],
       child: MaterialApp.router(
-        title: "Driver",
+        title: appName,
         theme: lightTheme,
         themeMode: ThemeMode.light,
         localizationsDelegates: const [

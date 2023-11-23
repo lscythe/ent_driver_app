@@ -7,6 +7,8 @@ export 'preference_keys.dart';
 export 'radius.dart';
 export 'spaces.dart';
 
+const appName = "Smart Driver";
+
 enum Status { success, loading, failure }
 
 enum PageState { success, loading, failure, idle }

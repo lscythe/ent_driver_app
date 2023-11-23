@@ -49,17 +49,16 @@
 		<true/>
 		<key>UIViewControllerBasedStatusBarAppearance</key>
 		<false/>
-
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-        <string>This app needs access to location.</string>
-        <key>NSLocationAlwaysUsageDescription</key>
-        <string>This app needs access to location.</string>
-        <key>NSLocationWhenInUseUsageDescription</key>
-        <string>This app needs access to location.</string>
-        <key>UIBackgroundModes</key>
-        <array>
-        	<string>fetch</string>
-        	<string>location</string>
-        </array>
+		<string>This app needs access to location.</string>
+		<key>NSLocationAlwaysUsageDescription</key>
+		<string>This app needs access to location.</string>
+		<key>NSLocationWhenInUseUsageDescription</key>
+		<string>This app needs access to location.</string>
+		<key>UIBackgroundModes</key>
+		<array>
+			<string>fetch</string>
+			<string>location</string>
+		</array>
 	</dict>
 </plist>

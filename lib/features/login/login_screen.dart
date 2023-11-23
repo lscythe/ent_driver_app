@@ -3,6 +3,7 @@ import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -24,6 +25,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final FocusNode _passwordNode = FocusNode();
 
   bool _obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseMessaging.instance.requestPermission();
+  }
 
   @override
   void dispose() {

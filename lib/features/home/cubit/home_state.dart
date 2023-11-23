@@ -9,9 +9,12 @@ class HomeState extends Equatable {
     this.errorMessage,
     required this.userId,
     required this.permissionStatus,
-    required this.isAllPermissionGranted,
+    required this.isPermissionGranted,
     this.location,
     required this.isDisallow,
+    required this.isLocationServiceEnabled,
+    this.lastAction,
+    required this.isDialogOpen,
   });
 
   const HomeState.init()
@@ -22,9 +25,12 @@ class HomeState extends Equatable {
         errorMessage = null,
         userId = 0,
         permissionStatus = const Tuple2(null, PermissionStatus.denied),
-        isAllPermissionGranted = true,
+        isPermissionGranted = true,
         location = null,
-        isDisallow = false;
+        isDisallow = false,
+        isLocationServiceEnabled = false,
+        lastAction = null,
+        isDialogOpen = true;
 
   final int index;
   final PageState state;
@@ -33,9 +39,12 @@ class HomeState extends Equatable {
   final String? errorMessage;
   final int userId;
   final Tuple2<Permission?, PermissionStatus> permissionStatus;
-  final bool isAllPermissionGranted;
+  final bool isPermissionGranted;
   final Location? location;
   final bool isDisallow;
+  final bool isLocationServiceEnabled;
+  final String? lastAction;
+  final bool isDialogOpen;
 
   HomeState copyWith({
     int? index,
@@ -45,9 +54,12 @@ class HomeState extends Equatable {
     String? errorMessage,
     int? userId,
     Tuple2<Permission?, PermissionStatus>? permissionStatus,
-    bool? isAllPermissionGranted,
+    bool? isPermissionGranted,
     Location? location,
     bool? isDisallow,
+    bool? isLocationServiceEnabled,
+    String? lastAction,
+    bool? isDialogOpen,
   }) =>
       HomeState(
         index: index ?? this.index,
@@ -57,10 +69,13 @@ class HomeState extends Equatable {
         errorMessage: errorMessage ?? this.errorMessage,
         userId: userId ?? this.userId,
         permissionStatus: permissionStatus ?? this.permissionStatus,
-        isAllPermissionGranted:
-            isAllPermissionGranted ?? this.isAllPermissionGranted,
+        isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
         location: location ?? this.location,
         isDisallow: isDisallow ?? this.isDisallow,
+        isLocationServiceEnabled:
+            isLocationServiceEnabled ?? this.isLocationServiceEnabled,
+        lastAction: lastAction ?? this.lastAction,
+        isDialogOpen: isDialogOpen ?? this.isDialogOpen,
       );
 
   @override
@@ -72,8 +87,11 @@ class HomeState extends Equatable {
         errorMessage,
         userId,
         permissionStatus,
-        isAllPermissionGranted,
+        isPermissionGranted,
         location,
         isDisallow,
+        isLocationServiceEnabled,
+        lastAction,
+        isDialogOpen,
       ];
 }

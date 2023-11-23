@@ -8,6 +8,7 @@ import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,52 +26,27 @@ class HomeCubit extends Cubit<HomeState> {
   final AuthRepository _authRepository;
   final DriverRepository _driverRepository;
 
-  late Permission currentPermission;
-
-  final _permissionList = [
-    Permission.notification,
-    Permission.reminders,
-    Permission.scheduleExactAlarm,
-  ];
-
   Future<void> init() async {
-    const HomeState.init();
     final hasCheckIn = _driverRepository.haveCheckIn();
     final user = await _authRepository.getCurrentUser();
     final isAfterLogin = _authRepository.isAfterLogin();
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final permissionGranted = await Permission.location.status;
 
-    await checkIfPermissionNeeded().whenComplete(() async {
-      if (isAfterLogin) {
-        await _authRepository.setIsAfterLogin(false);
-        postTracking("LOGIN");
-      }
-    });
+    emit(
+      state.copyWith(
+        hasCheckIn: hasCheckIn,
+        userId: user?.id,
+        isLocationServiceEnabled: serviceEnabled,
+        isPermissionGranted: permissionGranted.isGranted,
+      ),
+    );
 
-    await setupBackgroundLocation();
     await postDriverToken();
-    emit(state.copyWith(hasCheckIn: hasCheckIn, userId: user?.id));
-  }
-
-  Future<void> checkIfPermissionNeeded() async {
-    final List<bool> grantedPermissions = List.empty(growable: true);
-    for (final permission in _permissionList) {
-      currentPermission = permission;
-      final status = await permission.status;
-
-      if (status.isGranted) {
-        grantedPermissions.add(true);
-      } else {
-        grantedPermissions.add(false);
-      }
+    if (isAfterLogin) {
+      await _authRepository.setIsAfterLogin(false);
+      postTracking("LOGIN");
     }
-
-    if (!grantedPermissions.any((element) => false)) {
-      onAllPermissionGranted();
-    }
-  }
-
-  void onAllPermissionGranted() {
-    emit(state.copyWith(isAllPermissionGranted: true));
   }
 
   Future<void> postTracking(String name) async {
@@ -78,7 +54,7 @@ class HomeCubit extends Cubit<HomeState> {
     Position? position;
 
     if (state.location == null) {
-      position = await _getCurrentPosition();
+      position = await _getCurrentPosition(name);
     }
 
     final request = TrackingRequest(
@@ -149,26 +125,24 @@ class HomeCubit extends Cubit<HomeState> {
     await _authRepository.logout();
   }
 
-  Future<Position> _getCurrentPosition() async {
+  Future<Position> _getCurrentPosition(String action) async {
     bool serviceEnabled;
     PermissionStatus permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      final check = await Geolocator.openLocationSettings();
-      if (check) {
-        _getCurrentPosition();
-      }
-    }
+    print("Service Enabled: $serviceEnabled");
 
     permission = await Permission.location.status;
+    print("Permission Status: ${permission.name}");
     if (!permission.isGranted) {
       permission = await Permission.location.request();
       if (!permission.isGranted) {
         emit(
           state.copyWith(
             permissionStatus: Tuple2(Permission.location, permission),
-            isAllPermissionGranted: false,
+            isPermissionGranted: false,
+            lastAction: action,
+            isDialogOpen: false,
           ),
         );
       }
@@ -178,12 +152,23 @@ class HomeCubit extends Cubit<HomeState> {
       emit(
         state.copyWith(
           permissionStatus: Tuple2(Permission.location, permission),
-          isAllPermissionGranted: false,
+          isPermissionGranted: false,
+          lastAction: action,
+          isDialogOpen: false,
         ),
       );
     }
 
-    onAllPermissionGranted();
+    if (!serviceEnabled) {
+      emit(
+        state.copyWith(
+          isLocationServiceEnabled: false,
+          lastAction: action,
+          isDialogOpen: false,
+        ),
+      );
+    }
+
     return await Geolocator.getCurrentPosition();
   }
 
@@ -230,6 +215,10 @@ class HomeCubit extends Cubit<HomeState> {
         errorMessage: errorMessage,
       ),
     );
+  }
+
+  void updateDialogState() {
+    emit(state.copyWith(isDialogOpen: !state.isDialogOpen));
   }
 
   void resetErrorMessage() => emit(

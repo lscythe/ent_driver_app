@@ -252,13 +252,17 @@ class _CheckInScreenState extends State<CheckInScreen> {
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 
   Future<void> _onButtonTapped() async {
-    // context.hideKeyboard();
-    // final checkInCubit = context.read<CheckInCubit>();
-    // await checkInCubit.postCheckIn().whenComplete(
-    //       () => context.read<HomeCubit>().postTracking(
-    //             !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
-    //           ),
-    //     );
-    BackgroundLocation.stopLocationService();
+    context.hideKeyboard();
+    final checkInCubit = context.read<CheckInCubit>();
+    await checkInCubit
+        .postCheckIn()
+        .whenComplete(
+          () => context.read<HomeCubit>().postTracking(
+                !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
+              ),
+        )
+        .whenComplete(
+          () => context.read<HomeCubit>().setupBackgroundLocation(),
+        );
   }
 }

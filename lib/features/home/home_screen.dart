@@ -53,25 +53,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
       child: BlocBuilder<HomeCubit, HomeState>(
-        builder: (context, state) {
-          context.watch<HomeCubit>().checkIfPermissionNeeded();
-          return Stack(
-            children: [
-              Scaffold(
-                backgroundColor: context.isDarkMode
-                    ? KColors.charcoal
-                    : KColors.antiFlashGray,
-                appBar: _appBar(context),
-                body: _buildChild(),
-                bottomNavigationBar: const KBottomNavigationBar(),
-              ),
-              if (state.state == PageState.loading)
-                const LoadingIndicator()
-              else
-                Container(),
-            ],
-          );
-        },
+        builder: (context, state) => Stack(
+          children: [
+            Scaffold(
+              backgroundColor: KColors.antiFlashGray,
+              appBar: _appBar(context),
+              body: _buildChild(),
+              bottomNavigationBar: const KBottomNavigationBar(),
+            ),
+            if (state.state == PageState.loading)
+              const LoadingIndicator()
+            else
+              Container(),
+          ],
+        ),
       ),
     );
   }
@@ -114,9 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
       buildWhen: (previous, current) => previous.index != current.index,
       builder: (context, state) => Padding(
         padding: EdgeInsets.only(
-          left: KSize.s6.size,
-          right: KSize.s6.size,
-          top: KSize.s6.size,
+          left: KSize.s16.size,
+          right: KSize.s16.size,
+          top: KSize.s16.size,
         ),
         child: Container(
           decoration: BoxDecoration(
@@ -133,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _homeListener(BuildContext context, HomeState state) {
+  Future<void> _homeListener(BuildContext context, HomeState state) async {
     final message = switch (state.homeError) {
       HomeError.notCheckIn => context.localization.notCheckIn,
       HomeError.none => null,
@@ -152,6 +147,24 @@ class _HomeScreenState extends State<HomeScreen> {
     if (state.hasCheckIn) {
       BackgroundLocation.startLocationService(distanceFilter: 10);
     }
+
+    if ((!state.isLocationServiceEnabled || !state.isPermissionGranted) &&
+        !state.isDialogOpen) {
+      context.read<HomeCubit>().updateDialogState();
+      final bool? isEnabled = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const LocationServiceDialog(),
+      );
+
+      if (isEnabled ?? false) {
+        doLastAction(state.lastAction ?? "");
+      }
+    }
+  }
+
+  void doLastAction(String name) {
+    context.read<HomeCubit>().postTracking(name);
   }
 
   void _checkInListener(BuildContext context, CheckInState state) {
