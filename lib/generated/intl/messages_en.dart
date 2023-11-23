@@ -39,6 +39,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "alertMessage": MessageLookupByLibrary.simpleMessage("Alerts"),
         "allMessage": MessageLookupByLibrary.simpleMessage("All"),
         "allow": MessageLookupByLibrary.simpleMessage("Allow"),
+        "alwaysLocation": MessageLookupByLibrary.simpleMessage(
+            "Please allow to Always access location"),
         "appName": MessageLookupByLibrary.simpleMessage("Scheduling System"),
         "broadcastMessage": MessageLookupByLibrary.simpleMessage("Broadcast"),
         "calendarInfo": MessageLookupByLibrary.simpleMessage("Calendar Info"),

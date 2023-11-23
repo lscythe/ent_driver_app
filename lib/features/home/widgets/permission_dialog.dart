@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class LocationServiceDialog extends StatefulWidget {
-  const LocationServiceDialog({
+class PermissionDialog extends StatefulWidget {
+  const PermissionDialog({
     super.key,
     required this.onCloseTap,
     required this.onConfirmTap,
@@ -15,17 +15,17 @@ class LocationServiceDialog extends StatefulWidget {
   final VoidCallback onConfirmTap;
 
   @override
-  State<LocationServiceDialog> createState() => _LocationServiceDialogState();
+  State<PermissionDialog> createState() => _PermissionDialogState();
 }
 
-class _LocationServiceDialogState extends State<LocationServiceDialog>
+class _PermissionDialogState extends State<PermissionDialog>
     with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    context.read<HomeCubit>().updateLocationServiceDialogState();
+    context.read<HomeCubit>().updatePermissionDialogState();
   }
 
   @override
@@ -50,8 +50,10 @@ class _LocationServiceDialogState extends State<LocationServiceDialog>
         surfaceTintColor: context.colorScheme.background,
         icon: const Icon(Icons.location_on_outlined),
         iconColor: context.colorScheme.primary,
-        title: Text(context.localization.enableLocationTitle),
-        content: Text(context.localization.locationDialogDesc),
+        title: Text(context.localization.updateLocationSetting),
+        content: Text(
+          "${context.localization.locationPermissionDesc} ${context.localization.alwaysLocation}",
+        ),
         actions: [
           TextButton(
             onPressed: widget.onCloseTap,
@@ -65,7 +67,7 @@ class _LocationServiceDialogState extends State<LocationServiceDialog>
           TextButton(
             onPressed: widget.onConfirmTap,
             child: Text(
-              context.localization.enable,
+              context.localization.openSetting,
               style: context.textTheme.bodyMedium?.copyWith(
                 color: context.colorScheme.primary,
               ),

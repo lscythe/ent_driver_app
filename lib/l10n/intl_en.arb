@@ -111,6 +111,7 @@
   "enable": "Enable",
   "enableLocationTitle": "Enable Location",
   "updateLocationSetting": "Update Location Setting",
+  "alwaysLocation": "Please allow to Always access location",
   "nowNowLocation": "Not Now",
   "locationDialogDesc": "We need to know your location in order to enable identification location"
 }

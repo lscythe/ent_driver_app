@@ -720,6 +720,16 @@ class S {
     );
   }
 
+  /// `Please allow to Always access location`
+  String get alwaysLocation {
+    return Intl.message(
+      'Please allow to Always access location',
+      name: 'alwaysLocation',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Not Now`
   String get nowNowLocation {
     return Intl.message(

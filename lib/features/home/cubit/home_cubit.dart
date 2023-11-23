@@ -8,7 +8,6 @@ import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:injectable/injectable.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -46,6 +45,8 @@ class HomeCubit extends Cubit<HomeState> {
     if (isAfterLogin) {
       await _authRepository.setIsAfterLogin(false);
       postTracking("LOGIN");
+    } else {
+      await checkPermissionAndLocationService();
     }
   }
 
@@ -53,7 +54,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(state.copyWith(state: PageState.loading));
     Position? position;
 
-    if (state.location == null) {
+    if (state.location == null ||
+        (name != "LOGOUT" &&
+            state.isLocationServiceEnabled &&
+            state.isPermissionGranted)) {
       position = await _getCurrentPosition(name);
     }
 
@@ -62,13 +66,13 @@ class HomeCubit extends Cubit<HomeState> {
       driverId: state.userId,
       lat: position != null
           ? position.latitude.toString()
-          : state.location?.latitude.toString() ?? "",
+          : state.location?.latitude.toString() ?? "0",
       lng: position != null
           ? position.longitude.toString()
-          : state.location?.longitude.toString() ?? "",
+          : state.location?.longitude.toString() ?? "0",
       speed: position != null
           ? position.speed.toString()
-          : state.location?.speed.toString() ?? "",
+          : state.location?.speed.toString() ?? "0",
     );
 
     final result = await _driverRepository.postAnalystTracking(request);
@@ -121,55 +125,64 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> logout() async {
-    await postTracking("LOGOUT");
-    await _authRepository.logout();
+    await postTracking("LOGOUT")
+        .whenComplete(() async => await _authRepository.logout());
   }
 
-  Future<Position> _getCurrentPosition(String action) async {
+  Future<Position?> _getCurrentPosition(String action) async {
     bool serviceEnabled;
     PermissionStatus permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    print("Service Enabled: $serviceEnabled");
 
-    permission = await Permission.location.status;
-    print("Permission Status: ${permission.name}");
-    if (!permission.isGranted) {
-      permission = await Permission.location.request();
-      if (!permission.isGranted) {
-        emit(
-          state.copyWith(
-            permissionStatus: Tuple2(Permission.location, permission),
-            isPermissionGranted: false,
-            lastAction: action,
-            isDialogOpen: false,
-          ),
-        );
-      }
-    }
-
-    if (permission.isPermanentlyDenied) {
+    permission = await Permission.locationAlways.status;
+    if (!permission.isGranted && !serviceEnabled) {
       emit(
         state.copyWith(
-          permissionStatus: Tuple2(Permission.location, permission),
+          permissionStatus: Tuple2(Permission.locationAlways, permission),
           isPermissionGranted: false,
           lastAction: action,
-          isDialogOpen: false,
+          showPermissionDialog: true,
         ),
       );
-    }
-
-    if (!serviceEnabled) {
+      updatePermissionDialogState();
+      return null;
+    } else if (!serviceEnabled) {
       emit(
         state.copyWith(
           isLocationServiceEnabled: false,
           lastAction: action,
-          isDialogOpen: false,
+          showLocationServiceDialog: true,
         ),
       );
+      updateLocationServiceDialogState();
+      return null;
+    } else {
+      return await Geolocator.getCurrentPosition();
     }
+  }
 
-    return await Geolocator.getCurrentPosition();
+  Future<void> checkPermissionAndLocationService() async {
+    final serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final permissionGranted = await Permission.locationAlways.status;
+
+    if (!serviceEnabled) {
+      emit(
+        state.copyWith(
+          showLocationServiceDialog: true,
+          isLocationServiceEnabled: serviceEnabled,
+        ),
+      );
+      updateLocationServiceDialogState();
+    } else if (!permissionGranted.isGranted) {
+      emit(
+        state.copyWith(
+          showPermissionDialog: true,
+          isPermissionGranted: permissionGranted.isGranted,
+        ),
+      );
+      updatePermissionDialogState();
+    }
   }
 
   Future<void> setupBackgroundLocation() async {
@@ -217,8 +230,12 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void updateDialogState() {
-    emit(state.copyWith(isDialogOpen: !state.isDialogOpen));
+  void updatePermissionDialogState() {
+    emit(state.copyWith(showPermissionDialog: false));
+  }
+
+  void updateLocationServiceDialogState() {
+    emit(state.copyWith(showLocationServiceDialog: false));
   }
 
   void resetErrorMessage() => emit(

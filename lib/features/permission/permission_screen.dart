@@ -36,6 +36,8 @@ class _PermissionScreenState extends State<PermissionScreen>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
 
+    debugPrint("Lifecycle: ${state.name}");
+
     if (state == AppLifecycleState.resumed) {
       context.read<PermissionCubit>().checkPermission();
     }
@@ -88,14 +90,12 @@ class _PermissionScreenState extends State<PermissionScreen>
                 ),
               ),
               KElevatedButton(
-                label: state.isPermissionPermanentlyDenied &&
-                        !state.isPermissionAlwaysGranted
+                label: state.isPermissionPermanentlyDenied
                     ? context.localization.openSetting
                     : context.localization.allow,
                 mainAxisSize: MainAxisSize.max,
                 onPressed: () async {
-                  if (!state.isPermissionPermanentlyDenied &&
-                      !state.isPermissionAlwaysGranted) {
+                  if (state.isPermissionPermanentlyDenied) {
                     openAppSettings();
                   } else {
                     context.read<PermissionCubit>().requestPermission();
@@ -114,6 +114,7 @@ class _PermissionScreenState extends State<PermissionScreen>
         ),
       ),
       listener: (context, state) {
+        debugPrint("State: ${state.isPermissionGranted}");
         if (state.isPermissionGranted) {
           context.go(HomeScreen.path);
         }

@@ -14,7 +14,8 @@ class HomeState extends Equatable {
     required this.isDisallow,
     required this.isLocationServiceEnabled,
     this.lastAction,
-    required this.isDialogOpen,
+    required this.showLocationServiceDialog,
+    required this.showPermissionDialog,
   });
 
   const HomeState.init()
@@ -30,7 +31,8 @@ class HomeState extends Equatable {
         isDisallow = false,
         isLocationServiceEnabled = false,
         lastAction = null,
-        isDialogOpen = true;
+        showLocationServiceDialog = false,
+        showPermissionDialog = false;
 
   final int index;
   final PageState state;
@@ -44,7 +46,8 @@ class HomeState extends Equatable {
   final bool isDisallow;
   final bool isLocationServiceEnabled;
   final String? lastAction;
-  final bool isDialogOpen;
+  final bool showLocationServiceDialog;
+  final bool showPermissionDialog;
 
   HomeState copyWith({
     int? index,
@@ -59,24 +62,27 @@ class HomeState extends Equatable {
     bool? isDisallow,
     bool? isLocationServiceEnabled,
     String? lastAction,
-    bool? isDialogOpen,
+    bool? showLocationServiceDialog,
+    bool? showPermissionDialog,
   }) =>
       HomeState(
-        index: index ?? this.index,
-        state: state ?? this.state,
-        hasCheckIn: hasCheckIn ?? this.hasCheckIn,
-        homeError: homeError ?? this.homeError,
-        errorMessage: errorMessage ?? this.errorMessage,
-        userId: userId ?? this.userId,
-        permissionStatus: permissionStatus ?? this.permissionStatus,
-        isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
-        location: location ?? this.location,
-        isDisallow: isDisallow ?? this.isDisallow,
-        isLocationServiceEnabled:
-            isLocationServiceEnabled ?? this.isLocationServiceEnabled,
-        lastAction: lastAction ?? this.lastAction,
-        isDialogOpen: isDialogOpen ?? this.isDialogOpen,
-      );
+          index: index ?? this.index,
+          state: state ?? this.state,
+          hasCheckIn: hasCheckIn ?? this.hasCheckIn,
+          homeError: homeError ?? this.homeError,
+          errorMessage: errorMessage ?? this.errorMessage,
+          userId: userId ?? this.userId,
+          permissionStatus: permissionStatus ?? this.permissionStatus,
+          isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
+          location: location ?? this.location,
+          isDisallow: isDisallow ?? this.isDisallow,
+          isLocationServiceEnabled:
+              isLocationServiceEnabled ?? this.isLocationServiceEnabled,
+          lastAction: lastAction ?? this.lastAction,
+          showLocationServiceDialog:
+              showLocationServiceDialog ?? this.showLocationServiceDialog,
+          showPermissionDialog:
+              showPermissionDialog ?? this.showPermissionDialog);
 
   @override
   List<Object?> get props => <Object?>[
@@ -92,6 +98,6 @@ class HomeState extends Equatable {
         isDisallow,
         isLocationServiceEnabled,
         lastAction,
-        isDialogOpen,
+        showLocationServiceDialog,
       ];
 }

@@ -7,7 +7,9 @@ import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -21,6 +23,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool hideScreen = false;
+  bool isPermissionDialogShown = false;
+  bool isLocationServiceDialogShown = false;
 
   final List<Widget> _child = [
     const CheckInScreen(),
@@ -148,18 +152,13 @@ class _HomeScreenState extends State<HomeScreen> {
       BackgroundLocation.startLocationService(distanceFilter: 10);
     }
 
-    if ((!state.isLocationServiceEnabled || !state.isPermissionGranted) &&
-        !state.isDialogOpen) {
-      context.read<HomeCubit>().updateDialogState();
-      final bool? isEnabled = await showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const LocationServiceDialog(),
-      );
+    if (!state.isPermissionGranted && !isPermissionDialogShown) {
+      await requestPermission(state);
+    }
 
-      if (isEnabled ?? false) {
-        doLastAction(state.lastAction ?? "");
-      }
+    if ((!state.isLocationServiceEnabled && state.isPermissionGranted) &&
+        !isLocationServiceDialogShown) {
+      await requestLocationService(state);
     }
   }
 
@@ -181,5 +180,49 @@ class _HomeScreenState extends State<HomeScreen> {
     await context.read<HomeCubit>().logout().whenComplete(
           () => context.go(LoginScreen.path),
         );
+  }
+
+  Future<void> requestPermission(HomeState state) async {
+    setState(() {
+      isPermissionDialogShown = !isPermissionDialogShown;
+    });
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PermissionDialog(
+        onCloseTap: () {
+          context.pop();
+          setState(() {
+            isPermissionDialogShown = !isPermissionDialogShown;
+          });
+        },
+        onConfirmTap: () {
+          context.pop();
+          Permission.locationAlways.request();
+        },
+      ),
+    );
+  }
+
+  Future<void> requestLocationService(HomeState state) async {
+    setState(() {
+      isLocationServiceDialogShown = !isLocationServiceDialogShown;
+    });
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => LocationServiceDialog(
+        onCloseTap: () {
+          context.pop();
+          setState(() {
+            isLocationServiceDialogShown = !isLocationServiceDialogShown;
+          });
+        },
+        onConfirmTap: () {
+          context.pop();
+          Geolocator.openLocationSettings();
+        },
+      ),
+    );
   }
 }

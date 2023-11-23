@@ -52,11 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context.scaffoldMessage
                 .showSnackBar(_errorSnackBar(state.errorMessage!));
           } else if (state.state == PageState.success) {
-            if (state.isLocationPermissionGranted) {
-              context.go(HomeScreen.path);
-            } else {
-              context.go(PermissionScreen.path);
-            }
+            context.go(HomeScreen.path);
           }
         },
         builder: (context, state) => Stack(
