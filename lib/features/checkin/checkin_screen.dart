@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:background_location/background_location.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
@@ -260,9 +259,6 @@ class _CheckInScreenState extends State<CheckInScreen> {
           () => context.read<HomeCubit>().postTracking(
                 !checkInCubit.state.hasCheckIn ? "CHECK-IN" : "CHECK-OUT",
               ),
-        )
-        .whenComplete(
-          () => context.read<HomeCubit>().setupBackgroundLocation(),
         );
   }
 }

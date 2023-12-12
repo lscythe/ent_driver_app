@@ -55,6 +55,9 @@ class RemoteDataSource {
   Future<Result<EmptyResponse>> postAnalystTracking(TrackingRequest request) =>
       _getResultWithSingleObject(_api.postAnalystTracking(request));
 
+  Future<Result<EmptyResponse>> postForgotPassword(ForgotPasswordRequest request) =>
+      _getResultWithSingleObject(_api.postForgotPassword(request));
+
   Future<Result<T>> _getResultWithSingleObject<T>(
     Future<BaseResponse<T>> apiCall,
   ) async {

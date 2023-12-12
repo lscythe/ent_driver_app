@@ -68,4 +68,9 @@ abstract class ApiService {
   Future<BaseResponse<EmptyResponse>> postAnalystTracking(
     @Body() TrackingRequest request,
   );
+
+  @POST("${ApiConstants.userPath}Tracking")
+  Future<BaseResponse<EmptyResponse>> postForgotPassword(
+    @Body() ForgotPasswordRequest request,
+  );
 }

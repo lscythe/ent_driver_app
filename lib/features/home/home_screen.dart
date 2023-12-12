@@ -1,4 +1,3 @@
-import 'package:background_location/background_location.dart';
 import 'package:driver/app/themes/themes.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/extensions/extensions.dart';
@@ -22,7 +21,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool hideScreen = false;
+  bool hasCheckIn = false;
   bool isPermissionDialogShown = false;
   bool isLocationServiceDialogShown = false;
 
@@ -46,15 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
       listeners: [
         BlocListener<HomeCubit, HomeState>(listener: _homeListener),
         BlocListener<CheckInCubit, CheckInState>(listener: _checkInListener),
-        BlocListener<HomeCubit, HomeState>(
-          listener: (context, state) {
-            if (state.location != null) {
-              context.read<HomeCubit>().postTracking("LOCATION");
-            }
-          },
-          listenWhen: (previous, current) =>
-              previous.location != current.location,
-        ),
       ],
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) => Stack(
@@ -63,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: KColors.antiFlashGray,
               appBar: _appBar(context),
               body: _buildChild(),
-              bottomNavigationBar: const KBottomNavigationBar(),
+              bottomNavigationBar: _buildBottomNavBar(),
             ),
             if (state.state == PageState.loading)
               const LoadingIndicator()
@@ -96,7 +86,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
 
             if (isLogout ?? false) {
-              BackgroundLocation.stopLocationService();
               _onLogout();
             }
           },
@@ -132,6 +121,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildBottomNavBar() => BlocBuilder<HomeCubit, HomeState>(
+      builder: (context, state) => Material(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(KRadius.r32.size),
+              topRight: Radius.circular(KRadius.r32.size),
+            ),
+            child: BottomNavigationBar(
+              items: [
+                BottomNavigationBarItem(
+                  icon: const Icon(AppIcons.checkIn),
+                  label: context.localization.checkIn,
+                  tooltip: context.localization.checkIn,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(AppIcons.schedule),
+                  label: context.localization.schedule,
+                  tooltip: context.localization.schedule,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    AppIcons.trip,
+                    color: hasCheckIn
+                        ? state.index != 2
+                            ? context.colorScheme.secondary
+                            : context.colorScheme.onPrimary
+                        : KColors.davyGray,
+                  ),
+                  label: context.localization.trip,
+                  tooltip: context.localization.trip,
+                ),
+                BottomNavigationBarItem(
+                  icon: const Icon(AppIcons.message),
+                  label: context.localization.message,
+                  tooltip: context.localization.message,
+                ),
+              ],
+              currentIndex: state.index,
+              onTap: context.read<HomeCubit>().onNavigationChanged,
+              showSelectedLabels: false,
+              showUnselectedLabels: false,
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: context.colorScheme.primary,
+              unselectedItemColor: context.colorScheme.secondary,
+              selectedItemColor: context.colorScheme.onPrimary,
+            ),
+          ),);
+
   Future<void> _homeListener(BuildContext context, HomeState state) async {
     final message = switch (state.homeError) {
       HomeError.notCheckIn => context.localization.notCheckIn,
@@ -148,10 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
       context.read<HomeCubit>().resetErrorMessage();
     }
 
-    if (state.hasCheckIn) {
-      BackgroundLocation.startLocationService(distanceFilter: 10);
-    }
-
     if (!state.isPermissionGranted && !isPermissionDialogShown) {
       await requestPermission(state);
     }
@@ -160,6 +193,10 @@ class _HomeScreenState extends State<HomeScreen> {
         !isLocationServiceDialogShown) {
       await requestLocationService(state);
     }
+
+    setState(() {
+      hasCheckIn = state.hasCheckIn;
+    });
   }
 
   void doLastAction(String name) {

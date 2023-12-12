@@ -38,7 +38,7 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
       if (result is Success) {
-        emit(state.copyWith(state: PageState.success));
+        emit(state.copyWith(state: PageState.success, isForgotPassword: false));
       } else {
         emit(
           state.copyWith(
@@ -49,4 +49,33 @@ class LoginCubit extends Cubit<LoginState> {
       }
     }
   }
+
+  Future<void> forgotPassword(String email) async {
+    emit(state.copyWith(state: PageState.loading));
+    final request = ForgotPasswordRequest(email: email);
+
+    final result = await _authRepository.postForgotPassword(request);
+
+    if (result is Success) {
+      emit(
+        state.copyWith(
+          state: PageState.success,
+          isForgotPassword: true,
+          message: "We have send password reset request to your email.",
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          state: PageState.failure,
+          errorMessage: result.message,
+        ),
+      );
+    }
+  }
+
+  void resetMessage() {
+    emit(state.copyWith());
+  }
+
 }

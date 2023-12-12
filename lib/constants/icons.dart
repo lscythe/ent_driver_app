@@ -11,4 +11,5 @@ class AppIcons {
   static const IconData trip = Icons.local_shipping;
   static const IconData message = Icons.mail_outline_rounded;
   static const IconData chevronRight = Icons.chevron_right_rounded;
+  static const IconData email = Icons.mail_outline;
 }

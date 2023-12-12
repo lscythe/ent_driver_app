@@ -21,10 +21,12 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final FocusNode _usernameNode = FocusNode();
   final FocusNode _passwordNode = FocusNode();
 
   bool _obscureText = true;
+  bool _isForgotPassword = false;
 
   @override
   void initState() {
@@ -36,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     _usernameController.dispose();
     _passwordController.dispose();
+    _emailController.dispose();
     _usernameNode.dispose();
     _passwordNode.dispose();
 
@@ -51,8 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state.state == PageState.failure && state.errorMessage != null) {
             context.scaffoldMessage
                 .showSnackBar(_errorSnackBar(state.errorMessage!));
-          } else if (state.state == PageState.success) {
+            context.read<LoginCubit>().resetMessage();
+          }
+
+          if (state.state == PageState.success && !state.isForgotPassword) {
             context.go(HomeScreen.path);
+          }
+
+          if (state.message != null) {
+            context.scaffoldMessage
+                .showSnackBar(_errorSnackBar(state.message!));
+            context.read<LoginCubit>().resetMessage();
           }
         },
         builder: (context, state) => Stack(
@@ -69,7 +81,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     Spaces.h32.size,
                     Center(
                       child: Text(
-                        context.localization.loginTitle,
+                        _isForgotPassword
+                            ? context.localization.forgotPassword
+                            : context.localization.loginTitle,
                         textAlign: TextAlign.start,
                         style: context.textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
@@ -77,42 +91,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     Spaces.h16.size,
-                    KTextField(
-                      hint: context.localization.usernameHint,
-                      borderRadius: KRadius.r32.size,
-                      prefixIcon: const Icon(AppIcons.username),
-                      focusNode: _usernameNode,
-                      onEditingComplete: () => _usernameNode.nextFocus(),
-                      textInputAction: TextInputAction.next,
-                      onChanged: context.read<LoginCubit>().onUsernameChanged,
+                    Visibility(
+                      visible: !_isForgotPassword,
+                      child: _loginForm(),
                     ),
-                    Spaces.h16.size,
-                    KTextField(
-                      hint: context.localization.passwordHint,
-                      borderRadius: KRadius.r32.size,
-                      prefixIcon: const Icon(AppIcons.password),
-                      obscureText: _obscureText,
-                      suffixIcon: IconButton(
-                        onPressed: _changePasswordVisibility,
-                        icon: Icon(
-                          _obscureText ? AppIcons.hide : AppIcons.show,
-                        ),
-                      ),
-                      focusNode: _passwordNode,
-                      onChanged: context.read<LoginCubit>().onPasswordChanged,
-                    ),
-                    Spaces.h16.size,
-                    KElevatedButton(
-                      label: context.localization.loginBtn,
-                      mainAxisSize: MainAxisSize.max,
-                      onPressed: () {
-                        context.hideKeyboard();
-                        context.read<LoginCubit>().login();
-                      },
-                      suffixIcon: Icon(
-                        AppIcons.chevronRight,
-                        color: context.colorScheme.onPrimary,
-                      ),
+                    Visibility(
+                      visible: _isForgotPassword,
+                      child: _forgotPasswordForm(),
                     ),
                   ],
                 ),
@@ -127,6 +112,106 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  Widget _loginForm() => Column(
+        children: [
+          KTextField(
+            hint: context.localization.usernameHint,
+            borderRadius: KRadius.r32.size,
+            prefixIcon: const Icon(AppIcons.username),
+            focusNode: _usernameNode,
+            onEditingComplete: () => _usernameNode.nextFocus(),
+            textInputAction: TextInputAction.next,
+            onChanged: context.read<LoginCubit>().onUsernameChanged,
+          ),
+          Spaces.h16.size,
+          KTextField(
+            hint: context.localization.passwordHint,
+            borderRadius: KRadius.r32.size,
+            prefixIcon: const Icon(AppIcons.password),
+            obscureText: _obscureText,
+            suffixIcon: IconButton(
+              onPressed: _changePasswordVisibility,
+              icon: Icon(
+                _obscureText ? AppIcons.hide : AppIcons.show,
+              ),
+            ),
+            focusNode: _passwordNode,
+            onChanged: context.read<LoginCubit>().onPasswordChanged,
+          ),
+          Spaces.h16.size,
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _isForgotPassword = !_isForgotPassword;
+                });
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  context.localization.forgotPassword,
+                  style: context.textTheme.bodyLarge
+                      ?.copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ),
+          Spaces.h16.size,
+          KElevatedButton(
+            label: context.localization.loginBtn,
+            mainAxisSize: MainAxisSize.max,
+            onPressed: () {
+              context.hideKeyboard();
+              context.read<LoginCubit>().login();
+            },
+            suffixIcon: Icon(
+              AppIcons.chevronRight,
+              color: context.colorScheme.onPrimary,
+            ),
+          ),
+        ],
+      );
+
+  Widget _forgotPasswordForm() => Column(
+    children: [
+      KTextField(
+        hint: "Email address",
+        borderRadius: KRadius.r32.size,
+        prefixIcon: const Icon(AppIcons.email),
+        textInputAction: TextInputAction.next,
+        controller: _emailController,
+      ),
+      Spaces.h16.size,
+      KElevatedButton(
+        label: "Reset Password",
+        mainAxisSize: MainAxisSize.max,
+        onPressed: () {
+          context.hideKeyboard();
+          context.read<LoginCubit>().forgotPassword(_emailController.text);
+        },
+      ),
+      Spaces.h16.size,
+      Align(
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _isForgotPassword = !_isForgotPassword;
+            });
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Back to Login",
+              style: context.textTheme.bodyLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ),
+    ],
+  );
 
   void _changePasswordVisibility() {
     setState(() {

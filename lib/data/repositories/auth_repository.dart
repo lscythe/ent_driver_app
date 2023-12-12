@@ -27,6 +27,10 @@ class AuthRepository {
     return result;
   }
 
+  Future<Result<EmptyResponse>> postForgotPassword(
+          ForgotPasswordRequest request) =>
+      _remoteDataSource.postForgotPassword(request);
+
   Future<DriverResponse?> getCurrentUser() async => _localDataSource.getUser();
 
   Future<String> accessToken() async => _localDataSource.getAccessToken();
@@ -37,5 +41,6 @@ class AuthRepository {
 
   bool isAfterLogin() => _localDataSource.isAfterLogin();
 
-  Future<void> setIsAfterLogin(bool value) async => _localDataSource.setIsAfterLogin(value);
+  Future<void> setIsAfterLogin(bool value) async =>
+      _localDataSource.setIsAfterLogin(value);
 }

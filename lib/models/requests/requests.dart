@@ -1,5 +1,6 @@
 export 'cico/cico_request.dart';
 export 'fcm_token/fcm_token_request.dart';
+export 'forgot_password/forgot_password_request.dart';
 export 'leave/leave_request.dart';
 export 'list_trip_form/list_trip_form_request.dart';
 export 'login/login_request.dart';

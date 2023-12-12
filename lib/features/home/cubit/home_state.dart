@@ -10,7 +10,6 @@ class HomeState extends Equatable {
     required this.userId,
     required this.permissionStatus,
     required this.isPermissionGranted,
-    this.location,
     required this.isDisallow,
     required this.isLocationServiceEnabled,
     this.lastAction,
@@ -27,7 +26,6 @@ class HomeState extends Equatable {
         userId = 0,
         permissionStatus = const Tuple2(null, PermissionStatus.denied),
         isPermissionGranted = true,
-        location = null,
         isDisallow = false,
         isLocationServiceEnabled = false,
         lastAction = null,
@@ -42,7 +40,6 @@ class HomeState extends Equatable {
   final int userId;
   final Tuple2<Permission?, PermissionStatus> permissionStatus;
   final bool isPermissionGranted;
-  final Location? location;
   final bool isDisallow;
   final bool isLocationServiceEnabled;
   final String? lastAction;
@@ -58,7 +55,6 @@ class HomeState extends Equatable {
     int? userId,
     Tuple2<Permission?, PermissionStatus>? permissionStatus,
     bool? isPermissionGranted,
-    Location? location,
     bool? isDisallow,
     bool? isLocationServiceEnabled,
     String? lastAction,
@@ -74,7 +70,6 @@ class HomeState extends Equatable {
           userId: userId ?? this.userId,
           permissionStatus: permissionStatus ?? this.permissionStatus,
           isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
-          location: location ?? this.location,
           isDisallow: isDisallow ?? this.isDisallow,
           isLocationServiceEnabled:
               isLocationServiceEnabled ?? this.isLocationServiceEnabled,
@@ -94,7 +89,6 @@ class HomeState extends Equatable {
         userId,
         permissionStatus,
         isPermissionGranted,
-        location,
         isDisallow,
         isLocationServiceEnabled,
         lastAction,

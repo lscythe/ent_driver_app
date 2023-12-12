@@ -6,6 +6,7 @@ class ApiConstants {
   static const String leavePath = "$apiPath/Leave/";
   static const String transportLocationPath = "$apiPath/TransportLocation/";
   static const String analystPath = "$apiPath/Analyst/";
+  static const String userPath = "$apiPath/user/";
 
   static const String contentType = "application/json";
   static const String authorizationHeader = "Authorization";

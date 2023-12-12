@@ -7,6 +7,8 @@ class LoginState extends Equatable {
     this.password = "",
     this.errorMessage,
     required this.isLocationPermissionGranted,
+    required this.isForgotPassword,
+    this.message,
   });
 
   const LoginState.init()
@@ -14,13 +16,17 @@ class LoginState extends Equatable {
         username = "",
         password = "",
         errorMessage = "",
-        isLocationPermissionGranted = false;
+        isLocationPermissionGranted = false,
+        isForgotPassword = false,
+        message = "";
 
   final PageState state;
   final String username;
   final String password;
   final String? errorMessage;
   final bool isLocationPermissionGranted;
+  final bool isForgotPassword;
+  final String? message;
 
   LoginState copyWith({
     PageState? state,
@@ -28,6 +34,8 @@ class LoginState extends Equatable {
     String? password,
     String? errorMessage,
     bool? isLocationPermissionGranted,
+    bool? isForgotPassword,
+    String? message,
   }) {
     return LoginState(
       state: state ?? this.state,
@@ -36,6 +44,8 @@ class LoginState extends Equatable {
       errorMessage: errorMessage ?? this.errorMessage,
       isLocationPermissionGranted:
           isLocationPermissionGranted ?? this.isLocationPermissionGranted,
+      isForgotPassword: isForgotPassword ?? this.isForgotPassword,
+      message: message ?? this.message,
     );
   }
 
@@ -46,5 +56,7 @@ class LoginState extends Equatable {
         password,
         errorMessage,
         isLocationPermissionGranted,
+        isForgotPassword,
+        message
       ];
 }

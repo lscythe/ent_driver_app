@@ -220,6 +220,9 @@ class _TripScreenState extends State<TripScreen> {
                       await context.push<bool>(TripFormDetail.path);
 
                   if (refresh ?? false) {
+                    setState(() {
+                      _selectedDate = DateTime.now();
+                    });
                     _refreshController.requestRefresh();
                   }
                 },

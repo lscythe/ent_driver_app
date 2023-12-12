@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:background_location/background_location.dart';
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:driver/constants/constants.dart';
@@ -52,27 +51,14 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> postTracking(String name) async {
     emit(state.copyWith(state: PageState.loading));
-    Position? position;
-
-    if (state.location == null ||
-        (name != "LOGOUT" &&
-            state.isLocationServiceEnabled &&
-            state.isPermissionGranted)) {
-      position = await _getCurrentPosition(name);
-    }
+    final position = await _getCurrentPosition(name);
 
     final request = TrackingRequest(
       actionType: name,
       driverId: state.userId,
-      lat: position != null
-          ? position.latitude.toString()
-          : state.location?.latitude.toString() ?? "0",
-      lng: position != null
-          ? position.longitude.toString()
-          : state.location?.longitude.toString() ?? "0",
-      speed: position != null
-          ? position.speed.toString()
-          : state.location?.speed.toString() ?? "0",
+      lat: position?.latitude.toString() ?? "0",
+      lng: position?.longitude.toString() ?? "0",
+      speed: position?.speed.toString(),
     );
 
     final result = await _driverRepository.postAnalystTracking(request);
@@ -123,6 +109,7 @@ class HomeCubit extends Cubit<HomeState> {
       );
     }
   }
+
 
   Future<void> logout() async {
     await postTracking("LOGOUT")
@@ -183,23 +170,6 @@ class HomeCubit extends Cubit<HomeState> {
       );
       updatePermissionDialogState();
     }
-  }
-
-  Future<void> setupBackgroundLocation() async {
-    await BackgroundLocation.setAndroidNotification(
-      title: "Location Tracker is running",
-      message: "Background location in progress",
-      icon: "@mipmap/ic_launcher_foreground",
-    );
-
-    await BackgroundLocation.setAndroidConfiguration(600000);
-    if (state.hasCheckIn) {
-      await BackgroundLocation.startLocationService(distanceFilter: 10);
-    }
-    BackgroundLocation.getLocationUpdates((location) async {
-      emit(state.copyWith(location: location));
-      await postTracking("LOCATION");
-    });
   }
 
   void onPermissionDisallow() {
