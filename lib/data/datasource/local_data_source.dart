@@ -196,4 +196,21 @@ class LocalDataSource {
             filteredDate.add(const Duration(hours: 24)),
           )
           .findAll();
+
+  Future<void> storeOfflineData<T>(T data) async {
+    final offlineData = OfflineData()
+      ..timestamp = DateTime.now()
+      ..setData(data);
+
+    await _isar.writeTxn(() async {
+      await _isar.offlineDatas.put(offlineData);
+    });
+  }
+
+  Future<List<OfflineData>> getOfflineData() async =>
+      _isar.offlineDatas.where().findAll();
+
+  Future<void> deleteOfflineData(int id) async {
+    await _isar.writeTxn(() async => await _isar.offlineDatas.delete(id));
+  }
 }

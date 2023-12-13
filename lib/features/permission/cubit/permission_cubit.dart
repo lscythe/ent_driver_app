@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 part 'permission_state.dart';
@@ -13,7 +12,6 @@ class PermissionCubit extends Cubit<PermissionState> {
     final status = await Permission.location.request();
 
     if (!status.isGranted) {
-
       if (status.isDenied) {
         emit(state.copyWith(isPermissionGranted: false));
         return;

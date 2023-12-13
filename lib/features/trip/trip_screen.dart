@@ -223,6 +223,7 @@ class _TripScreenState extends State<TripScreen> {
                     setState(() {
                       _selectedDate = DateTime.now();
                     });
+                    postTracking();
                     _refreshController.requestRefresh();
                   }
                 },
@@ -241,8 +242,11 @@ class _TripScreenState extends State<TripScreen> {
         ],
       ),
       listener: (context, state) {
-        if (state.state != PageState.loading) {
+        if (state.state == PageState.success) {
           _refreshController.refreshCompleted();
+        }
+        if (state.state == PageState.failure) {
+          _refreshController.refreshFailed();
         }
         if (state.errorMessage?.isNotEmpty ?? false) {
           context.scaffoldMessage
@@ -293,6 +297,9 @@ class _TripScreenState extends State<TripScreen> {
 
   void _getNewDataByDate() =>
       context.read<TripCubit>().postListTrip(date: _selectedDate);
+
+  void postTracking() =>
+      context.read<HomeCubit>().postTracking("ADD_TRIP_FORM");
 
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

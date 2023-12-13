@@ -104,7 +104,7 @@
     }
   },
   "locationPermissionTitle": "Location Access",
-  "locationPermissionDesc": "Smart Driver collects location data to enable identification location even when the app is closed or not in use.",
+  "locationPermissionDesc": "Smart Driver collects location data to enable identification location for tracking purpose.",
   "allow": "Allow",
   "notNow": "Skip (app would not work properly)",
   "openSetting": "Open Settings",

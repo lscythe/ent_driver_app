@@ -8,6 +8,8 @@ export 'radius.dart';
 export 'spaces.dart';
 
 const appName = "Smart Driver";
+const noInternetConnection = "No internet connection. The request has been saved for later processing.";
+const noInternetConnectionProcessLater = "No internet connection. The offline data will be processed later.";
 
 enum Status { success, loading, failure }
 

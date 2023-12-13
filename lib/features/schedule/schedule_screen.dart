@@ -67,12 +67,21 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               Container(),
           ],
         ),
+        onRefresh: () =>
+            context.read<ScheduleCubit>().postSchedule(date: _focusedDay.value),
       ),
       listener: (context, state) {
         if (state.errorMessage?.isNotEmpty ?? false) {
           context.scaffoldMessage
               .showSnackBar(_errorSnackBar(state.errorMessage!));
           context.read<ScheduleCubit>().resetErrorMessage();
+        }
+        if (state.state == PageState.success) {
+          _refreshController.refreshCompleted();
+        }
+
+        if (state.state == PageState.failure) {
+          _refreshController.refreshFailed();
         }
       },
     );

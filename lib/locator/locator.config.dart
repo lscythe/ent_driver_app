@@ -44,7 +44,10 @@ extension GetItInjectableX on _i1.GetIt {
     );
     final initialModule = _$InitialModule();
     gh.factory<_i3.ApiService>(() => initialModule.apiService);
-    gh.factory<_i4.Dio>(() => initialModule.client);
+    await gh.factoryAsync<_i4.Dio>(
+      () => initialModule.dio(),
+      preResolve: true,
+    );
     gh.factory<_i5.FlutterSecureStorage>(() => initialModule.secureStorage);
     await gh.factoryAsync<_i6.Isar>(
       () => initialModule.isar(),

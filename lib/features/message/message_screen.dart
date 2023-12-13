@@ -61,47 +61,11 @@ class _MessageScreenState extends State<MessageScreen>
     return BlocConsumer<MessageCubit, MessageState>(
       builder: (context, state) => Column(
         children: [
-          ColoredBox(
-            color: context.colorScheme.primary,
-            child: TabBar(
-              labelStyle: context.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-              labelColor: context.colorScheme.onSecondary,
-              unselectedLabelStyle: context.textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
-              unselectedLabelColor:
-                  context.colorScheme.onPrimary.withOpacity(0.6),
-              indicator: BoxDecoration(
-                borderRadius: _getBorderRadiusByIndex(),
-                color: context.colorScheme.secondary,
-              ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorWeight: 0.0,
-              tabs: [
-                KTab(
-                  label: context.localization.allMessage,
-                  messageTotal: state.unreadAllMessageTotal,
-                  isSelected: _currentIndex == 0,
-                ),
-                KTab(
-                  label: context.localization.alertMessage,
-                  messageTotal: state.unreadAlertMessageTotal,
-                  isSelected: _currentIndex == 1,
-                ),
-                KTab(
-                  label: context.localization.requestMessage,
-                  messageTotal: state.unreadRequestMessageTotal,
-                  isSelected: _currentIndex == 2,
-                ),
-                KTab(
-                  label: context.localization.broadcastMessage,
-                  messageTotal: state.unreadBroadcastMessageTotal,
-                  isSelected: _currentIndex == 3,
-                ),
-              ],
-              controller: _tabController,
+          PreferredSize(
+            preferredSize: _tabBar(state).preferredSize,
+            child: ColoredBox(
+              color: context.colorScheme.primary,
+              child: _tabBar(state),
             ),
           ),
           Expanded(
@@ -114,30 +78,55 @@ class _MessageScreenState extends State<MessageScreen>
       ),
       listener: (context, state) {
         if (state.errorMessage?.isNotEmpty ?? false) {
-          context.scaffoldMessage.showSnackBar(_errorSnackBar(state.errorMessage!));
+          context.scaffoldMessage
+              .showSnackBar(_errorSnackBar(state.errorMessage!));
           context.read<MessageCubit>().resetErrorMessage();
         }
       },
     );
   }
 
-  BorderRadius _getBorderRadiusByIndex() {
-    if (_currentIndex == 0) {
-      return BorderRadius.only(
-        topRight: Radius.circular(KRadius.r10.size),
-        topLeft: Radius.circular(KRadius.r10.size),
-        bottomRight: Radius.circular(KRadius.r10.size),
+  TabBar _tabBar(MessageState state) => TabBar(
+        labelStyle: context.textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        labelColor: context.colorScheme.onSecondary,
+        unselectedLabelStyle: context.textTheme.labelLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelColor: context.colorScheme.onPrimary.withOpacity(0.6),
+        indicator: BoxDecoration(
+          borderRadius: BorderRadius.circular(KRadius.r10.size),
+          color: context.colorScheme.secondary,
+        ),
+        isScrollable: true,
+        indicatorSize: TabBarIndicatorSize.tab,
+        tabAlignment: TabAlignment.center,
+        indicatorWeight: 0,
+        tabs: [
+          KTab(
+            label: context.localization.allMessage,
+            messageTotal: state.unreadAllMessageTotal,
+            isSelected: _currentIndex == 0,
+          ),
+          KTab(
+            label: context.localization.alertMessage,
+            messageTotal: state.unreadAlertMessageTotal,
+            isSelected: _currentIndex == 1,
+          ),
+          KTab(
+            label: context.localization.requestMessage,
+            messageTotal: state.unreadRequestMessageTotal,
+            isSelected: _currentIndex == 2,
+          ),
+          KTab(
+            label: context.localization.broadcastMessage,
+            messageTotal: state.unreadBroadcastMessageTotal,
+            isSelected: _currentIndex == 3,
+          ),
+        ],
+        controller: _tabController,
       );
-    } else if (_currentIndex == 3) {
-      return BorderRadius.only(
-        topRight: Radius.circular(KRadius.r10.size),
-        topLeft: Radius.circular(KRadius.r10.size),
-        bottomLeft: Radius.circular(KRadius.r10.size),
-      );
-    } else {
-      return BorderRadius.circular(KRadius.r10.size);
-    }
-  }
 
   SnackBar _errorSnackBar(String message) => SnackBar(content: Text(message));
 }

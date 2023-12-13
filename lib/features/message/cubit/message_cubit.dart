@@ -15,13 +15,6 @@ class MessageCubit extends Cubit<MessageState> {
   final DriverRepository _driverRepository;
   final AuthRepository _authRepository;
 
-  Future<void> init() async {
-    const MessageState.init();
-    for (final type in MessageType.values) {
-      await postMessages(type);
-    }
-  }
-
   Future<void> getUnreadMessage() async {
     for (final type in MessageType.values) {
       final count = await _driverRepository.getUnreadMessageCount(type.name);

@@ -1,6 +1,6 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:driver/constants/constants.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/models/result.dart';
 
 class ConnectivityInterceptor extends InterceptorsWrapper {
@@ -9,14 +9,15 @@ class ConnectivityInterceptor extends InterceptorsWrapper {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    final connectivityResult = await Connectivity().checkConnectivity();
+    final isConnected = await connectivityService.isConnected();
 
-    if (connectivityResult == ConnectivityResult.none) {
+    if (!isConnected) {
       return handler.reject(
         DioException(
           requestOptions: options,
           response: Response(
             requestOptions: options,
+            statusCode: 800,
             data: Failure(
               code: ErrorCode.connection,
             ),

@@ -506,7 +506,7 @@ class _ApiService implements ApiService {
     )
             .compose(
               _dio.options,
-              '/api/user/Tracking',
+              '/api/user/forgetpassword',
               queryParameters: queryParameters,
               data: _data,
             )

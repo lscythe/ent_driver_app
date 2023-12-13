@@ -106,11 +106,13 @@ class DriverRepository {
       _remoteDataSource.postRequestLeave(request);
 
   Future<Result<EmptyResponse>> postDriverToken(
-          FcmTokenRequest request,) async =>
+    FcmTokenRequest request,
+  ) async =>
       _remoteDataSource.postDriverToken(request);
 
   Future<Result<EmptyResponse>> postAnalystTracking(
-          TrackingRequest request,) async =>
+    TrackingRequest request,
+  ) async =>
       _remoteDataSource.postAnalystTracking(request);
 
   Future<int> getUnreadMessageCount(String type) async =>
@@ -118,6 +120,15 @@ class DriverRepository {
 
   Future<void> updateMessageOnRead(int id) async =>
       _localDataSource.updateMessage(id);
+
+  Future<void> storeOfflineData<T>(T data) async =>
+      _localDataSource.storeOfflineData(data);
+
+  Future<List<OfflineData>> getOfflineData() async =>
+      _localDataSource.getOfflineData();
+
+  Future<void> deleteOfflineData(int id) async =>
+      _localDataSource.deleteOfflineData(id);
 
   bool haveCheckIn() => _localDataSource.getHaveCheckIn();
 

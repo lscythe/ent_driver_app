@@ -5,8 +5,8 @@ import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -36,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.light,
+        statusBarColor: Colors.white,
+      ),
+    );
     context.read<HomeCubit>().init();
   }
 
@@ -49,11 +55,20 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) => Stack(
           children: [
-            Scaffold(
-              backgroundColor: KColors.antiFlashGray,
-              appBar: _appBar(context),
-              body: _buildChild(),
-              bottomNavigationBar: _buildBottomNavBar(),
+            SafeArea(
+              child: Column(
+                children: [
+                  _buildConnectionState(),
+                  Expanded(
+                    child: Scaffold(
+                      backgroundColor: Colors.grey.shade300,
+                      appBar: _appBar(context),
+                      body: _buildChild(),
+                      bottomNavigationBar: _buildBottomNavBar(),
+                    ),
+                  ),
+                ],
+              ),
             ),
             if (state.state == PageState.loading)
               const LoadingIndicator()
@@ -102,9 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
       buildWhen: (previous, current) => previous.index != current.index,
       builder: (context, state) => Padding(
         padding: EdgeInsets.only(
-          left: KSize.s16.size,
-          right: KSize.s16.size,
-          top: KSize.s16.size,
+          left: KSize.s10.size,
+          right: KSize.s10.size,
+          top: KSize.s10.size,
         ),
         child: Container(
           decoration: BoxDecoration(
@@ -121,53 +136,91 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildConnectionState() =>
+      BlocConsumer<ConnectivityCubit, ConnectivityState>(
+        buildWhen: (previous, current) =>
+            previous.isConnected != current.isConnected,
+        builder: (context, state) => Material(
+          child: Visibility(
+            visible: !state.isConnected,
+            child: ColoredBox(
+              color: context.colorScheme.secondary,
+              child: Padding(
+                padding: Paddings.a8.size,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.cloud_off_rounded,
+                      color: context.colorScheme.onSecondary,
+                    ),
+                    Spaces.w12.size,
+                    Text(
+                      "No internet connection",
+                      style: context.textTheme.bodyMedium
+                          ?.copyWith(color: context.colorScheme.onSecondary),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        listener: (context, state) {
+          if (state.isConnected) {
+            context.read<HomeCubit>().processOfflineData();
+          }
+        },
+      );
+
   Widget _buildBottomNavBar() => BlocBuilder<HomeCubit, HomeState>(
-      builder: (context, state) => Material(
-            clipBehavior: Clip.antiAlias,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(KRadius.r32.size),
-              topRight: Radius.circular(KRadius.r32.size),
-            ),
-            child: BottomNavigationBar(
-              items: [
-                BottomNavigationBarItem(
-                  icon: const Icon(AppIcons.checkIn),
-                  label: context.localization.checkIn,
-                  tooltip: context.localization.checkIn,
+        builder: (context, state) => Material(
+          clipBehavior: Clip.antiAlias,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(KRadius.r32.size),
+            topRight: Radius.circular(KRadius.r32.size),
+          ),
+          child: BottomNavigationBar(
+            items: [
+              BottomNavigationBarItem(
+                icon: const Icon(AppIcons.checkIn),
+                label: context.localization.checkIn,
+                tooltip: context.localization.checkIn,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(AppIcons.schedule),
+                label: context.localization.schedule,
+                tooltip: context.localization.schedule,
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  AppIcons.trip,
+                  color: hasCheckIn
+                      ? state.index != 2
+                          ? context.colorScheme.secondary
+                          : context.colorScheme.onPrimary
+                      : KColors.davyGray,
                 ),
-                BottomNavigationBarItem(
-                  icon: const Icon(AppIcons.schedule),
-                  label: context.localization.schedule,
-                  tooltip: context.localization.schedule,
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(
-                    AppIcons.trip,
-                    color: hasCheckIn
-                        ? state.index != 2
-                            ? context.colorScheme.secondary
-                            : context.colorScheme.onPrimary
-                        : KColors.davyGray,
-                  ),
-                  label: context.localization.trip,
-                  tooltip: context.localization.trip,
-                ),
-                BottomNavigationBarItem(
-                  icon: const Icon(AppIcons.message),
-                  label: context.localization.message,
-                  tooltip: context.localization.message,
-                ),
-              ],
-              currentIndex: state.index,
-              onTap: context.read<HomeCubit>().onNavigationChanged,
-              showSelectedLabels: false,
-              showUnselectedLabels: false,
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: context.colorScheme.primary,
-              unselectedItemColor: context.colorScheme.secondary,
-              selectedItemColor: context.colorScheme.onPrimary,
-            ),
-          ),);
+                label: context.localization.trip,
+                tooltip: context.localization.trip,
+              ),
+              BottomNavigationBarItem(
+                icon: const Icon(AppIcons.message),
+                label: context.localization.message,
+                tooltip: context.localization.message,
+              ),
+            ],
+            currentIndex: state.index,
+            onTap: context.read<HomeCubit>().onNavigationChanged,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: context.colorScheme.primary,
+            unselectedItemColor: context.colorScheme.secondary,
+            selectedItemColor: context.colorScheme.onPrimary,
+          ),
+        ),
+      );
 
   Future<void> _homeListener(BuildContext context, HomeState state) async {
     final message = switch (state.homeError) {
@@ -187,11 +240,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (!state.isPermissionGranted && !isPermissionDialogShown) {
       await requestPermission(state);
-    }
-
-    if ((!state.isLocationServiceEnabled && state.isPermissionGranted) &&
-        !isLocationServiceDialogShown) {
-      await requestLocationService(state);
     }
 
     setState(() {
@@ -235,29 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         onConfirmTap: () {
           context.pop();
-          Permission.locationAlways.request();
-        },
-      ),
-    );
-  }
-
-  Future<void> requestLocationService(HomeState state) async {
-    setState(() {
-      isLocationServiceDialogShown = !isLocationServiceDialogShown;
-    });
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => LocationServiceDialog(
-        onCloseTap: () {
-          context.pop();
-          setState(() {
-            isLocationServiceDialogShown = !isLocationServiceDialogShown;
-          });
-        },
-        onConfirmTap: () {
-          context.pop();
-          Geolocator.openLocationSettings();
+          Permission.location.request();
         },
       ),
     );

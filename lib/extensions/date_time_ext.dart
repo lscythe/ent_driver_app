@@ -17,7 +17,7 @@ extension DateTimeExt on DateTime {
 
   String get ddMMMyyyy => DateFormat(KDateFormat.ddMMMyyyy.format).format(this);
 
-  bool get isNightShift => hour > 17 && hour < 8;
+  bool get isNightShift => hour > 17 || hour < 8;
 
   List<DateTime> daysInBetween({required DateTime endDate}) {
     final DateTime startDateUTC = DateTime.utc(year, month, day);

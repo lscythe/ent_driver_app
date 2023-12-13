@@ -1,9 +1,12 @@
+import 'package:isar/isar.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'schedule_response.g.dart';
 
+@collection
 @JsonSerializable()
 class ScheduleResponse {
+  Id? isarId;
   @JsonKey(name: "Id")
   final int? id;
   @JsonKey(name: "Name")

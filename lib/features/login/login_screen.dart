@@ -5,6 +5,7 @@ import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -31,6 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
+    );
     FirebaseMessaging.instance.requestPermission();
   }
 
@@ -61,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context.go(HomeScreen.path);
           }
 
-          if (state.message != null) {
+          if (state.message != null && state.isForgotPassword) {
             context.scaffoldMessage
                 .showSnackBar(_errorSnackBar(state.message!));
             context.read<LoginCubit>().resetMessage();

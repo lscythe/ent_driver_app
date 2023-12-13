@@ -62,22 +62,22 @@ class HomeState extends Equatable {
     bool? showPermissionDialog,
   }) =>
       HomeState(
-          index: index ?? this.index,
-          state: state ?? this.state,
-          hasCheckIn: hasCheckIn ?? this.hasCheckIn,
-          homeError: homeError ?? this.homeError,
-          errorMessage: errorMessage ?? this.errorMessage,
-          userId: userId ?? this.userId,
-          permissionStatus: permissionStatus ?? this.permissionStatus,
-          isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
-          isDisallow: isDisallow ?? this.isDisallow,
-          isLocationServiceEnabled:
-              isLocationServiceEnabled ?? this.isLocationServiceEnabled,
-          lastAction: lastAction ?? this.lastAction,
-          showLocationServiceDialog:
-              showLocationServiceDialog ?? this.showLocationServiceDialog,
-          showPermissionDialog:
-              showPermissionDialog ?? this.showPermissionDialog);
+        index: index ?? this.index,
+        state: state ?? this.state,
+        hasCheckIn: hasCheckIn ?? this.hasCheckIn,
+        homeError: homeError ?? this.homeError,
+        errorMessage: errorMessage ?? this.errorMessage,
+        userId: userId ?? this.userId,
+        permissionStatus: permissionStatus ?? this.permissionStatus,
+        isPermissionGranted: isPermissionGranted ?? this.isPermissionGranted,
+        isDisallow: isDisallow ?? this.isDisallow,
+        isLocationServiceEnabled:
+            isLocationServiceEnabled ?? this.isLocationServiceEnabled,
+        lastAction: lastAction ?? this.lastAction,
+        showLocationServiceDialog:
+            showLocationServiceDialog ?? this.showLocationServiceDialog,
+        showPermissionDialog: showPermissionDialog ?? this.showPermissionDialog,
+      );
 
   @override
   List<Object?> get props => <Object?>[

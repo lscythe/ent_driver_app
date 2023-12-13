@@ -650,10 +650,10 @@ class S {
     );
   }
 
-  /// `Smart Driver collects location data to enable identification location even when the app is closed or not in use.`
+  /// `Smart Driver collects location data to enable identification location for tracking purpose.`
   String get locationPermissionDesc {
     return Intl.message(
-      'Smart Driver collects location data to enable identification location even when the app is closed or not in use.',
+      'Smart Driver collects location data to enable identification location for tracking purpose.',
       name: 'locationPermissionDesc',
       desc: '',
       args: [],

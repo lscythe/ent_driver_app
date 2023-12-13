@@ -1,9 +1,12 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/data/repositories/repositories.dart';
+import 'package:driver/extensions/int_ext.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -23,6 +26,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   final AuthRepository _authRepository;
   final DriverRepository _driverRepository;
+  Timer? _trackingTimer;
 
   Future<void> init() async {
     final hasCheckIn = _driverRepository.haveCheckIn();
@@ -47,6 +51,7 @@ class HomeCubit extends Cubit<HomeState> {
     } else {
       await checkPermissionAndLocationService();
     }
+    postLocationTracking();
   }
 
   Future<void> postTracking(String name) async {
@@ -61,18 +66,69 @@ class HomeCubit extends Cubit<HomeState> {
       speed: position?.speed.toString(),
     );
 
-    final result = await _driverRepository.postAnalystTracking(request);
+    final isConnected = await connectivityService.isConnected();
 
-    if (result is Success) {
-      emit(state.copyWith(state: PageState.success));
+    if (isConnected) {
+      final result = await _driverRepository.postAnalystTracking(request);
+
+      if (result is Success) {
+        emit(state.copyWith(state: PageState.success));
+      } else {
+        emit(
+          state.copyWith(
+            state: PageState.failure,
+            errorMessage: result.message,
+          ),
+        );
+      }
     } else {
+      await _driverRepository.storeOfflineData(request);
       emit(
         state.copyWith(
           state: PageState.failure,
-          errorMessage: result.message,
+          errorMessage: noInternetConnection,
         ),
       );
     }
+  }
+
+  Future<void> postLocationTracking() async {
+    _trackingTimer?.cancel();
+    _trackingTimer = Timer.periodic(const Duration(minutes: 10), (timer) async {
+      emit(state.copyWith(state: PageState.loading));
+      final position = await _getCurrentPosition("LOCATION_TRACKING");
+      final request = TrackingRequest(
+        actionType: "LOCATION_TRACKING",
+        driverId: state.userId,
+        lat: position?.latitude.toString() ?? "0",
+        lng: position?.longitude.toString() ?? "0",
+        speed: position?.speed.toString(),
+      );
+      final isConnected = await connectivityService.isConnected();
+
+      if (isConnected) {
+        final result = await _driverRepository.postTracking(request);
+
+        if (result is Success) {
+          emit(state.copyWith(state: PageState.success));
+        } else {
+          emit(
+            state.copyWith(
+              state: PageState.failure,
+              errorMessage: result.message,
+            ),
+          );
+        }
+      } else {
+        await _driverRepository.storeOfflineData(request);
+        emit(
+          state.copyWith(
+            state: PageState.failure,
+            errorMessage: noInternetConnection,
+          ),
+        );
+      }
+    });
   }
 
   Future<void> postDriverToken() async {
@@ -110,10 +166,76 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
-
   Future<void> logout() async {
+    _trackingTimer?.cancel();
     await postTracking("LOGOUT")
         .whenComplete(() async => await _authRepository.logout());
+  }
+
+  Future<void> processOfflineData() async {
+    final offlineDataList = await _driverRepository.getOfflineData();
+
+    if (offlineDataList.isNotEmpty) {
+      emit(state.copyWith(state: PageState.loading));
+      for (final offlineData in offlineDataList) {
+        final data = offlineData.getData();
+
+        final isConnected = await connectivityService.isConnected();
+
+        if (isConnected) {
+          if (data is LeaveRequest) {
+            final result = await _driverRepository.postRequestLeave(data);
+
+            if (result is Success) {
+              emit(state.copyWith(state: PageState.success));
+            } else {
+              emit(
+                state.copyWith(
+                  state: PageState.failure,
+                  errorMessage: result.message,
+                ),
+              );
+            }
+            await _driverRepository.deleteOfflineData(offlineData.id.orZero);
+          } else if (data is TrackingRequest) {
+            final result = await _driverRepository.postTracking(data);
+
+            if (result is Success) {
+              emit(state.copyWith(state: PageState.success));
+            } else {
+              emit(
+                state.copyWith(
+                  state: PageState.failure,
+                  errorMessage: result.message,
+                ),
+              );
+            }
+            await _driverRepository.deleteOfflineData(offlineData.id.orZero);
+          } else if (data is TripFormRequest) {
+            final result = await _driverRepository.postTripForm(data);
+
+            if (result is Success) {
+              emit(state.copyWith(state: PageState.success));
+            } else {
+              emit(
+                state.copyWith(
+                  state: PageState.failure,
+                  errorMessage: result.message,
+                ),
+              );
+            }
+            await _driverRepository.deleteOfflineData(offlineData.id.orZero);
+          }
+        } else {
+          emit(
+            state.copyWith(
+              state: PageState.failure,
+              errorMessage: noInternetConnectionProcessLater,
+            ),
+          );
+        }
+      }
+    }
   }
 
   Future<Position?> _getCurrentPosition(String action) async {
@@ -122,11 +244,11 @@ class HomeCubit extends Cubit<HomeState> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
-    permission = await Permission.locationAlways.status;
+    permission = await Permission.location.status;
     if (!permission.isGranted && !serviceEnabled) {
       emit(
         state.copyWith(
-          permissionStatus: Tuple2(Permission.locationAlways, permission),
+          permissionStatus: Tuple2(Permission.location, permission),
           isPermissionGranted: false,
           lastAction: action,
           showPermissionDialog: true,
@@ -151,7 +273,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> checkPermissionAndLocationService() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    final permissionGranted = await Permission.locationAlways.status;
+    final permissionGranted = await Permission.location.status;
 
     if (!serviceEnabled) {
       emit(
@@ -214,6 +336,12 @@ class HomeCubit extends Cubit<HomeState> {
           homeError: HomeError.none,
         ),
       );
+
+  @override
+  Future<void> close() {
+    _trackingTimer?.cancel();
+    return super.close();
+  }
 }
 
 enum HomeError { notCheckIn, none }

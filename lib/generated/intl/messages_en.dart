@@ -74,7 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "locationDialogDesc": MessageLookupByLibrary.simpleMessage(
             "We need to know your location in order to enable identification location"),
         "locationPermissionDesc": MessageLookupByLibrary.simpleMessage(
-            "Smart Driver collects location data to enable identification location even when the app is closed or not in use."),
+            "Smart Driver collects location data to enable identification location for tracking purpose."),
         "locationPermissionTitle":
             MessageLookupByLibrary.simpleMessage("Location Access"),
         "loginBtn": MessageLookupByLibrary.simpleMessage("Login"),

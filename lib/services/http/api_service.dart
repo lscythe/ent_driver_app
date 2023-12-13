@@ -69,7 +69,7 @@ abstract class ApiService {
     @Body() TrackingRequest request,
   );
 
-  @POST("${ApiConstants.userPath}Tracking")
+  @POST("${ApiConstants.userPath}forgetpassword")
   Future<BaseResponse<EmptyResponse>> postForgotPassword(
     @Body() ForgotPasswordRequest request,
   );

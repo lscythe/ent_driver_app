@@ -2,8 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/extensions/extensions.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 
 part 'schedule_state.dart';
@@ -80,33 +82,50 @@ class ScheduleCubit extends Cubit<ScheduleState> {
     }
   }
 
-  Future<void> postRequestLeave(DateTime date, {String? errorMessage}) async {
+  Future<bool> postRequestLeave(DateTime date, {String? errorMessage}) async {
     state.copyWith(state: PageState.loading);
     final totalDay = int.parse(state.leaveDays);
+
+    final isConnected = await connectivityService.isConnected();
+    debugPrint("isConnected: $isConnected");
+
+    final request = LeaveRequest(
+      driverId: state.userId,
+      leaveType: state.leaveType,
+      date: date.ddMMMyyyy,
+      totalDay: totalDay,
+    );
 
     if (totalDay > state.leaveQuota) {
       emit(
         state.copyWith(errorMessage: errorMessage, state: PageState.failure),
       );
+      return false;
     } else {
-      final request = LeaveRequest(
-        driverId: state.userId,
-        leaveType: state.leaveType,
-        date: date.ddMMMyyyy,
-        totalDay: totalDay,
-      );
+      if (isConnected) {
+        final result = await _driverRepository.postRequestLeave(request);
 
-      final result = await _driverRepository.postRequestLeave(request);
-
-      if (result is Success) {
-        emit(state.copyWith(state: PageState.success));
+        if (result is Success) {
+          emit(state.copyWith(state: PageState.success));
+          return true;
+        } else {
+          emit(
+            state.copyWith(
+              state: PageState.failure,
+              errorMessage: result.message,
+            ),
+          );
+          return false;
+        }
       } else {
+        _driverRepository.storeOfflineData(request);
         emit(
           state.copyWith(
             state: PageState.failure,
-            errorMessage: result.message,
+            errorMessage: noInternetConnection,
           ),
         );
+        return false;
       }
     }
   }
@@ -119,7 +138,7 @@ class ScheduleCubit extends Cubit<ScheduleState> {
         final dateFrom = schedule.dateFrom?.timestamp ?? DateTime.now();
         DateTime dateTo;
 
-        if (schedule.dateTo != null) {
+        if (schedule.dateTo != null && schedule.leaveCode!.isNotEmpty) {
           dateTo = schedule.dateTo?.timestamp ?? DateTime.now();
         } else if (schedule.dataTo != null) {
           dateTo = schedule.dataTo?.timestamp ?? DateTime.now();

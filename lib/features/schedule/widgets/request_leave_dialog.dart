@@ -111,11 +111,13 @@ class _RequestLeaveDialogState extends State<RequestLeaveDialog> {
                                 state.leaveDays,
                               ),
                             )
-                            .whenComplete(
-                              () => context
-                                  .read<HomeCubit>()
-                                  .postTracking("REQUEST_LEAVE"),
-                            );
+                            .then((value) {
+                          if (value) {
+                            context
+                                .read<HomeCubit>()
+                                .postTracking("REQUEST_LEAVE");
+                          }
+                        });
                       }
                     : null,
               ),

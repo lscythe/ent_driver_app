@@ -21,9 +21,12 @@ class TripFormDetail extends StatefulWidget {
 }
 
 class _TripFormDetailState extends State<TripFormDetail> {
+
+  final dialogNotifier = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<TripCubit, TripState>(
+    return BlocBuilder<TripCubit, TripState>(
       builder: (context, state) {
         final isDeliverToExist = state.transportLocations
             .any((loc) => loc.location == widget.response?.deliveryTo);
@@ -151,12 +154,7 @@ class _TripFormDetailState extends State<TripFormDetail> {
                               await context
                                   .read<TripCubit>()
                                   .postTripForm()
-                                  .whenComplete(
-                                    () async => await context
-                                        .read<HomeCubit>()
-                                        .postTracking("ADD_TRIP_FORM")
-                                        .whenComplete(() => context.pop(true)),
-                                  );
+                                  .then((value) => context.pop(value));
                             }
                           : null,
                       mainAxisSize: MainAxisSize.max,
@@ -172,16 +170,6 @@ class _TripFormDetailState extends State<TripFormDetail> {
               Container(),
           ],
         );
-      },
-      listener: (context, state) {
-        if (state.state == PageState.failure) {
-          showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: Text(state.errorMessage.orEmpty),
-            ),
-          );
-        }
       },
     );
   }

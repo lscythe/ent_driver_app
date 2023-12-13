@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:driver/constants/constants.dart';
 import 'package:driver/data/repositories/repositories.dart';
 import 'package:driver/extensions/extensions.dart';
+import 'package:driver/features/features.dart';
 import 'package:driver/models/models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:injectable/injectable.dart';
@@ -45,6 +46,7 @@ class TripCubit extends Cubit<TripState> {
           state: PageState.success,
           tripForms: result.data,
           containerFilters: containerFilter,
+          isFiltered: false,
         ),
       );
     } else {
@@ -81,7 +83,7 @@ class TripCubit extends Cubit<TripState> {
     }
   }
 
-  Future<void> postTripForm() async {
+  Future<bool> postTripForm() async {
     emit(state.copyWith(state: PageState.loading));
     final user = await _authRepository.getCurrentUser();
     final vehicleNumber = _driverRepository.vehicleNumber();
@@ -95,17 +97,32 @@ class TripCubit extends Cubit<TripState> {
       contaierSize: state.containerSize,
     );
 
-    final result = await _driverRepository.postTripForm(request);
+    final isConnected = await connectivityService.isConnected();
 
-    if (result is Success) {
-      emit(state.copyWith(state: PageState.success));
+    if (isConnected) {
+      final result = await _driverRepository.postTripForm(request);
+
+      if (result is Success) {
+        emit(state.copyWith(state: PageState.success));
+        return true;
+      } else {
+        emit(
+          state.copyWith(
+            state: PageState.failure,
+            errorMessage: result.message,
+          ),
+        );
+        return false;
+      }
     } else {
+      await _driverRepository.storeOfflineData(request);
       emit(
         state.copyWith(
           state: PageState.failure,
-          errorMessage: result.message,
+          errorMessage: noInternetConnection,
         ),
       );
+      return false;
     }
   }
 
