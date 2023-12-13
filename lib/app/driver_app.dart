@@ -81,6 +81,7 @@ class _DriverAppState extends State<DriverApp> {
         routerDelegate: router.routerDelegate,
         routeInformationParser: router.routeInformationParser,
         routeInformationProvider: router.routeInformationProvider,
+        
       ),
     );
   }

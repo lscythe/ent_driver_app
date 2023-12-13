@@ -1,4 +1,3 @@
-import 'package:alice/alice.dart';
 import 'package:driver/data/repositories/auth_repository.dart';
 import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
@@ -9,11 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-
-final Alice alice = Alice(
-  showInspectorOnShake: true,
-  navigatorKey: _rootNavigatorKey,
-);
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,

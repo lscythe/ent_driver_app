@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:dio_cache_interceptor_isar_store/dio_cache_interceptor_isar_store.dart';
-import 'package:driver/app/router.dart';
 import 'package:driver/constants/api.dart';
 import 'package:driver/locator/locator.dart';
 import 'package:driver/models/models.dart';
 import 'package:driver/services/http/http.dart';
 import 'package:driver/services/service.dart';
+import 'package:fancy_dio_inspector/fancy_dio_inspector.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:injectable/injectable.dart';
 import 'package:isar/isar.dart';
@@ -66,7 +66,7 @@ abstract class InitialModule {
         requestHeader: true,
       ),
     );
-    dio.interceptors.add(alice.getDioInterceptor());
+    dio.interceptors.add(FancyDioInterceptor());
     dio.interceptors.add(DioCacheInterceptor(options: cacheOptions));
     dio.interceptors.add(ConnectivityInterceptor());
     dio.interceptors.add(TokenInterceptor());

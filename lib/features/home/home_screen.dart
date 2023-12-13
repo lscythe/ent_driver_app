@@ -4,6 +4,7 @@ import 'package:driver/extensions/extensions.dart';
 import 'package:driver/features/features.dart';
 import 'package:driver/generated/assets.gen.dart';
 import 'package:driver/widgets/widgets.dart';
+import 'package:fancy_dio_inspector/fancy_dio_inspector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool hasCheckIn = false;
   bool isPermissionDialogShown = false;
   bool isLocationServiceDialogShown = false;
+  bool showInspector = false;
 
   final List<Widget> _child = [
     const CheckInScreen(),
@@ -60,11 +62,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   _buildConnectionState(),
                   Expanded(
-                    child: Scaffold(
-                      backgroundColor: Colors.grey.shade300,
-                      appBar: _appBar(context),
-                      body: _buildChild(),
-                      bottomNavigationBar: _buildBottomNavBar(),
+                    child: Stack(
+                      children: [
+                        Scaffold(
+                          backgroundColor: Colors.grey.shade300,
+                          appBar: _appBar(context),
+                          body: _buildChild(),
+                          bottomNavigationBar: _buildBottomNavBar(),
+                          floatingActionButton: FloatingActionButton(
+                            onPressed: () {
+                              setState(() {
+                                showInspector = !showInspector;
+                              });
+                            },
+                            backgroundColor: context.colorScheme.secondary,
+                            child: const Icon(Icons.troubleshoot),
+                          ),
+                          floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+                        ),
+                        Visibility(
+                          visible: showInspector,
+                          child: Expanded(
+                            child: FancyDioInspectorView(
+                              themeData: context.theme,
+                              actions: [
+                                IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      showInspector = !showInspector;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.close),
+                                
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
